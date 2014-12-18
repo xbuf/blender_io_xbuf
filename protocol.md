@@ -1,9 +1,21 @@
+# Communication
+
+The communication is based on the following rules :
+
+* Messages are send like notification or event, no explicit request/response by default (if it is needed, use a correlation id to link request and response).
+* Client / Server communication, assymmetric messages support.
+* Currently the messages are exchange over tcp.
+* Server (eg: game engine) are bind to 127.0.0.1:4242 (default).
+* Client is the front-end editor (eg: blender).
+* Client should not freeze when server is unavailable.
+
 # Message
 
 | Offset | Size | description |
 |-------:|-----:|-------------|
 | 0 | 5 | header,  see header for description |
-| 5 | | body, size and format are defined in the header |
+| 5 | defined in header| body, size and format are defined in the header |
+
 
 # Header
 
@@ -27,7 +39,11 @@ In the sub-sections:
 | 0x02 | Ask Screenshot | client | X |
 | 0x02 | Raw Screenshot BGRA| server | X |
 | 0x05 | MessagePack encoded | client | |
+| ... | Unused | . |. |
+| 0xF0 | Reserved for future | .|. |
+| ... | Reserved for future | .|. |
 | 0xFF | Reserved for future | .|. |
+
 
 Other value for kind, will be used by other **possible** message or extension, like :
 * typed message encoded with [Cap’n Proto](http://kentonv.github.io/capnproto/otherlang.html) when it'll be more windows/python friendly
@@ -43,7 +59,7 @@ Message with king 0x00 are invalid and should be ignore or raise a warning.
 
 ## 0x01 : PingPong
 
-Body used to check the communication. When a peer receive 'ping', it should reply 'pong'.
+Body used to check the communication. When a peer receive 'ping', it should reply 'pong'. This message could be used to test the connexion, to mesure the minimal  roundtrip.
 
 | Offset | Size | Format | description |
 |-------:|-----:|--------|-------------|
@@ -53,13 +69,17 @@ Body used to check the communication. When a peer receive 'ping', it should repl
 
 ## 0x02 : Log Message
 
-Used by the server to reply, or send log to the client.
+Used by the server to reply, or to send a list of log messages to the client.
 
 | Offset | Size | Format | description |
 |-------:|-----:|--------|-------------|
-| 0 | 4 | big-endian int32 | size of the text in bytes|
-| 4 | 1 | char (**'t'** trace, **'d'** debug, **'c'** config, **'i'** info, **'w'** warning, **'e'** error, **'f'** fatal)| criticity, level|
-| 5 | size | UTF-8| text|
+| 0 | 4 | big-endian int32 | correlation id (**0** no correlation id)|
+| 4 | 1 | byte | number of log message|
+| 5 | 4 | big-endian int32 | size of the text in bytes|
+| 9 | 1 | char (**'t'** trace, **'d'** debug, **'c'** config, **'i'** info, **'w'** warning, **'e'** error, **'f'** fatal)| criticity, level|
+| 10 | size | UTF-8| text|
+
+repeat the last 3 (size + criticity + text) for every messages in the list.
 
 ## 0x03 : Ask Screenshot
 
@@ -76,7 +96,7 @@ In response to 'Ask Screenshot', the server can send the image in uncompressed B
 |-------:|-----:|--------|-------------|
 | 0 | 4 | big-endian int32 | width|
 | 4 | 4 | big-endian int32 | height|
-| 8 | width x height x 4 | BGRA8| the raw image|
+| 8 | width x height x 4 | BGRA8| the raw image with origine (0,0) at bottom left|
 
 ## 0x05 : MessagePack encoded
 
@@ -88,6 +108,6 @@ method.
 | method | string | represents the method name |
 | args| any[] | the array of the function arguments. The elements of this array is arbitrary object. |
 
-## 0xFF : Reserved for future
+## 0xF0..0xFF : Reserved for future
 
-Reseved to be used to extends the protocol if needed.
+Reserved to extends the protocol if needed.
