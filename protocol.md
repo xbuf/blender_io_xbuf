@@ -1,4 +1,4 @@
-# Communication
+# Communication Overview
 
 The communication is based on the following rules :
 
@@ -17,14 +17,14 @@ The communication is based on the following rules :
 | 5 | defined in header| body, size and format are defined in the header |
 
 
-# Header
+## Header
 
 | Offset | Size | Format | description |
 |-------:|-----:|--------|-------------|
 | 0 | 4 | big-endian int32 | size in bytes of the body |
 | 4 | 1 | byte | kind of the body (kind = format + version)|
 
-# Body
+## Body
 
 In the sub-sections:
 
@@ -53,11 +53,11 @@ Other value for kind, will be used by other **possible** message or extension, l
 * custom command meta-data, to allow server to expose custom command to client.
 * audio ??
 
-## 0x00 : Invalid
+### 0x00 : Invalid
 
 Message with king 0x00 are invalid and should be ignore or raise a warning.
 
-## 0x01 : PingPong
+### 0x01 : PingPong
 
 Body used to check the communication. When a peer receive 'ping', it should reply 'pong'. This message could be used to test the connexion, to mesure the minimal  roundtrip.
 
@@ -67,7 +67,7 @@ Body used to check the communication. When a peer receive 'ping', it should repl
 | 4 | 1 | byte (**0x01** : ping, **0x02**: pong)| the request or the response|
 
 
-## 0x02 : Log Message
+### 0x02 : Log Message
 
 Used by the server to reply, or to send a list of log messages to the client.
 
@@ -81,14 +81,14 @@ Used by the server to reply, or to send a list of log messages to the client.
 
 repeat the last 3 (size + criticity + text) for every messages in the list.
 
-## 0x03 : Ask Screenshot
+### 0x03 : Ask Screenshot
 
 | Offset | Size | Format | description |
 |-------:|-----:|--------|-------------|
 | 0 | 4 | big-endian int32 | width|
 | 4 | 4 | big-endian int32 | height|
 
-## 0x04 : Raw Screenshot BGRA
+### 0x04 : Raw Screenshot BGRA
 
 In response to 'Ask Screenshot', the server can send the image in uncompressed BGRA format. The raw image can be loaded to opengl directly.
 
@@ -98,7 +98,7 @@ In response to 'Ask Screenshot', the server can send the image in uncompressed B
 | 4 | 4 | big-endian int32 | height|
 | 8 | width x height x 4 | BGRA8| the raw image with origine (0,0) at bottom left|
 
-## 0x05 : MessagePack encoded
+### 0x05 : MessagePack encoded
 
 The full body is encoded with [msgpack](http://msgpack.org/), the format is inspired cli or the notification in [msgpack-rpc' spec](https://github.com/msgpack-rpc/msgpack-rpc/blob/master/spec.md).
 method.
@@ -108,6 +108,6 @@ method.
 | method | string | represents the method name |
 | args| any[] | the array of the function arguments. The elements of this array is arbitrary object. |
 
-## 0xF0..0xFF : Reserved for future
+### 0xF0..0xFF : Reserved for future
 
 Reserved to extends the protocol if needed.
