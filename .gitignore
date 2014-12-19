@@ -8,9 +8,10 @@ build
 .nb-gradle
 .nb-gradle-properties
 
-# native created when running
+# native, cache created when running
 *.so
 *.dll
+__pycache__
 
 # eclipse
 /bin
