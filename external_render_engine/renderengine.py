@@ -17,8 +17,7 @@ import bpy
 import bgl
 # from mathutils import Vector, Matrix
 import asyncio
-from external_render_engine import bl_info
-
+from . import protocol
 
 # gloop = external_render_engine.gloop
 
@@ -30,16 +29,13 @@ from external_render_engine import bl_info
 class ExternalRenderEngine(bpy.types.RenderEngine):
     # These three members are used by blender to set up the
     # RenderEngine; define its internal name, visible name and capabilities.
-    bl_idname = bl_info["name"]
+    bl_idname = "external_renderer"
     bl_label = "External Renderer"
     bl_use_preview = True
 
     # moved assignment from execute() to the body of the class...
     port = bpy.props.IntProperty(name="port", default=4242, min=1024)
     host = bpy.props.StringProperty(name="host", default="127.0.0.1")
-
-    # TODO better management off the event loop (eg close on unregister)
-    loop = asyncio.get_event_loop()
 
     def __init__(self):
         print("__init__")
@@ -50,29 +46,14 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     @asyncio.coroutine
     def remote_render(self, width, height, flocal):
         # import msgpack
-        import struct
-        reader, writer = yield from asyncio.open_connection(self.host, self.port, loop=self.loop)
-        message = '%rx%s' % (width, height)
-        print('Send: %r' % message)
-        b = bytearray()
-        b.extend((width).to_bytes(4, byteorder='big'))
-        b.extend((height).to_bytes(4, byteorder='big'))
-        # packed = msgpack.packb([width, height], use_bin_type=True)
-        writer.write((len(b)).to_bytes(4, byteorder='big'))
-        writer.write((1).to_bytes(1, byteorder='big'))
-        writer.write(b)
+        (reader, writer) = yield from protocol.streams(self.host, self.port)
+        print('Send: %rx%r' % (width, height))
+        protocol.askScreenshot(writer, width, height)
         # yield from writer.drain()
 
-        header = yield from reader.readexactly(5)
-        (size, kind) = struct.unpack('>iB', header)
-        # kind = header[4]
-        raw = yield from reader.readexactly(size)
-
-        # data = yield from reader.read(-1)
-        print('Received %r + %r' % (len(header), len(raw)))
-
+        (kind, raw) = yield from protocol.readMessage(reader)
         # raw = [[128, 255, 0, 255]] * (width * height)
-        if kind == 2:
+        if kind == protocol.Kind.rawScreenshot:
             print('draw local image %r' % kind)
             flocal(width, height, raw)
 
@@ -80,12 +61,11 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         writer.close()
 
     def render(self, scene):
-        print("render 55")
+        print("render 44")
         scale = scene.render.resolution_percentage / 100.0
         width = int(scene.render.resolution_x * scale)
         height = int(scene.render.resolution_y * scale)
-        coro = self.remote_render(width, height, self.render_image)
-        self.loop.run_until_complete(coro)
+        protocol.run_until_complete(self.remote_render(width, height, self.render_image))
 
     def update(self, data, scene):
         """Export scene data for render"""
@@ -115,8 +95,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         height = int(screen.height)
         print("view_draw {!r} :: {!r} :: {!r} ::{!r}x{!r}".format(rot, loc, projection, width, height))
 
-        coro = self.remote_render(width, height, self.view_draw_image)
-        self.loop.run_until_complete(coro)
+        protocol.run_until_complete(self.remote_render(width, height, self.view_draw_image))
 
     def render_image(self, width, height, raw):
         # TODO optimize the loading/convertion of raw (other renderegine use load_from_file instead of rect)

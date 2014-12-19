@@ -36,8 +36,8 @@ In the sub-sections:
 | 0x00 | Invalid | none | |
 | 0x01 | PingPong | client,server | |
 | 0x02 | Log Message | server | |
-| 0x02 | Ask Screenshot | client | X |
-| 0x02 | Raw Screenshot BGRA| server | X |
+| 0x03 | Ask Screenshot | client | X |
+| 0x04 | Raw Screenshot BGRA| server | X |
 | 0x05 | MessagePack encoded | client | |
 | ... | Unused | . |. |
 | 0xF0 | Reserved for future | .|. |

@@ -13,7 +13,9 @@
 #
 # Copyright David Bernard
 
-import renderengine
+from . import renderengine
+from . import protocol
+
 
 bl_info = {
     "name": "external_render_engine",
@@ -26,7 +28,7 @@ bl_info = {
     "wiki_url": "",
     "category": "Add RenderEngine"}
 
-__all__ = ['ExternalRenderEngine']
+# __all__ = ['']
 
 
 def register():

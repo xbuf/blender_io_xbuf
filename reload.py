@@ -22,6 +22,7 @@ except (RuntimeError):
 
 # register with new code
 import imp
-imp.reload(external_render_engine.renderengine)
 imp.reload(external_render_engine)
+imp.reload(external_render_engine.protocol)
+imp.reload(external_render_engine.renderengine)
 external_render_engine.register()
