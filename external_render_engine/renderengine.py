@@ -45,7 +45,6 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     @asyncio.coroutine
     def remote_render(self, width, height, flocal):
-        # import msgpack
         (reader, writer) = yield from protocol.streams(self.host, self.port)
         print('Send: %rx%r' % (width, height))
         protocol.askScreenshot(writer, width, height)
@@ -78,6 +77,19 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     def view_update(self, context):
         print("view_update")
+        # screen = context.screen.areas[2]
+        # r3d = screen.spaces[0].region_3d # region_3d of 3D View
+        r3d = context.space_data.region_3d
+        # loc = r3d.view_matrix.col[3][1:4]  # translation part of the view matrix
+        rot = r3d.view_rotation  # quaternion
+        loc = r3d.view_location  # vec3
+        projection = r3d.perspective_matrix  # mat4
+
+        @asyncio.coroutine
+        def update():
+            (_, writer) = yield from protocol.streams(self.host, self.port)
+            protocol.updateCamera(writer, loc, rot, projection)
+        protocol.run_until_complete(update())
         # exp = MemoryOpenGexExporter()
         # b = exp.exportToBytes(context)
         # print(b)
@@ -94,7 +106,6 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         width = int(screen.width)
         height = int(screen.height)
         print("view_draw {!r} :: {!r} :: {!r} ::{!r}x{!r}".format(rot, loc, projection, width, height))
-
         protocol.run_until_complete(self.remote_render(width, height, self.view_draw_image))
 
     def render_image(self, width, height, raw):
