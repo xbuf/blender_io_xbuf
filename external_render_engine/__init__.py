@@ -13,6 +13,8 @@
 #
 # Copyright David Bernard
 
+import renderengine
+
 bl_info = {
     "name": "external_render_engine",
     "author": "David Bernard",
@@ -23,3 +25,43 @@ bl_info = {
     "warning": "",
     "wiki_url": "",
     "category": "Add RenderEngine"}
+
+__all__ = ['ExternalRenderEngine']
+
+
+def register():
+
+    import bpy
+    # Register the RenderEngine
+    bpy.utils.register_class(renderengine.ExternalRenderEngine)
+
+    # RenderEngines also need to tell UI Panels that they are compatible
+    # Otherwise most of the UI will be empty when the engine is selected.
+    # In this example, we need to see the main render image button and
+    # the material preview panel.
+    from bl_ui import properties_render
+    properties_render.RENDER_PT_render.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
+    del properties_render
+
+    from bl_ui import properties_material
+    properties_material.MATERIAL_PT_preview.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
+    del properties_material
+
+
+def unregister():
+    import bpy
+    bpy.utils.unregister_class(renderengine.ExternalRenderEngine)
+
+
+def main():
+    try:
+        unregister()
+    except (RuntimeError, ValueError):
+        pass
+    register()
+
+
+# This allows you to run the script directly from blenders text editor
+# to test the addon without having to install it.
+if __name__ == "__main__":
+    main()
