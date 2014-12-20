@@ -88,13 +88,14 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         @asyncio.coroutine
         def update():
             (_, writer) = yield from protocol.streams(self.host, self.port)
-            protocol.updateCamera(writer, loc, rot, projection)
+            protocol.setCamera(writer, loc, rot, projection)
         protocol.run_until_complete(update())
         # exp = MemoryOpenGexExporter()
         # b = exp.exportToBytes(context)
         # print(b)
 
     def view_draw(self, context):
+        self.view_update(context)
         # from http://blender.stackexchange.com/questions/5035/moving-user-perspective-in-blender-with-python
         screen = context.screen.areas[2]
         # r3d = screen.spaces[0].region_3d # region_3d of 3D View

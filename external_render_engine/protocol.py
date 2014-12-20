@@ -1,7 +1,7 @@
 import struct
 import asyncio
 import atexit
-import msgpack
+import pgex
 
 # TODO better management off the event loop (eg close on unregister)
 loop = asyncio.get_event_loop()
@@ -14,6 +14,7 @@ class Kind:
     askScreenshot = 0x03
     rawScreenshot = 0x04
     msgpack = 0x05
+    pgex_cmd = 0x06
 
 
 @asyncio.coroutine
@@ -52,33 +53,52 @@ def askScreenshot(writer, width, height):
     writeMessage(writer, Kind.askScreenshot, b)
 
 
-def updateCamera(writer, location, rotation, projection_matrix):
-    sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
+def setCamera(writer, location, rotation, projection_matrix):
+    # sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
+    cmd = pgex.cmds_pb2.Cmd()
+    # cmd.setCamera = pgex.cmds_pb2.SetCamera()
+    _cnv_vec3(location, cmd.setCamera.location)
+    _cnv_quat(rotation, cmd.setCamera.rotation)
+    _cnv_mat4(projection_matrix, cmd.setCamera.projection)
+    writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 
-def sendCmd(writer, method, args):
-    b = bytearray()
-    b.extend(msgpack.packb(method, use_bin_type=True))
-    b.extend(msgpack.packb(args, use_bin_type=True))
-    writeMessage(writer, Kind.msgpack, b)
+def _cnv_vec3(src, dst):
+    # dst = pgex.math_pb2.Vec3()
+    dst.x = src.x
+    dst.y = src.y
+    dst.z = src.z
+    return dst
 
 
-def _encode_vec3(v3):
-    return (v3.x, v3.y, v3.z)
+def _cnv_quat(src, dst):
+    # dst = pgex.math_pb2.Quaternion()
+    dst.x = src.x
+    dst.y = src.y
+    dst.z = src.z
+    dst.w = src.w
+    return dst
 
 
-def _encode_quat(q):
-    return (q.x, q.y, q.z, q.w)
-
-
-def _encode_mat4(mat4):
-    return (
-        mat4.col[0][0], mat4.col[1][0], mat4.col[2][0], mat4.col[3][0],
-        mat4.col[0][1], mat4.col[1][1], mat4.col[2][1], mat4.col[3][1],
-        mat4.col[0][2], mat4.col[1][2], mat4.col[2][2], mat4.col[3][2],
-        mat4.col[0][3], mat4.col[1][3], mat4.col[2][3], mat4.col[3][3],
-    )
-
+def _cnv_mat4(src, dst):
+    # dst = pgex.math_pb2.Quaternion()
+    dst.c00 = src.col[0][0]
+    dst.c10 = src.col[1][0]
+    dst.c20 = src.col[2][0]
+    dst.c30 = src.col[3][0]
+    dst.c01 = src.col[0][1]
+    dst.c11 = src.col[1][1]
+    dst.c21 = src.col[2][1]
+    dst.c31 = src.col[3][1]
+    dst.c02 = src.col[0][2]
+    dst.c12 = src.col[1][2]
+    dst.c22 = src.col[2][2]
+    dst.c32 = src.col[3][2]
+    dst.c03 = src.col[0][3]
+    dst.c13 = src.col[1][3]
+    dst.c23 = src.col[2][3]
+    dst.c33 = src.col[3][3]
+    return dst
 
 def run_until_complete(f, *args, **kwargs):
     if asyncio.iscoroutine(f):
