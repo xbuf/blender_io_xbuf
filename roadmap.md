@@ -88,6 +88,7 @@
   * http://kristianduske.com/trenchbroom/
   * http://gamedev.stackexchange.com/questions/35265/create-levels-using-blender
 * http://cgcookiemarkets.com/blender/contest-blender-add-on/
+* [bdx](https://github.com/GoranM/bdx) blender + libgdx framework
 
 ---
 
