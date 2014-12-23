@@ -64,6 +64,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         scale = scene.render.resolution_percentage / 100.0
         width = int(scene.render.resolution_x * scale)
         height = int(scene.render.resolution_y * scale)
+        # context.space_data.camera
         protocol.run_until_complete(self.remote_render(width, height, self.render_image))
 
     def update(self, data, scene):
@@ -76,14 +77,29 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                     print("=>", ob.name)
 
     def view_update(self, context):
+        import mathutils
         print("view_update")
         # screen = context.screen.areas[2]
         # r3d = screen.spaces[0].region_3d # region_3d of 3D View
         r3d = context.space_data.region_3d
         # loc = r3d.view_matrix.col[3][1:4]  # translation part of the view matrix
-        rot = r3d.view_rotation  # quaternion
-        loc = r3d.view_location  # vec3
+        # rotate the camera to be Zup and Ybackward like other blender object
+        # in blender camera and spotlight are face -Z
+        # see http://blender.stackexchange.com/questions/8999/convert-from-blender-rotations-to-right-handed-y-up-rotations-maya-houdini
+        rot = r3d.view_rotation.copy()
+        # rot = mathutils.Quaternion((0, 0, 1, 1))
+        # rot = mathutils.Quaternion((-1, 1, 0, 0))  # -PI/2 axis x
+        # rot.rotate(mathutils.Quaternion((0, 0, 0, 1)))   # PI axis z
+        q = mathutils.Quaternion((1, -1, 0, 0))
+        q.normalize()
+        rot.rotate(q)
+        # rot.rotate(r3d.view_rotation)  # quaternion
+        # rot = r3d.view_rotation
+        # camera are Yup no more conversion needed
+        # loc = r3d.view_location  # vec3
+        loc = mathutils.Vector(camera_position(context.space_data))
         projection = r3d.perspective_matrix  # mat4
+        print("view_draw {!r} :: {!r} :: {!r}".format(rot, loc, r3d.view_rotation))
 
         @asyncio.coroutine
         def update():
@@ -97,16 +113,18 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     def view_draw(self, context):
         self.view_update(context)
         # from http://blender.stackexchange.com/questions/5035/moving-user-perspective-in-blender-with-python
-        screen = context.screen.areas[2]
+        area = context.screen.areas[2]
         # r3d = screen.spaces[0].region_3d # region_3d of 3D View
         r3d = context.space_data.region_3d
         # loc = r3d.view_matrix.col[3][1:4]  # translation part of the view matrix
+        fov = context.space_data.lens
+        near = context.space_data.clip_start
+        far = context.space_data.clip_end
         rot = r3d.view_rotation  # quaternion
-        loc = r3d.view_location  # vec3
-        projection = r3d.perspective_matrix  # mat4
-        width = int(screen.width)
-        height = int(screen.height)
-        print("view_draw {!r} :: {!r} :: {!r} ::{!r}x{!r}".format(rot, loc, projection, width, height))
+        width = int(area.regions[4].width)
+        height = int(area.regions[4].height)
+        print("view_info {!r} :: {!r} :: {!r} ::{!r}x{!r}".format(fov, near, far, width, height))
+        print("view_quat {!r} :: {!r} :: {!r} ::{!r}".format(rot.x, rot.y, rot.z, r3d.view_matrix))
         protocol.run_until_complete(self.remote_render(width, height, self.view_draw_image))
 
     def render_image(self, width, height, raw):
@@ -137,3 +155,34 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                          # bgl.GL_BGRA, bgl.GL_UNSIGNED_BYTE,
                          bitmap
                          )
+
+
+# from http://stackoverflow.com/questions/9028398/change-viewport-angle-in-blender-using-python
+def camera_position(space_data):
+    """ From 4x4 matrix, calculate camera location """
+    matrix = space_data.region_3d.view_matrix
+    t = (matrix[0][3], matrix[1][3], matrix[2][3])
+    r = (
+        (matrix[0][0], matrix[0][1], matrix[0][2]),
+        (matrix[1][0], matrix[1][1], matrix[1][2]),
+        (matrix[2][0], matrix[2][1], matrix[2][2])
+    )
+    rp = (
+        (-r[0][0], -r[1][0], -r[2][0]),
+        (-r[0][1], -r[1][1], -r[2][1]),
+        (-r[0][2], -r[1][2], -r[2][2])
+    )
+    output = (
+        rp[0][0] * t[0] + rp[0][1] * t[1] + rp[0][2] * t[2],
+        rp[1][0] * t[0] + rp[1][1] * t[1] + rp[1][2] * t[2],
+        rp[2][0] * t[0] + rp[2][1] * t[1] + rp[2][2] * t[2],
+    )
+    return output
+
+
+def camera_fov(space_data):
+    return space_data.lens
+
+
+def camera_nearfar(space_data):
+    return (space_data.clip_start, space_data.clip_end)

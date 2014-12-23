@@ -2,6 +2,7 @@ import struct
 import asyncio
 import atexit
 import pgex
+import mathutils
 
 # TODO better management off the event loop (eg close on unregister)
 loop = asyncio.get_event_loop()
@@ -57,26 +58,70 @@ def setCamera(writer, location, rotation, projection_matrix):
     # sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
     cmd = pgex.cmds_pb2.Cmd()
     # cmd.setCamera = pgex.cmds_pb2.SetCamera()
-    _cnv_vec3(location, cmd.setCamera.location)
-    _cnv_quat(rotation, cmd.setCamera.rotation)
+    _cnv_vec3ZupToYup(location, cmd.setCamera.location)
+    _cnv_quatZupToYup(rotation, cmd.setCamera.rotation)
     _cnv_mat4(projection_matrix, cmd.setCamera.projection)
     writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 
 def _cnv_vec3(src, dst):
     # dst = pgex.math_pb2.Vec3()
-    dst.x = src.x
-    dst.y = src.y
-    dst.z = src.z
+    # dst.x = src.x
+    # dst.y = src.y
+    # dst.z = src.z
+    dst.x = src[0]
+    dst.y = src[1]
+    dst.z = src[2]
+    return dst
+
+
+def _cnv_vec3ZupToYup(src, dst):
+    # same as src.rotate(Quaternion((1,1,0,0))) # 90 deg CW axis X
+    src = src.copy()
+    q = mathutils.Quaternion((-1, 1, 0, 0))
+    q.normalize()
+    src.rotate(q)
+    # dst = pgex.math_pb2.Vec3()
+    # dst.x = src.x
+    # dst.y = src.y
+    # dst.z = src.z
+    dst.x = src[0]
+    dst.y = src[1]
+    dst.z = src[2]
+    return dst
+
+
+def _cnv_quatZupToYup(src, dst):
+    # dst = pgex.math_pb2.Quaternion()
+    src = src.copy()
+    q = mathutils.Quaternion((-1, 1, 0, 0))
+    q.normalize()
+    # src.rotate(q)
+    # orig = src
+    # src = mathutils.Quaternion((-1, 1, 0, 0))
+    # src.normalize()
+    # src.rotate(orig)
+    dst.x = src.x  # [1]
+    dst.y = src.y  # [2]
+    dst.z = src.z  # [3]
+    dst.w = src.w  # [0]
+    # dst.x = src[0]
+    # dst.y = src[1]
+    # dst.z = src[2]
+    # dst.w = src[3]
     return dst
 
 
 def _cnv_quat(src, dst):
     # dst = pgex.math_pb2.Quaternion()
-    dst.x = src.x
-    dst.y = src.y
-    dst.z = src.z
-    dst.w = src.w
+    dst.x = src.x  # [1]
+    dst.y = src.y  # [2]
+    dst.z = src.z  # [3]
+    dst.w = src.w  # [0]
+    # dst.x = src[0]
+    # dst.y = src[1]
+    # dst.z = src[2]
+    # dst.w = src[3]
     return dst
 
 
