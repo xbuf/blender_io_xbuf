@@ -77,38 +77,40 @@ def _cnv_vec3(src, dst):
 
 def _cnv_vec3ZupToYup(src, dst):
     # same as src.rotate(Quaternion((1,1,0,0))) # 90 deg CW axis X
-    src = src.copy()
+    src0 = src.copy()
     q = mathutils.Quaternion((-1, 1, 0, 0))
     q.normalize()
-    src.rotate(q)
+    src0.rotate(q)
     # dst = pgex.math_pb2.Vec3()
     # dst.x = src.x
     # dst.y = src.y
     # dst.z = src.z
-    dst.x = src[0]
-    dst.y = src[1]
-    dst.z = src[2]
+    dst.x = src0[0]
+    dst.y = src0[1]
+    dst.z = src0[2]
+    print("_cnv_vec3ZupToYup %r -> %r" % (src, src0))
     return dst
 
 
 def _cnv_quatZupToYup(src, dst):
     # dst = pgex.math_pb2.Quaternion()
-    src = src.copy()
+    src0 = src.copy()
     q = mathutils.Quaternion((-1, 1, 0, 0))
     q.normalize()
-    # src.rotate(q)
+    src0.rotate(q)
     # orig = src
     # src = mathutils.Quaternion((-1, 1, 0, 0))
     # src.normalize()
     # src.rotate(orig)
-    dst.x = src.x  # [1]
-    dst.y = src.y  # [2]
-    dst.z = src.z  # [3]
-    dst.w = src.w  # [0]
+    dst.w = src0.w  # [0]
+    dst.x = src0.x  # [1]
+    dst.y = src0.y  # [2]
+    dst.z = src0.z  # [3]
     # dst.x = src[0]
     # dst.y = src[1]
     # dst.z = src[2]
     # dst.w = src[3]
+    print("_cnv_quatZupToYup %r -> %r" % (src, src0))
     return dst
 
 

@@ -20,7 +20,7 @@ from pgex.math_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='cmds.proto',
   package='pgex',
-  serialized_pb=_b('\n\ncmds.proto\x12\x04pgex\x1a\nmath.proto\"2\n\x03\x43md\x12$\n\tsetCamera\x18\x01 \x01(\x0b\x32\x0f.pgex.SetCameraH\x00\x42\x05\n\x03\x63md\"m\n\tSetCamera\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x02(\x0b\x32\n.pgex.Mat4B\x02H\x03P\x00')
+  serialized_pb=_b('\n\ncmds.proto\x12\x04pgex\x1a\nmath.proto\"W\n\x03\x43md\x12#\n\nsetMetrics\x18\x01 \x01(\x0b\x32\r.pgex.MetricsH\x00\x12$\n\tsetCamera\x18\x02 \x01(\x0b\x32\x0f.pgex.SetCameraH\x00\x42\x05\n\x03\x63md\"m\n\tSetCamera\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x02(\x0b\x32\n.pgex.Mat4B\x02H\x03P\x00')
   ,
   dependencies=[math_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -36,8 +36,15 @@ _CMD = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='setCamera', full_name='pgex.Cmd.setCamera', index=0,
+      name='setMetrics', full_name='pgex.Cmd.setMetrics', index=0,
       number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='setCamera', full_name='pgex.Cmd.setCamera', index=1,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -57,7 +64,7 @@ _CMD = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=32,
-  serialized_end=82,
+  serialized_end=119,
 )
 
 
@@ -100,11 +107,15 @@ _SETCAMERA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=84,
-  serialized_end=193,
+  serialized_start=121,
+  serialized_end=230,
 )
 
+_CMD.fields_by_name['setMetrics'].message_type = math_pb2._METRICS
 _CMD.fields_by_name['setCamera'].message_type = _SETCAMERA
+_CMD.oneofs_by_name['cmd'].fields.append(
+  _CMD.fields_by_name['setMetrics'])
+_CMD.fields_by_name['setMetrics'].containing_oneof = _CMD.oneofs_by_name['cmd']
 _CMD.oneofs_by_name['cmd'].fields.append(
   _CMD.fields_by_name['setCamera'])
 _CMD.fields_by_name['setCamera'].containing_oneof = _CMD.oneofs_by_name['cmd']

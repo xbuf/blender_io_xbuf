@@ -86,20 +86,28 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         # rotate the camera to be Zup and Ybackward like other blender object
         # in blender camera and spotlight are face -Z
         # see http://blender.stackexchange.com/questions/8999/convert-from-blender-rotations-to-right-handed-y-up-rotations-maya-houdini
-        rot = r3d.view_rotation.copy()
+        # rot = r3d.view_rotation.copy()
         # rot = mathutils.Quaternion((0, 0, 1, 1))
         # rot = mathutils.Quaternion((-1, 1, 0, 0))  # -PI/2 axis x
         # rot.rotate(mathutils.Quaternion((0, 0, 0, 1)))   # PI axis z
-        q = mathutils.Quaternion((1, -1, 0, 0))
-        q.normalize()
-        rot.rotate(q)
+        qr0 = mathutils.Quaternion((0, 0, 1, 0)) # z forward
+        qr0.normalize()
+        qr0.rotate(r3d.view_rotation)
+        qr0.normalize()
+        rot = qr0
+        # why we don't need to make z up and -y forward ?
+        qr1 = mathutils.Quaternion((-1,-1,0,0))
+        qr1.normalize()
+        qr1.rotate(qr0)
+        qr1.normalize()
+        # rot = qr1
         # rot.rotate(r3d.view_rotation)  # quaternion
         # rot = r3d.view_rotation
         # camera are Yup no more conversion needed
         # loc = r3d.view_location  # vec3
         loc = mathutils.Vector(camera_position(context.space_data))
         projection = r3d.perspective_matrix  # mat4
-        print("view_draw {!r} :: {!r} :: {!r}".format(rot, loc, r3d.view_rotation))
+        print("eye : rot0 {!r} | rot {!r} |  loc {!r}".format(r3d.view_rotation, rot, loc))
 
         @asyncio.coroutine
         def update():
