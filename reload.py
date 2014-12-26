@@ -16,9 +16,8 @@ if module_dir not in sys.path:
     sys.path.append(module_dir)
 
 import external_render_engine
-import pgex.math_pb2
+import pgex.datas_pb2
 import pgex.cmds_pb2
-import pgex.scene_pb2
 
 # unregister previously code
 try:
@@ -29,9 +28,8 @@ except (RuntimeError):
 # register with new code
 import imp
 
-imp.reload(pgex.math_pb2)
+imp.reload(pgex.datas_pb2)
 imp.reload(pgex.cmds_pb2)
-imp.reload(pgex.scene_pb2)
 
 imp.reload(external_render_engine)
 imp.reload(external_render_engine.protocol)
