@@ -54,13 +54,28 @@ def askScreenshot(writer, width, height):
     writeMessage(writer, Kind.askScreenshot, b)
 
 
-def setCamera(writer, location, rotation, projection_matrix):
+def setEye(writer, location, rotation, projection_matrix):
     # sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
     cmd = pgex.cmds_pb2.Cmd()
     # cmd.setCamera = pgex.cmds_pb2.SetCamera()
-    _cnv_vec3ZupToYup(location, cmd.setCamera.location)
-    _cnv_quatZupToYup(rotation, cmd.setCamera.rotation)
-    _cnv_mat4(projection_matrix, cmd.setCamera.projection)
+    _cnv_vec3ZupToYup(location, cmd.setEye.location)
+    _cnv_quatZupToYup(rotation, cmd.setEye.rotation)
+    _cnv_mat4(projection_matrix, cmd.setEye.projection)
+    writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
+
+
+def setData(writer, context):
+    cmd = pgex.cmds_pb2.Cmd()
+    cmd.setData.version = 1
+    scene = context.scene
+    for obj in scene.objects:
+        node = cmd.setData.nodes.add()
+        node.id = obj.name
+        transform = node.transforms.add()
+        #TODO convert zup only for child of root
+        _cnv_vec3ZupToYup(obj.location, transform.translation)
+        _cnv_quatZupToYup(obj.rotation_quaternion, transform.rotation)
+        _cnv_vec3(obj.scale, transform.scale)
     writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 

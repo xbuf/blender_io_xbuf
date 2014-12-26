@@ -96,7 +96,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         qr0.normalize()
         rot = qr0
         # why we don't need to make z up and -y forward ?
-        qr1 = mathutils.Quaternion((-1,-1,0,0))
+        qr1 = mathutils.Quaternion((-1, -1, 0, 0))
         qr1.normalize()
         qr1.rotate(qr0)
         qr1.normalize()
@@ -112,7 +112,9 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         @asyncio.coroutine
         def update():
             (_, writer) = yield from protocol.streams(self.host, self.port)
-            protocol.setCamera(writer, loc, rot, projection)
+            protocol.setData(writer, context)
+            protocol.setEye(writer, loc, rot, projection)
+            writer.close()
         protocol.run_until_complete(update())
         # exp = MemoryOpenGexExporter()
         # b = exp.exportToBytes(context)
