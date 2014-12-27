@@ -20,7 +20,7 @@ from pgex.datas_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/cmds.proto',
   package='pgex',
-  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"2\n\x03\x43md\x12$\n\tsetCamera\x18\x02 \x01(\x0b\x32\x0f.pgex.SetCameraH\x00\x42\x05\n\x03\x63md\"m\n\tSetCamera\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x02(\x0b\x32\n.pgex.Mat4B\x02H\x03P\x00')
+  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"l\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12\x1f\n\tunsetData\x18\x04 \x01(\x0b\x32\n.pgex.DataH\x00\x42\x05\n\x03\x63md\"j\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x02(\x0b\x32\n.pgex.Mat4B\x02H\x03P\x00')
   ,
   dependencies=[pgex.datas_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -36,8 +36,22 @@ _CMD = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='setCamera', full_name='pgex.Cmd.setCamera', index=0,
+      name='setEye', full_name='pgex.Cmd.setEye', index=0,
       number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='setData', full_name='pgex.Cmd.setData', index=1,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='unsetData', full_name='pgex.Cmd.unsetData', index=2,
+      number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -57,33 +71,33 @@ _CMD = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=43,
-  serialized_end=93,
+  serialized_end=151,
 )
 
 
-_SETCAMERA = _descriptor.Descriptor(
-  name='SetCamera',
-  full_name='pgex.SetCamera',
+_SETEYE = _descriptor.Descriptor(
+  name='SetEye',
+  full_name='pgex.SetEye',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='location', full_name='pgex.SetCamera.location', index=0,
+      name='location', full_name='pgex.SetEye.location', index=0,
       number=1, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='rotation', full_name='pgex.SetCamera.rotation', index=1,
+      name='rotation', full_name='pgex.SetEye.rotation', index=1,
       number=2, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='projection', full_name='pgex.SetCamera.projection', index=2,
+      name='projection', full_name='pgex.SetEye.projection', index=2,
       number=3, type=11, cpp_type=10, label=2,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -100,19 +114,27 @@ _SETCAMERA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=95,
-  serialized_end=204,
+  serialized_start=153,
+  serialized_end=259,
 )
 
-_CMD.fields_by_name['setCamera'].message_type = _SETCAMERA
+_CMD.fields_by_name['setEye'].message_type = _SETEYE
+_CMD.fields_by_name['setData'].message_type = pgex.datas_pb2._DATA
+_CMD.fields_by_name['unsetData'].message_type = pgex.datas_pb2._DATA
 _CMD.oneofs_by_name['cmd'].fields.append(
-  _CMD.fields_by_name['setCamera'])
-_CMD.fields_by_name['setCamera'].containing_oneof = _CMD.oneofs_by_name['cmd']
-_SETCAMERA.fields_by_name['location'].message_type = pgex.datas_pb2._VEC3
-_SETCAMERA.fields_by_name['rotation'].message_type = pgex.datas_pb2._QUATERNION
-_SETCAMERA.fields_by_name['projection'].message_type = pgex.datas_pb2._MAT4
+  _CMD.fields_by_name['setEye'])
+_CMD.fields_by_name['setEye'].containing_oneof = _CMD.oneofs_by_name['cmd']
+_CMD.oneofs_by_name['cmd'].fields.append(
+  _CMD.fields_by_name['setData'])
+_CMD.fields_by_name['setData'].containing_oneof = _CMD.oneofs_by_name['cmd']
+_CMD.oneofs_by_name['cmd'].fields.append(
+  _CMD.fields_by_name['unsetData'])
+_CMD.fields_by_name['unsetData'].containing_oneof = _CMD.oneofs_by_name['cmd']
+_SETEYE.fields_by_name['location'].message_type = pgex.datas_pb2._VEC3
+_SETEYE.fields_by_name['rotation'].message_type = pgex.datas_pb2._QUATERNION
+_SETEYE.fields_by_name['projection'].message_type = pgex.datas_pb2._MAT4
 DESCRIPTOR.message_types_by_name['Cmd'] = _CMD
-DESCRIPTOR.message_types_by_name['SetCamera'] = _SETCAMERA
+DESCRIPTOR.message_types_by_name['SetEye'] = _SETEYE
 
 Cmd = _reflection.GeneratedProtocolMessageType('Cmd', (_message.Message,), dict(
   DESCRIPTOR = _CMD,
@@ -121,12 +143,12 @@ Cmd = _reflection.GeneratedProtocolMessageType('Cmd', (_message.Message,), dict(
   ))
 _sym_db.RegisterMessage(Cmd)
 
-SetCamera = _reflection.GeneratedProtocolMessageType('SetCamera', (_message.Message,), dict(
-  DESCRIPTOR = _SETCAMERA,
+SetEye = _reflection.GeneratedProtocolMessageType('SetEye', (_message.Message,), dict(
+  DESCRIPTOR = _SETEYE,
   __module__ = 'pgex.cmds_pb2'
-  # @@protoc_insertion_point(class_scope:pgex.SetCamera)
+  # @@protoc_insertion_point(class_scope:pgex.SetEye)
   ))
-_sym_db.RegisterMessage(SetCamera)
+_sym_db.RegisterMessage(SetEye)
 
 
 DESCRIPTOR.has_options = True

@@ -15,6 +15,7 @@
 
 from . import renderengine
 from . import protocol
+from . import pgex_export
 
 
 bl_info = {

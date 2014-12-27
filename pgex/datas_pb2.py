@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/datas.proto',
   package='pgex',
-  serialized_pb=_b('\n\x10pgex/datas.proto\x12\x04pgex\"\x82\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x02(\r:\x01\x31\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x19\n\x05nodes\x18\x03 \x03(\x0b\x32\n.pgex.Node\x12(\n\ngeometries\x18\x04 \x03(\x0b\x32\x14.pgex.GeometryObject\"4\n\x08Relation\x12\x0b\n\x03src\x18\x01 \x02(\t\x12\x0c\n\x04\x64\x65st\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"8\n\x0eGeometryObject\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.pgex.Mesh\"\xfd\x01\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.pgex.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x02(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.pgex.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.pgex.IndexArray\"`\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\x12\t\n\x05quads\x10\x06\"\xf8\x01\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.pgex.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x02(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.pgex.FloatBufferH\x00\x12%\n\x07\x64oubles\x18\x04 \x01(\x0b\x32\x12.pgex.DoubleBufferH\x00\"W\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x42\x08\n\x06\x62uffer\"\x0c\n\nIndexArray\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"3\n\x0c\x44oubleBuffer\x12\x12\n\x06values\x18\x01 \x03(\x01\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"I\n\x04Node\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\ntransforms\x18\x02 \x03(\x0b\x32\x0f.pgex.Transform\x12\x10\n\x08parentId\x18\x03 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.pgex.Vec3\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
+  serialized_pb=_b('\n\x10pgex/datas.proto\x12\x04pgex\"\x8a\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x31\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x19\n\x05nodes\x18\x03 \x03(\x0b\x32\n.pgex.Node\x12(\n\ngeometries\x18\x04 \x03(\x0b\x32\x14.pgex.GeometryObject*\x06\x08\xf4\x03\x10\xd1\x0f\"4\n\x08Relation\x12\x0b\n\x03src\x18\x01 \x02(\t\x12\x0c\n\x04\x64\x65st\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"8\n\x0eGeometryObject\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.pgex.Mesh\"\xfd\x01\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.pgex.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.pgex.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.pgex.IndexArray\"`\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\x12\t\n\x05quads\x10\x06\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.pgex.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.pgex.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.pgex.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"I\n\x04Node\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\ntransforms\x18\x02 \x03(\x0b\x32\x0f.pgex.Transform\x12\x10\n\x08parentId\x18\x03 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.pgex.Vec3\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -57,8 +57,8 @@ _MESH_PRIMITIVE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=429,
-  serialized_end=525,
+  serialized_start=437,
+  serialized_end=533,
 )
 _sym_db.RegisterEnumDescriptor(_MESH_PRIMITIVE)
 
@@ -92,11 +92,43 @@ _VERTEXARRAY_ATTRIB = _descriptor.EnumDescriptor(
       name='texcoord', index=5, number=6,
       options=None,
       type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord2', index=6, number=7,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord3', index=7, number=8,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord4', index=8, number=9,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord5', index=9, number=10,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord6', index=10, number=11,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord7', index=11, number=12,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord8', index=12, number=13,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord9', index=13, number=14,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=679,
-  serialized_end=766,
+  serialized_start=649,
+  serialized_end=856,
 )
 _sym_db.RegisterEnumDescriptor(_VERTEXARRAY_ATTRIB)
 
@@ -110,7 +142,7 @@ _DATA = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='version', full_name='pgex.Data.version', index=0,
-      number=1, type=13, cpp_type=3, label=2,
+      number=1, type=13, cpp_type=3, label=1,
       has_default_value=True, default_value=1,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -143,12 +175,12 @@ _DATA = _descriptor.Descriptor(
   enum_types=[
   ],
   options=None,
-  is_extendable=False,
-  extension_ranges=[],
+  is_extendable=True,
+  extension_ranges=[(500, 2001), ],
   oneofs=[
   ],
   serialized_start=27,
-  serialized_end=157,
+  serialized_end=165,
 )
 
 
@@ -191,8 +223,8 @@ _RELATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=159,
-  serialized_end=211,
+  serialized_start=167,
+  serialized_end=219,
 )
 
 
@@ -228,8 +260,8 @@ _GEOMETRYOBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=213,
-  serialized_end=269,
+  serialized_start=221,
+  serialized_end=277,
 )
 
 
@@ -256,7 +288,7 @@ _MESH = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='lod', full_name='pgex.Mesh.lod', index=2,
-      number=3, type=13, cpp_type=3, label=2,
+      number=3, type=13, cpp_type=3, label=1,
       has_default_value=True, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -287,8 +319,8 @@ _MESH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=272,
-  serialized_end=525,
+  serialized_start=280,
+  serialized_end=533,
 )
 
 
@@ -308,7 +340,7 @@ _VERTEXARRAY = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='morph', full_name='pgex.VertexArray.morph', index=1,
-      number=2, type=13, cpp_type=3, label=2,
+      number=2, type=13, cpp_type=3, label=1,
       has_default_value=True, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -316,13 +348,6 @@ _VERTEXARRAY = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='floats', full_name='pgex.VertexArray.floats', index=2,
       number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='doubles', full_name='pgex.VertexArray.doubles', index=3,
-      number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -342,8 +367,8 @@ _VERTEXARRAY = _descriptor.Descriptor(
       name='buffer', full_name='pgex.VertexArray.buffer',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=528,
-  serialized_end=776,
+  serialized_start=536,
+  serialized_end=866,
 )
 
 
@@ -354,6 +379,13 @@ _INDEXARRAY = _descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    _descriptor.FieldDescriptor(
+      name='ints', full_name='pgex.IndexArray.ints', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -364,9 +396,12 @@ _INDEXARRAY = _descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   oneofs=[
+    _descriptor.OneofDescriptor(
+      name='buffer', full_name='pgex.IndexArray.buffer',
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=778,
-  serialized_end=790,
+  serialized_start=868,
+  serialized_end=924,
 )
 
 
@@ -402,45 +437,8 @@ _FLOATBUFFER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=792,
-  serialized_end=842,
-)
-
-
-_DOUBLEBUFFER = _descriptor.Descriptor(
-  name='DoubleBuffer',
-  full_name='pgex.DoubleBuffer',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='values', full_name='pgex.DoubleBuffer.values', index=0,
-      number=1, type=1, cpp_type=5, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
-    _descriptor.FieldDescriptor(
-      name='step', full_name='pgex.DoubleBuffer.step', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=True, default_value=1,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=844,
-  serialized_end=895,
+  serialized_start=926,
+  serialized_end=976,
 )
 
 
@@ -476,8 +474,8 @@ _UINTBUFFER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=897,
-  serialized_end=946,
+  serialized_start=978,
+  serialized_end=1027,
 )
 
 
@@ -520,8 +518,8 @@ _NODE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=948,
-  serialized_end=1021,
+  serialized_start=1029,
+  serialized_end=1102,
 )
 
 
@@ -564,8 +562,8 @@ _TRANSFORM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1023,
-  serialized_end=1130,
+  serialized_start=1104,
+  serialized_end=1211,
 )
 
 
@@ -608,8 +606,8 @@ _VEC3 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1132,
-  serialized_end=1171,
+  serialized_start=1213,
+  serialized_end=1252,
 )
 
 
@@ -659,8 +657,8 @@ _VEC4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1173,
-  serialized_end=1223,
+  serialized_start=1254,
+  serialized_end=1304,
 )
 
 
@@ -710,8 +708,8 @@ _QUATERNION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1225,
-  serialized_end=1281,
+  serialized_start=1306,
+  serialized_end=1362,
 )
 
 
@@ -845,8 +843,8 @@ _MAT4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1284,
-  serialized_end=1498,
+  serialized_start=1365,
+  serialized_end=1579,
 )
 
 _DATA.fields_by_name['relations'].message_type = _RELATION
@@ -859,14 +857,14 @@ _MESH.fields_by_name['indexArrays'].message_type = _INDEXARRAY
 _MESH_PRIMITIVE.containing_type = _MESH
 _VERTEXARRAY.fields_by_name['attrib'].enum_type = _VERTEXARRAY_ATTRIB
 _VERTEXARRAY.fields_by_name['floats'].message_type = _FLOATBUFFER
-_VERTEXARRAY.fields_by_name['doubles'].message_type = _DOUBLEBUFFER
 _VERTEXARRAY_ATTRIB.containing_type = _VERTEXARRAY
 _VERTEXARRAY.oneofs_by_name['buffer'].fields.append(
   _VERTEXARRAY.fields_by_name['floats'])
 _VERTEXARRAY.fields_by_name['floats'].containing_oneof = _VERTEXARRAY.oneofs_by_name['buffer']
-_VERTEXARRAY.oneofs_by_name['buffer'].fields.append(
-  _VERTEXARRAY.fields_by_name['doubles'])
-_VERTEXARRAY.fields_by_name['doubles'].containing_oneof = _VERTEXARRAY.oneofs_by_name['buffer']
+_INDEXARRAY.fields_by_name['ints'].message_type = _UINTBUFFER
+_INDEXARRAY.oneofs_by_name['buffer'].fields.append(
+  _INDEXARRAY.fields_by_name['ints'])
+_INDEXARRAY.fields_by_name['ints'].containing_oneof = _INDEXARRAY.oneofs_by_name['buffer']
 _NODE.fields_by_name['transforms'].message_type = _TRANSFORM
 _TRANSFORM.fields_by_name['translation'].message_type = _VEC3
 _TRANSFORM.fields_by_name['rotation'].message_type = _QUATERNION
@@ -878,7 +876,6 @@ DESCRIPTOR.message_types_by_name['Mesh'] = _MESH
 DESCRIPTOR.message_types_by_name['VertexArray'] = _VERTEXARRAY
 DESCRIPTOR.message_types_by_name['IndexArray'] = _INDEXARRAY
 DESCRIPTOR.message_types_by_name['FloatBuffer'] = _FLOATBUFFER
-DESCRIPTOR.message_types_by_name['DoubleBuffer'] = _DOUBLEBUFFER
 DESCRIPTOR.message_types_by_name['UintBuffer'] = _UINTBUFFER
 DESCRIPTOR.message_types_by_name['Node'] = _NODE
 DESCRIPTOR.message_types_by_name['Transform'] = _TRANSFORM
@@ -936,13 +933,6 @@ FloatBuffer = _reflection.GeneratedProtocolMessageType('FloatBuffer', (_message.
   ))
 _sym_db.RegisterMessage(FloatBuffer)
 
-DoubleBuffer = _reflection.GeneratedProtocolMessageType('DoubleBuffer', (_message.Message,), dict(
-  DESCRIPTOR = _DOUBLEBUFFER,
-  __module__ = 'pgex.datas_pb2'
-  # @@protoc_insertion_point(class_scope:pgex.DoubleBuffer)
-  ))
-_sym_db.RegisterMessage(DoubleBuffer)
-
 UintBuffer = _reflection.GeneratedProtocolMessageType('UintBuffer', (_message.Message,), dict(
   DESCRIPTOR = _UINTBUFFER,
   __module__ = 'pgex.datas_pb2'
@@ -997,8 +987,6 @@ DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('H\003'))
 _FLOATBUFFER.fields_by_name['values'].has_options = True
 _FLOATBUFFER.fields_by_name['values']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
-_DOUBLEBUFFER.fields_by_name['values'].has_options = True
-_DOUBLEBUFFER.fields_by_name['values']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
 _UINTBUFFER.fields_by_name['values'].has_options = True
 _UINTBUFFER.fields_by_name['values']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
 # @@protoc_insertion_point(module_scope)

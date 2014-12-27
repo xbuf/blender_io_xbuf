@@ -52,7 +52,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
         (kind, raw) = yield from protocol.readMessage(reader)
         # raw = [[128, 255, 0, 255]] * (width * height)
-        if kind == protocol.Kind.rawScreenshot:
+        if kind == protocol.Kind.raw_screenshot:
             print('draw local image %r' % kind)
             flocal(width, height, raw)
 
@@ -112,7 +112,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         @asyncio.coroutine
         def update():
             (_, writer) = yield from protocol.streams(self.host, self.port)
-            protocol.setData(writer, context)
+            protocol.setData(writer, context, False)
             protocol.setEye(writer, loc, rot, projection)
             writer.close()
         protocol.run_until_complete(update())
