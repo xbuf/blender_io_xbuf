@@ -1,17 +1,19 @@
 # Main
 
-- java: logger server (netty)
-- python: client send message (asyncore)
-- java: send generated image on (render x,y,w,h)
-- python: request update image
-- java: wrap server into appstate
-- java: send image from current jme display
-- test: resize
-- python: integrate into blender
-- python: display image send from server
+## Overview
+
+- ~~java: logger server (netty)~~
+- ~~python: client send message (asyncore)~~
+- ~~java: send generated image on (render x,y,w,h)~~
+- ~~python: request update image~~
+- ~~java: wrap server into appstate~~
+- ~~java: send image from current jme display~~
+- ~~test: resize~~
+- ~~python: integrate into blender~~
+- ~~python: display image send from server~~
 - python: send camera update
-- server: drive camera from python
-- blender: try to send data in ddl (opengex)
+- ~~server: drive camera from python~~
+- ~~blender: try to send data in ddl (opengex)~~
 - server: ignore (log) unimplemented message
 - doc: write protocol
 - blender: display error
@@ -33,6 +35,13 @@
 - server gui: enable/disable some remote control (camera,...)
 - doc: update
 - demo: scenario, screenshot, video
+
+## TODO
+
+- only send update not the full scene
+- only send update on change
+- one client (writer+reader) per RenderEngine
+- send correct info about eye view (fov, perspective, projection,...)
 
 # Protocol options
 
