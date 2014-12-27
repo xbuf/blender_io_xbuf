@@ -36,28 +36,27 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     # moved assignment from execute() to the body of the class...
     port = bpy.props.IntProperty(name="port", default=4242, min=1024)
     host = bpy.props.StringProperty(name="host", default="127.0.0.1")
+    client = protocol.Client()
 
     def __init__(self):
         print("__init__")
 
     def __del__(self):
         print("__del__")
+        self.client.close()
 
     @asyncio.coroutine
     def remote_render(self, width, height, flocal):
-        (reader, writer) = yield from protocol.streams(self.host, self.port)
+        yield from self.client.connect(self.host, self.port)
         print('Send: %rx%r' % (width, height))
-        protocol.askScreenshot(writer, width, height)
+        protocol.askScreenshot(self.client.writer, width, height)
         # yield from writer.drain()
 
-        (kind, raw) = yield from protocol.readMessage(reader)
+        (kind, raw) = yield from protocol.readMessage(self.client.reader)
         # raw = [[128, 255, 0, 255]] * (width * height)
         if kind == protocol.Kind.raw_screenshot:
             print('draw local image %r' % kind)
             flocal(width, height, raw)
-
-        print('Close the socket')
-        writer.close()
 
     def render(self, scene):
         print("render 44")
@@ -111,10 +110,9 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
         @asyncio.coroutine
         def update():
-            (_, writer) = yield from protocol.streams(self.host, self.port)
-            protocol.setData(writer, context, False)
-            protocol.setEye(writer, loc, rot, projection)
-            writer.close()
+            yield from self.client.connect(self.host, self.port)
+            protocol.setData(self.client.writer, context, False)
+            protocol.setEye(self.client.writer, loc, rot, projection)
         protocol.run_until_complete(update())
         # exp = MemoryOpenGexExporter()
         # b = exp.exportToBytes(context)

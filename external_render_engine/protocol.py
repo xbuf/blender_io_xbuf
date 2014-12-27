@@ -6,7 +6,7 @@ import mathutils
 
 from . import pgex_export
 
-# TODO better management off the event loop (eg close on unregister)
+# TODO better management off the event loop (eg  on unregister)
 loop = asyncio.get_event_loop()
 atexit.register(loop.close)
 
@@ -20,12 +20,30 @@ class Kind:
     pgex_cmd = 0x06
 
 
-@asyncio.coroutine
-def streams(host, port):
-    """return (reader, writer)"""
-    reader, writer = yield from asyncio.open_connection(host, port, loop=loop)
-    return (reader, writer)
+class Client:
 
+    def __init__(self):
+        self.writer = None
+        self.reader = None
+        self.host = None
+        self.port = None
+
+    def close(self):
+        if self.writer is not None:
+            print('Close the socket/writer')
+            self.writer.close()
+            self.writer = None
+            self.reader = None
+
+    @asyncio.coroutine
+    def connect(self, host, port):
+        if (host != self.host) or (port != self.port):
+            self.close()
+        if self.writer is None:
+            self.host = host
+            self.port = port
+            (self.reader, self.writer) = yield from asyncio.open_connection(host, port, loop=loop)
+        return self
 
 @asyncio.coroutine
 def readHeader(reader):
