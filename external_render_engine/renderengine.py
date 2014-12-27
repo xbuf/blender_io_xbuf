@@ -122,7 +122,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.view_update(context)
         # from http://blender.stackexchange.com/questions/5035/moving-user-perspective-in-blender-with-python
         area = context.screen.areas[2]
-        # r3d = screen.spaces[0].region_3d # region_3d of 3D View
+        # r3d = area.spaces[0].region_3d # region_3d of 3D View
         r3d = context.space_data.region_3d
         # loc = r3d.view_matrix.col[3][1:4]  # translation part of the view matrix
         fov = context.space_data.lens
