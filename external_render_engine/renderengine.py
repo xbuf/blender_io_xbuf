@@ -86,13 +86,16 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     def view_update(self, context):
         self.report({'DEBUG'}, "view_update")
         print("view_update")
+        for ob in context.scene.objects:
+            if ob.is_updated:
+                print("updated =>", ob.name)
         @asyncio.coroutine
         def update():
             try:
                 yield from self.client.connect(self.host, self.port)
                 protocol.setData(self.client.writer, context, False)
             except BrokenPipeError:
-                self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port)) 
+                self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
         protocol.run_until_complete(update())
         # exp = MemoryOpenGexExporter()
