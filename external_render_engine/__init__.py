@@ -21,11 +21,11 @@ from . import pgex_export
 
 
 bl_info = {
-    "name": "external_render_engine",
+    "name": "External Render Engine",
     "author": "David Bernard",
     "version": (0, 1),
     "blender": (2, 72, 0),
-    "location": "Render > Engine > External Renderer",
+    "location": "Render > Engine > External Render",
     "description": "Delegate rendering to an external render engine (eg provided by game engine)",
     "warning": "This script is Alpha",
     "wiki_url": "https://github.com/davidB/blender_external_renderer",

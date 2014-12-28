@@ -30,8 +30,8 @@ from . import protocol
 class ExternalRenderEngine(bpy.types.RenderEngine):
     # These three members are used by blender to set up the
     # RenderEngine; define its internal name, visible name and capabilities.
-    bl_idname = "external_renderer"
-    bl_label = "External Renderer"
+    bl_idname = "external_render"
+    bl_label = "External Render"
     bl_use_preview = True
 
     # moved assignment from execute() to the body of the class...

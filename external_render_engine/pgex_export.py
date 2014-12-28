@@ -17,7 +17,8 @@
 
 import mathutils
 import pgex
-
+import pgex.datas_pb2
+import pgex.cmds_pb2
 
 def cnv_vec3(src, dst):
     # dst = pgex.math_pb2.Vec3()

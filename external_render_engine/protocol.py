@@ -19,6 +19,8 @@ import struct
 import asyncio
 import atexit
 import pgex
+import pgex.datas_pb2
+import pgex.cmds_pb2
 import mathutils
 
 from . import pgex_export
