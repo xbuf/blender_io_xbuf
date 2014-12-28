@@ -15,7 +15,6 @@
 
 import bpy
 import bgl
-# from mathutils import Vector, Matrix
 import asyncio
 import math
 import mathutils
@@ -47,60 +46,62 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         print("__del__")
         self.client.close()
 
-    @asyncio.coroutine
-    def remote_render(self, context, width, height, flocal):
-        try:
-            self.report({'WARNING'}, "test remote host (%r:%r)" % (self.host, self.port))
-            (loc, rot, projection, near, far) = extractEye(context)
-            yield from self.client.connect(self.host, self.port)
-            print('Send: %rx%r' % (width, height))
-            protocol.setEye(self.client.writer, loc, rot, projection, near, far)
-            protocol.askScreenshot(self.client.writer, width, height)
-            # yield from writer.drain()
+    def external_render(self, context, width, height, flocal):
+        (loc, rot, projection, near, far) = extractEye(context)
 
-            (kind, raw) = yield from protocol.readMessage(self.client.reader)
-            # raw = [[128, 255, 0, 255]] * (width * height)
-            if kind == protocol.Kind.raw_screenshot:
-                flocal(width, height, raw)
-        except BrokenPipeError:
-            self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
-            self.client.close()
+        @asyncio.coroutine
+        def my_render():
+            try:
+                self.report({'WARNING'}, "test remote host (%r:%r)" % (self.host, self.port))
+                yield from self.client.connect(self.host, self.port)
+                print('Send: %rx%r' % (width, height))
+                protocol.setEye(self.client.writer, loc, rot, projection, near, far)
+                protocol.askScreenshot(self.client.writer, width, height)
+                # yield from writer.drain()
+
+                (kind, raw) = yield from protocol.readMessage(self.client.reader)
+                # raw = [[128, 255, 0, 255]] * (width * height)
+                if kind == protocol.Kind.raw_screenshot:
+                    flocal(width, height, raw)
+            except BrokenPipeError:
+                self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
+                self.client.close()
+        if context is not None:
+            protocol.run_until_complete(my_render())
+        else:
+            self.report({'WARNING'}, "render disabled")
 
     def render(self, scene):
         scale = scene.render.resolution_percentage / 100.0
         width = int(scene.render.resolution_x * scale)
         height = int(scene.render.resolution_y * scale)
         # context.space_data.camera
-        self.report({'WARNING'}, "render disabled")
-        # protocol.run_until_complete(self.remote_render(width, height, self.render_image))
+        self.external_render(None, width, height, self.render_image)
 
     def update(self, data, scene):
         """Export scene data for render"""
-        print("update")
-        if data.objects.is_updated:
-            print("One or more objects were updated!")
-            for ob in data.objects:
-                if ob.is_updated:
-                    print("=>", ob.name)
+        self.report({'DEBUG'}, "update")
+        self.external_update(scene)
 
     def view_update(self, context):
         self.report({'DEBUG'}, "view_update")
-        print("view_update")
-        for ob in context.scene.objects:
+        self.external_update(context.scene)
+
+    def external_update(self, scene):
+        self.report({'DEBUG'}, "external_update")
+        for ob in scene.objects:
             if ob.is_updated:
                 print("updated =>", ob.name)
+
         @asyncio.coroutine
-        def update():
+        def my_update():
             try:
                 yield from self.client.connect(self.host, self.port)
-                protocol.setData(self.client.writer, context, False)
+                protocol.setData(self.client.writer, scene, False)
             except BrokenPipeError:
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
-        protocol.run_until_complete(update())
-        # exp = MemoryOpenGexExporter()
-        # b = exp.exportToBytes(context)
-        # print(b)
+        protocol.run_until_complete(my_update())
 
     def view_draw(self, context):
         self.report({'DEBUG'}, "view_draw")
@@ -120,7 +121,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         region = context.region  # area.regions[4]
         width = int(region.width)
         height = int(region.height)
-        protocol.run_until_complete(self.remote_render(context, width, height, self.view_draw_image))
+        self.external_render(context, width, height, self.view_draw_image)
 
     def render_image(self, width, height, raw):
         # TODO optimize the loading/convertion of raw (other renderegine use load_from_file instead of rect)
@@ -180,6 +181,7 @@ def extractEye(context):
     projection = rv3d.perspective_matrix * rv3d.view_matrix.inverted()
     (near, far) = camera_nearfar(context.space_data)
     return (loc, rot, projection, near, far)
+
 
 # from http://stackoverflow.com/questions/9028398/change-viewport-angle-in-blender-using-python
 def camera_position(space_data):

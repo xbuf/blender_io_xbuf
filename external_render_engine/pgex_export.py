@@ -90,8 +90,7 @@ def cnv_mat4(src, dst):
     return dst
 
 
-def export(context, data, isPreview):
-    scene = context.scene
+def export(scene, data, isPreview):
     for obj in scene.objects:
         node = data.nodes.add()
         node.id = obj.name

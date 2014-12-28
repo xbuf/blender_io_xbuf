@@ -105,9 +105,9 @@ def setEye(writer, location, rotation, projection_matrix, near, far):
     writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 
-def setData(writer, context, isPreview):
+def setData(writer, scene, isPreview):
     cmd = pgex.cmds_pb2.Cmd()
-    pgex_export.export(context, cmd.setData, isPreview)
+    pgex_export.export(scene, cmd.setData, isPreview)
     writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 
