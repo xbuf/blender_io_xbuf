@@ -20,7 +20,7 @@ from pgex.datas_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/cmds.proto',
   package='pgex',
-  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"l\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12\x1f\n\tunsetData\x18\x04 \x01(\x0b\x32\n.pgex.DataH\x00\x42\x05\n\x03\x63md\"j\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x02(\x0b\x32\n.pgex.Mat4B\x02H\x03P\x00')
+  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"l\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12\x1f\n\tunsetData\x18\x04 \x01(\x0b\x32\n.pgex.DataH\x00\x42\x05\n\x03\x63md\"\x85\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.pgex.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\x42\x02H\x03P\x00')
   ,
   dependencies=[pgex.datas_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -98,8 +98,22 @@ _SETEYE = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='projection', full_name='pgex.SetEye.projection', index=2,
-      number=3, type=11, cpp_type=10, label=2,
+      number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='near', full_name='pgex.SetEye.near', index=3,
+      number=5, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='far', full_name='pgex.SetEye.far', index=4,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -114,8 +128,8 @@ _SETEYE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=153,
-  serialized_end=259,
+  serialized_start=154,
+  serialized_end=287,
 )
 
 _CMD.fields_by_name['setEye'].message_type = _SETEYE

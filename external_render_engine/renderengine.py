@@ -17,6 +17,7 @@ import bpy
 import bgl
 # from mathutils import Vector, Matrix
 import asyncio
+import math
 from . import protocol
 
 # gloop = external_render_engine.gloop
@@ -36,10 +37,10 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     # moved assignment from execute() to the body of the class...
     port = bpy.props.IntProperty(name="port", default=4242, min=1024)
     host = bpy.props.StringProperty(name="host", default="127.0.0.1")
-    client = protocol.Client()
 
     def __init__(self):
         print("__init__")
+        self.client = protocol.Client()
 
     def __del__(self):
         print("__del__")
@@ -47,16 +48,19 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     @asyncio.coroutine
     def remote_render(self, width, height, flocal):
-        yield from self.client.connect(self.host, self.port)
-        print('Send: %rx%r' % (width, height))
-        protocol.askScreenshot(self.client.writer, width, height)
-        # yield from writer.drain()
+        try:
+            yield from self.client.connect(self.host, self.port)
+            print('Send: %rx%r' % (width, height))
+            protocol.askScreenshot(self.client.writer, width, height)
+            # yield from writer.drain()
 
-        (kind, raw) = yield from protocol.readMessage(self.client.reader)
-        # raw = [[128, 255, 0, 255]] * (width * height)
-        if kind == protocol.Kind.raw_screenshot:
-            print('draw local image %r' % kind)
-            flocal(width, height, raw)
+            (kind, raw) = yield from protocol.readMessage(self.client.reader)
+            # raw = [[128, 255, 0, 255]] * (width * height)
+            if kind == protocol.Kind.raw_screenshot:
+                print('draw local image %r' % kind)
+                flocal(width, height, raw)
+        except BrokenPipeError:
+            self.client.close()
 
     def render(self, scene):
         print("render 44")
@@ -80,7 +84,8 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         print("view_update")
         # screen = context.screen.areas[2]
         # r3d = screen.spaces[0].region_3d # region_3d of 3D View
-        r3d = context.space_data.region_3d
+        # rv3d = context.space_data.region_3d
+        rv3d = context.region_data
         # loc = r3d.view_matrix.col[3][1:4]  # translation part of the view matrix
         # rotate the camera to be Zup and Ybackward like other blender object
         # in blender camera and spotlight are face -Z
@@ -89,30 +94,31 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         # rot = mathutils.Quaternion((0, 0, 1, 1))
         # rot = mathutils.Quaternion((-1, 1, 0, 0))  # -PI/2 axis x
         # rot.rotate(mathutils.Quaternion((0, 0, 0, 1)))   # PI axis z
-        qr0 = mathutils.Quaternion((0, 0, 1, 0)) # z forward
+        qr0 = mathutils.Quaternion((0, 0, 1, 0))  # z forward
         qr0.normalize()
-        qr0.rotate(r3d.view_rotation)
+        qr0.rotate(rv3d.view_rotation)
         qr0.normalize()
         rot = qr0
         # why we don't need to make z up and -y forward ?
-        qr1 = mathutils.Quaternion((-1, -1, 0, 0))
-        qr1.normalize()
-        qr1.rotate(qr0)
-        qr1.normalize()
+        # qr1 = mathutils.Quaternion((-1, -1, 0, 0))
+        # qr1.normalize()
+        # qr1.rotate(qr0)
+        # qr1.normalize()
         # rot = qr1
-        # rot.rotate(r3d.view_rotation)  # quaternion
-        # rot = r3d.view_rotation
-        # camera are Yup no more conversion needed
-        # loc = r3d.view_location  # vec3
         loc = mathutils.Vector(camera_position(context.space_data))
-        projection = r3d.perspective_matrix  # mat4
-        print("eye : rot0 {!r} | rot {!r} |  loc {!r}".format(r3d.view_rotation, rot, loc))
+        projection = rv3d.perspective_matrix * rv3d.view_matrix.inverted()
+        (near, far) = camera_nearfar(context.space_data)
+        print("projection {!r}".format(projection))
+        print("eye : rot0 {!r} | rot {!r} |  loc {!r}".format(rv3d.view_rotation, rot, loc))
 
         @asyncio.coroutine
         def update():
-            yield from self.client.connect(self.host, self.port)
-            protocol.setData(self.client.writer, context, False)
-            protocol.setEye(self.client.writer, loc, rot, projection)
+            try:
+                yield from self.client.connect(self.host, self.port)
+                protocol.setData(self.client.writer, context, False)
+                protocol.setEye(self.client.writer, loc, rot, projection, near, far)
+            except BrokenPipeError:
+                self.client.close()
         protocol.run_until_complete(update())
         # exp = MemoryOpenGexExporter()
         # b = exp.exportToBytes(context)
@@ -121,18 +127,23 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     def view_draw(self, context):
         self.view_update(context)
         # from http://blender.stackexchange.com/questions/5035/moving-user-perspective-in-blender-with-python
-        area = context.screen.areas[2]
+        # area = context.area
+        # area = context.screen.areas[2]
         # r3d = area.spaces[0].region_3d # region_3d of 3D View
-        r3d = context.space_data.region_3d
+        # for area in bpy.context.screen.areas:
+        # if area.type=='VIEW_3D':
+        #         break
+        #
+        # space = area.spaces[0]
+        # region = area.regions[4]
+        # rv3d = context.space_data.region_3d
+        rv3d = context.region_data
         # loc = r3d.view_matrix.col[3][1:4]  # translation part of the view matrix
-        fov = context.space_data.lens
-        near = context.space_data.clip_start
-        far = context.space_data.clip_end
-        rot = r3d.view_rotation  # quaternion
-        width = int(area.regions[4].width)
-        height = int(area.regions[4].height)
-        print("view_info {!r} :: {!r} :: {!r} ::{!r}x{!r}".format(fov, near, far, width, height))
-        print("view_quat {!r} :: {!r} :: {!r} ::{!r}".format(rot.x, rot.y, rot.z, r3d.view_matrix))
+        rot = rv3d.view_rotation  # quaternion
+        region = context.region  # area.regions[4]
+        width = int(region.width)
+        height = int(region.height)
+        print("view_quat {!r} :: {!r} :: {!r} ::{!r}".format(rot.x, rot.y, rot.z, rv3d.view_matrix))
         protocol.run_until_complete(self.remote_render(width, height, self.view_draw_image))
 
     def render_image(self, width, height, raw):
@@ -143,7 +154,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
             i = p * 4
             data.append([float(raw[i + 2])/255.0, float(raw[i + 1])/255.0, float(raw[i + 0])/255.0, float(raw[i + 3])/255.0])
             # data.append([float(raw[i + 0]), float(raw[i + 1]), float(raw[i + 2]), float(raw[i + 3])]) # crash
-
+        # data = [[float(raw[i + 2])/255.0, float(raw[i + 1])/255.0, float(raw[i + 0])/255.0, float(raw[i + 3])/255.0] for p in range(width * height) i = p * 4]
         result = self.begin_result(0, 0, width, height)
         layer = result.layers[0]
         # layer.rect = list(map(lambda i : list(map(lambda c: c/255.0, i)), raw))
@@ -189,7 +200,9 @@ def camera_position(space_data):
 
 
 def camera_fov(space_data):
-    return space_data.lens
+    # src : http://jmonkeyengine.googlecode.com/svn/trunk/engine/src/blender/com/jme3/scene/plugins/blender/cameras/CameraHelper.java
+    fov = 2 * math.atan(16/space_data.lens)  # fov in radian, lens in mm, 16 is sensor_height (default: 32.0) / 2
+    return fov
 
 
 def camera_nearfar(space_data):

@@ -74,13 +74,15 @@ def askScreenshot(writer, width, height):
     writeMessage(writer, Kind.ask_screenshot, b)
 
 
-def setEye(writer, location, rotation, projection_matrix):
+def setEye(writer, location, rotation, projection_matrix, near, far):
     # sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
     cmd = pgex.cmds_pb2.Cmd()
     # cmd.setCamera = pgex.cmds_pb2.SetCamera()
     pgex_export.cnv_vec3ZupToYup(location, cmd.setEye.location)
     pgex_export.cnv_quatZupToYup(rotation, cmd.setEye.rotation)
     pgex_export.cnv_mat4(projection_matrix, cmd.setEye.projection)
+    cmd.setEye.near = near
+    cmd.setEye.far = far
     writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 
