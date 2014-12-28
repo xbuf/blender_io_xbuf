@@ -80,7 +80,7 @@ def export(context, data, isPreview):
         transform = node.transforms.add()
         # TODO convert zup only for child of root
         cnv_vec3ZupToYup(obj.location, transform.translation)
-        cnv_quatZupToYup(obj.rotation_quaternion, transform.rotation)
+        cnv_quatZupToYup(rot_quat(obj), transform.rotation)
         cnv_vec3(obj.scale, transform.scale)
         if obj.parent is not None:
             node.parent = obj.parent.name
@@ -89,6 +89,18 @@ def export(context, data, isPreview):
                 geometryObject = data.geometries.add()
                 export_geometry(obj, geometryObject, scene, isPreview)
                 add_relation(data.relations, node.id, geometryObject.id)
+
+
+def rot_quat(obj):
+    """ return the rotation of the object as quaternion"""
+    if obj.rotation_mode == 'QUATERNION':
+        return obj.rotation_quaternion
+    elif obj.rotation_mode == 'AXIS_ANGLE':
+        aa = obj.rotation_axis_angle
+        return mathutils.Quaternion((aa[1], aa[2], aa[3]), aa[0])
+    else:
+        # eurler
+        return obj.rotation_euler.to_quaternion()
 
 
 def add_relation(relations, src, dest):
