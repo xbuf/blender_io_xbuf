@@ -13,6 +13,8 @@
 #
 # Copyright David Bernard
 
+# <pep8 compliant>
+
 from . import renderengine
 from . import protocol
 from . import pgex_export
@@ -23,11 +25,12 @@ bl_info = {
     "author": "David Bernard",
     "version": (0, 1),
     "blender": (2, 72, 0),
-    # "location": "View3D > Add > Mesh > New Object",
-    "description": "Delegate rendering to an external render engine (eg provide by game engine)",
-    "warning": "",
-    "wiki_url": "",
-    "category": "Add RenderEngine"}
+    "location": "Render > Engine > External Renderer",
+    "description": "Delegate rendering to an external render engine (eg provided by game engine)",
+    "warning": "This script is Alpha",
+    "wiki_url": "https://github.com/davidB/blender_external_renderer",
+    "tracker_url": "https://github.com/davidB/blender_external_renderer/issues",
+    "category": "Render"}
 
 # __all__ = ['']
 
