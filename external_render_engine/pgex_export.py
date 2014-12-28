@@ -53,22 +53,22 @@ def cnv_quat(src, dst):
 
 def cnv_mat4(src, dst):
     # dst = pgex.math_pb2.Quaternion()
-    dst.c00 = src.col[0][0]
-    dst.c10 = src.col[1][0]
-    dst.c20 = src.col[2][0]
-    dst.c30 = src.col[3][0]
-    dst.c01 = src.col[0][1]
-    dst.c11 = src.col[1][1]
-    dst.c21 = src.col[2][1]
-    dst.c31 = src.col[3][1]
-    dst.c02 = src.col[0][2]
-    dst.c12 = src.col[1][2]
-    dst.c22 = src.col[2][2]
-    dst.c32 = src.col[3][2]
-    dst.c03 = src.col[0][3]
-    dst.c13 = src.col[1][3]
-    dst.c23 = src.col[2][3]
-    dst.c33 = src.col[3][3]
+    dst.c00 = src[0][0]
+    dst.c10 = src[1][0]
+    dst.c20 = src[2][0]
+    dst.c30 = src[3][0]
+    dst.c01 = src[0][1]
+    dst.c11 = src[1][1]
+    dst.c21 = src[2][1]
+    dst.c31 = src[3][1]
+    dst.c02 = src[0][2]
+    dst.c12 = src[1][2]
+    dst.c22 = src[2][2]
+    dst.c32 = src[3][2]
+    dst.c03 = src[0][3]
+    dst.c13 = src[1][3]
+    dst.c23 = src[2][3]
+    dst.c33 = src[3][3]
     return dst
 
 
