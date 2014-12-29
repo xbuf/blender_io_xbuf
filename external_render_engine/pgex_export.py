@@ -15,6 +15,7 @@
 
 # <pep8 compliant>
 
+import math
 import mathutils
 import pgex
 import pgex.datas_pb2
@@ -98,7 +99,7 @@ def cnv_color(src, dst):
     dst.a = 1.0 if len(src) < 4 else src[3]
     return dst
 
-
+# TODO avoid export obj with same id
 def export(scene, data, isPreview):
     for obj in scene.objects:
         node = data.nodes.add()
@@ -110,15 +111,19 @@ def export(scene, data, isPreview):
         cnv_vec3(obj.scale, transform.scale)
         if obj.parent is not None:
             node.parent = obj.parent.name
-        if (obj.type == "MESH"):
-            if (len(obj.data.polygons) != 0):
-                geometryObject = data.geometries.add()
-                export_geometry(obj, geometryObject, scene, isPreview)
-                add_relation(data.relations, node, geometryObject)
+        if obj.type == 'MESH':
+            if len(obj.data.polygons) != 0:
+                geometry = data.geometries.add()
+                export_geometry(obj, geometry, scene, isPreview)
+                add_relation(data.relations, node, geometry)
             for i in range(len(obj.material_slots)):
                 dst_mat = data.materials.add()
                 export_material(obj.material_slots[i].material, dst_mat)
                 add_relation(data.relations, node, dst_mat)
+        elif obj.type == 'LAMP':
+            light = data.lights.add()
+            export_light(obj.data, light)
+            add_relation(data.relations, node, light)
 
 
 def rot_quat(obj):
@@ -303,3 +308,38 @@ def export_tex(src, dst):
     # vscale = textureSlot.scale[1]
     # uoffset = textureSlot.offset[0]
     # voffset = textureSlot.offset[1]
+
+
+# TODO redo Light, more clear definition,...
+def export_light(src, dst):
+    dst.id = "light_" + src.name
+    kind = src.type
+    if kind == 'SUN':
+        dst.kind = pgex.datas_pb2.Light.directional
+    elif kind == 'POINT':
+        dst.kind = pgex.datas_pb2.Light.point
+    else:
+        dst.kind = pgex.datas_pb2.Light.spot
+        endAngle = src.spot_size * 0.5
+        # beginAngle = endAngle * (1.0 - src.spot_blend)
+        dst.attenuation.angle = endAngle
+    dst.cast_shadow = src.use_shadow
+    cnv_color(src.color, dst.color)
+    dst.intensity = src.energy
+    falloff = src.falloff_type
+    if falloff == 'INVERSE_LINEAR':
+        dst.attenuation.inverse.scale = src.distance
+    elif falloff == 'INVERSE_SQUARE':
+        dst.attenuation.inverse_square.scale = math.sqrt(src.distance)
+    elif falloff == 'LINEAR_QUADRATIC_WEIGHTED':
+        if src.quadratic_attenuation == 0.0:
+            dst.attenuation.inverse.scale = src.distance
+            dst.attenuation.inverse.constant = 1.0
+            dst.attenuation.inverse.linear = src.linear_attenuation
+        else:
+            dst.attenuation.inverse_square.scale = src.distance
+            dst.attenuation.inverse_square.constant = 1.0
+            dst.attenuation.inverse_square.linear = src.linear_attenuation
+            dst.attenuation.inverse_square.linear = src.quadratic_attenuation
+    if src.use_sphere:
+        dst.attenuation.linear.end = src.distance
