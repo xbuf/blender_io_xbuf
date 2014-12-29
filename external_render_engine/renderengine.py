@@ -44,7 +44,8 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     def __del__(self):
         print("__del__")
-        self.client.close()
+        if hasattr(self, 'client'):
+            self.client.close()
 
     def external_render(self, context, width, height, flocal):
         (loc, rot, projection, near, far) = extractEye(context)
