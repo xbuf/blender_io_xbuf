@@ -20,7 +20,7 @@ from pgex.datas_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/cmds.proto',
   package='pgex',
-  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"l\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12\x1f\n\tunsetData\x18\x04 \x01(\x0b\x32\n.pgex.DataH\x00\x42\x05\n\x03\x63md\"\x85\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.pgex.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\x42\x02H\x03P\x00')
+  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"s\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12&\n\ndeleteData\x18\x04 \x01(\x0b\x32\x10.pgex.DeleteDataH\x00\x42\x05\n\x03\x63md\"\x85\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.pgex.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\"=\n\nDeleteData\x12\x0c\n\x04refs\x18\x01 \x03(\t\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.RelationB\x02H\x03P\x00')
   ,
   dependencies=[pgex.datas_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -50,7 +50,7 @@ _CMD = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='unsetData', full_name='pgex.Cmd.unsetData', index=2,
+      name='deleteData', full_name='pgex.Cmd.deleteData', index=2,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -71,7 +71,7 @@ _CMD = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=43,
-  serialized_end=151,
+  serialized_end=158,
 )
 
 
@@ -128,13 +128,50 @@ _SETEYE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=154,
-  serialized_end=287,
+  serialized_start=161,
+  serialized_end=294,
+)
+
+
+_DELETEDATA = _descriptor.Descriptor(
+  name='DeleteData',
+  full_name='pgex.DeleteData',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='refs', full_name='pgex.DeleteData.refs', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='relations', full_name='pgex.DeleteData.relations', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=296,
+  serialized_end=357,
 )
 
 _CMD.fields_by_name['setEye'].message_type = _SETEYE
 _CMD.fields_by_name['setData'].message_type = pgex.datas_pb2._DATA
-_CMD.fields_by_name['unsetData'].message_type = pgex.datas_pb2._DATA
+_CMD.fields_by_name['deleteData'].message_type = _DELETEDATA
 _CMD.oneofs_by_name['cmd'].fields.append(
   _CMD.fields_by_name['setEye'])
 _CMD.fields_by_name['setEye'].containing_oneof = _CMD.oneofs_by_name['cmd']
@@ -142,13 +179,15 @@ _CMD.oneofs_by_name['cmd'].fields.append(
   _CMD.fields_by_name['setData'])
 _CMD.fields_by_name['setData'].containing_oneof = _CMD.oneofs_by_name['cmd']
 _CMD.oneofs_by_name['cmd'].fields.append(
-  _CMD.fields_by_name['unsetData'])
-_CMD.fields_by_name['unsetData'].containing_oneof = _CMD.oneofs_by_name['cmd']
+  _CMD.fields_by_name['deleteData'])
+_CMD.fields_by_name['deleteData'].containing_oneof = _CMD.oneofs_by_name['cmd']
 _SETEYE.fields_by_name['location'].message_type = pgex.datas_pb2._VEC3
 _SETEYE.fields_by_name['rotation'].message_type = pgex.datas_pb2._QUATERNION
 _SETEYE.fields_by_name['projection'].message_type = pgex.datas_pb2._MAT4
+_DELETEDATA.fields_by_name['relations'].message_type = pgex.datas_pb2._RELATION
 DESCRIPTOR.message_types_by_name['Cmd'] = _CMD
 DESCRIPTOR.message_types_by_name['SetEye'] = _SETEYE
+DESCRIPTOR.message_types_by_name['DeleteData'] = _DELETEDATA
 
 Cmd = _reflection.GeneratedProtocolMessageType('Cmd', (_message.Message,), dict(
   DESCRIPTOR = _CMD,
@@ -163,6 +202,13 @@ SetEye = _reflection.GeneratedProtocolMessageType('SetEye', (_message.Message,),
   # @@protoc_insertion_point(class_scope:pgex.SetEye)
   ))
 _sym_db.RegisterMessage(SetEye)
+
+DeleteData = _reflection.GeneratedProtocolMessageType('DeleteData', (_message.Message,), dict(
+  DESCRIPTOR = _DELETEDATA,
+  __module__ = 'pgex.cmds_pb2'
+  # @@protoc_insertion_point(class_scope:pgex.DeleteData)
+  ))
+_sym_db.RegisterMessage(DeleteData)
 
 
 DESCRIPTOR.has_options = True

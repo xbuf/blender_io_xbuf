@@ -20,6 +20,7 @@ import pgex
 import pgex.datas_pb2
 import pgex.cmds_pb2
 
+
 def cnv_vec3(src, dst):
     # dst = pgex.math_pb2.Vec3()
     # dst.x = src.x
@@ -90,6 +91,14 @@ def cnv_mat4(src, dst):
     return dst
 
 
+def cnv_color(src, dst):
+    dst.r = src[0]
+    dst.g = src[1]
+    dst.b = src[2]
+    dst.a = 1.0 if len(src) < 4 else src[3]
+    return dst
+
+
 def export(scene, data, isPreview):
     for obj in scene.objects:
         node = data.nodes.add()
@@ -105,7 +114,11 @@ def export(scene, data, isPreview):
             if (len(obj.data.polygons) != 0):
                 geometryObject = data.geometries.add()
                 export_geometry(obj, geometryObject, scene, isPreview)
-                add_relation(data.relations, node.id, geometryObject.id)
+                add_relation(data.relations, node, geometryObject)
+            for i in range(len(obj.material_slots)):
+                dst_mat = data.materials.add()
+                export_material(obj.material_slots[i].material, dst_mat)
+                add_relation(data.relations, node, dst_mat)
 
 
 def rot_quat(obj):
@@ -119,10 +132,15 @@ def rot_quat(obj):
         # eurler
         return obj.rotation_euler.to_quaternion()
 
-def add_relation(relations, src, dest):
+
+def add_relation(relations, e1, e2):
     rel = relations.add()
-    rel.src = src
-    rel.dest = dest
+    if type(e1).__name__ < type(e2).__name__:
+        rel.ref1 = e1.id
+        rel.ref2 = e2.id
+    else:
+        rel.ref1 = e2.id
+        rel.ref2 = e1.id
 
 
 def export_geometry(src, dst, scene, isPreview):
@@ -225,3 +243,63 @@ def export_texcoords(src_mesh, dst_mesh):
                 floats.extend(ftc.uv4)
             faceIndex += 1
         dst.floats.values.extend(floats)
+
+
+def export_material(src_mat, dst_mat):
+    dst_mat.id = src_mat.name
+
+    intensity = src_mat.diffuse_intensity
+    diffuse = [src_mat.diffuse_color[0] * intensity, src_mat.diffuse_color[1] * intensity, src_mat.diffuse_color[2] * intensity]
+
+    p = dst_mat.params.add()
+    p.attrib = pgex.datas_pb2.MaterialParam.color
+    cnv_color(diffuse, p.vcolor)
+
+    intensity = src_mat.specular_intensity
+    specular = [src_mat.specular_color[0] * intensity, src_mat.specular_color[1] * intensity, src_mat.specular_color[2] * intensity]
+
+    if ((specular[0] > 0.0) or (specular[1] > 0.0) or (specular[2] > 0.0)):
+        p = dst_mat.params.add()
+        p.attrib = pgex.datas_pb2.MaterialParam.specular
+        cnv_color(specular, p.vcolor)
+        p = dst_mat.params.add()
+        p.attrib = pgex.datas_pb2.MaterialParam.specular_power
+        p.vfloat = src_mat.specular_hardness
+
+    emission = src_mat.emit
+    if (emission > 0.0):
+        p = dst_mat.params.add()
+        p.attrib = pgex.datas_pb2.MaterialParam.emission
+        cnv_color([emission, emission, emission], p.vcolor)
+
+    for textureSlot in src_mat.texture_slots:
+        if ((textureSlot) and (textureSlot.use) and (textureSlot.texture.type == "IMAGE")):
+            if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
+                p = dst_mat.params.add()
+                p.attrib = pgex.datas_pb2.MaterialParam.color
+                export_tex(textureSlot, p.vtexture)
+            elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
+                p = dst_mat.params.add()
+                p.attrib = pgex.datas_pb2.MaterialParam.specular
+                export_tex(textureSlot, p.vtexture)
+            elif ((textureSlot.use_map_emit)):
+                p = dst_mat.params.add()
+                p.attrib = pgex.datas_pb2.MaterialParam.emission
+                export_tex(textureSlot, p.vtexture)
+            elif ((textureSlot.use_map_translucency)):
+                p = dst_mat.params.add()
+                p.attrib = pgex.datas_pb2.MaterialParam.transparency
+                export_tex(textureSlot, p.vtexture)
+            elif ((textureSlot.use_map_normal)):
+                p = dst_mat.params.add()
+                p.attrib = pgex.datas_pb2.MaterialParam.normal
+                export_tex(textureSlot, p.vtexture)
+
+
+def export_tex(src, dst):
+    dst.rpath = src.texture.image.filepath
+    # TODO If the texture has a scale and/or offset, then export a coordinate transform.
+    # uscale = textureSlot.scale[0]
+    # vscale = textureSlot.scale[1]
+    # uoffset = textureSlot.offset[0]
+    # voffset = textureSlot.offset[1]
