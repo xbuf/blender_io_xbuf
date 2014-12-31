@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/datas.proto',
   package='pgex',
-  serialized_pb=_b('\n\x10pgex/datas.proto\x12\x04pgex\"\xca\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x30\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x19\n\x05nodes\x18\x03 \x03(\x0b\x32\n.pgex.Node\x12(\n\ngeometries\x18\x04 \x03(\x0b\x32\x14.pgex.GeometryObject\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.pgex.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.pgex.Light*\x06\x08\xf4\x03\x10\xd1\x0f\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"8\n\x0eGeometryObject\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.pgex.Mesh\"\xf2\x01\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.pgex.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.pgex.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.pgex.IndexArray\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.pgex.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.pgex.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.pgex.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"K\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\x06params\x18\x02 \x03(\x0b\x32\x13.pgex.MaterialParam\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\"\xdf\x03\n\rMaterialParam\x12*\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x1a.pgex.MaterialParam.Attrib\x12\x1d\n\x06vcolor\x18\x02 \x01(\x0b\x32\x0b.pgex.ColorH\x00\x12\x10\n\x06vfloat\x18\x03 \x01(\x02H\x00\x12\x0e\n\x04vint\x18\x04 \x01(\x05H\x00\x12\x1b\n\x05vvec2\x18\x05 \x01(\x0b\x32\n.pgex.Vec2H\x00\x12\x1b\n\x05vvec3\x18\x06 \x01(\x0b\x32\n.pgex.Vec3H\x00\x12\x1b\n\x05vvec4\x18\x07 \x01(\x0b\x32\n.pgex.Vec4H\x00\x12!\n\x05vquat\x18\x08 \x01(\x0b\x32\x10.pgex.QuaternionH\x00\x12\x1b\n\x05vmat4\x18\t \x01(\x0b\x32\n.pgex.Mat4H\x00\x12\x11\n\x07vstring\x18\n \x01(\tH\x00\x12!\n\x08vtexture\x18\x0b \x01(\x0b\x32\r.pgex.TextureH\x00\x12\x0f\n\x05vbool\x18\x0c \x01(\x08H\x00\"z\n\x06\x41ttrib\x12\t\n\x05\x63olor\x10\x01\x12\r\n\troughness\x10\x02\x12\r\n\tmetalness\x10\x03\x12\x0c\n\x08specular\x10\x04\x12\x12\n\x0especular_power\x10\x05\x12\x0c\n\x08\x65mission\x10\x06\x12\x0b\n\x07opacity\x10\x07\x12\n\n\x06normal\x10\tB\x07\n\x05value\"\x90\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.pgex.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.pgex.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12&\n\x0b\x61ttenuation\x18\x05 \x01(\x0b\x32\x11.pgex.Attenuation\x12\x1a\n\x0b\x63\x61st_shadow\x18\x06 \x01(\x08:\x05\x66\x61lse\x12\x1d\n\tdirection\x18\x07 \x01(\x0b\x32\n.pgex.Vec3\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\x95\x02\n\x0b\x41ttenuation\x12\x12\n\x08\x64istance\x18\x01 \x01(\x08H\x00\x12\x0f\n\x05\x61ngle\x18\x02 \x01(\x02H\x00\x12\x13\n\tcos_angle\x18\x03 \x01(\x02H\x00\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.pgex.AttenuationLinearH\x01\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.pgex.AttenuationSmoothH\x01\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.pgex.AttenuationInverseH\x01\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.pgex.AttenuationInverseSquareH\x01\x42\x06\n\x04kindB\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31\"\x18\n\nLightPoint\x12\n\n\x02id\x18\x01 \x02(\t\"I\n\x04Node\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\ntransforms\x18\x02 \x03(\x0b\x32\x0f.pgex.Transform\x12\x10\n\x08parentId\x18\x03 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.pgex.Vec3\"\x1c\n\x04Vec2\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"3\n\x05\x43olor\x12\t\n\x01r\x18\x01 \x02(\x02\x12\t\n\x01g\x18\x02 \x02(\x02\x12\t\n\x01\x62\x18\x03 \x02(\x02\x12\t\n\x01\x61\x18\x04 \x02(\x02\"X\n\x07Texture\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x05rpath\x18\x02 \x01(\tH\x00\x12&\n\x05tex2d\x18\x03 \x01(\x0b\x32\x15.pgex.Texture2DInlineH\x00\x42\x06\n\x04\x64\x61ta\"\x96\x01\n\x0fTexture2DInline\x12,\n\x06\x66ormat\x18\x01 \x02(\x0e\x32\x1c.pgex.Texture2DInline.Format\x12\r\n\x05width\x18\x02 \x02(\r\x12\x0e\n\x06height\x18\x03 \x02(\r\x12\x0c\n\x04\x64\x61ta\x18\x04 \x02(\x0c\"(\n\x06\x46ormat\x12\x08\n\x04rgb8\x10\x01\x12\t\n\x05rgba8\x10\x02\x12\t\n\x05\x62gra8\x10\x03\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
+  serialized_pb=_b('\n\x10pgex/datas.proto\x12\x04pgex\"\xca\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x30\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x19\n\x05nodes\x18\x03 \x03(\x0b\x32\n.pgex.Node\x12(\n\ngeometries\x18\x04 \x03(\x0b\x32\x14.pgex.GeometryObject\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.pgex.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.pgex.Light*\x06\x08\xf4\x03\x10\xd1\x0f\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"8\n\x0eGeometryObject\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.pgex.Mesh\"\xf2\x01\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.pgex.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.pgex.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.pgex.IndexArray\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.pgex.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.pgex.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.pgex.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"K\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\x06params\x18\x02 \x03(\x0b\x32\x13.pgex.MaterialParam\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\"\xdf\x03\n\rMaterialParam\x12*\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x1a.pgex.MaterialParam.Attrib\x12\x1d\n\x06vcolor\x18\x02 \x01(\x0b\x32\x0b.pgex.ColorH\x00\x12\x10\n\x06vfloat\x18\x03 \x01(\x02H\x00\x12\x0e\n\x04vint\x18\x04 \x01(\x05H\x00\x12\x1b\n\x05vvec2\x18\x05 \x01(\x0b\x32\n.pgex.Vec2H\x00\x12\x1b\n\x05vvec3\x18\x06 \x01(\x0b\x32\n.pgex.Vec3H\x00\x12\x1b\n\x05vvec4\x18\x07 \x01(\x0b\x32\n.pgex.Vec4H\x00\x12!\n\x05vquat\x18\x08 \x01(\x0b\x32\x10.pgex.QuaternionH\x00\x12\x1b\n\x05vmat4\x18\t \x01(\x0b\x32\n.pgex.Mat4H\x00\x12\x11\n\x07vstring\x18\n \x01(\tH\x00\x12!\n\x08vtexture\x18\x0b \x01(\x0b\x32\r.pgex.TextureH\x00\x12\x0f\n\x05vbool\x18\x0c \x01(\x08H\x00\"z\n\x06\x41ttrib\x12\t\n\x05\x63olor\x10\x01\x12\r\n\troughness\x10\x02\x12\r\n\tmetalness\x10\x03\x12\x0c\n\x08specular\x10\x04\x12\x12\n\x0especular_power\x10\x05\x12\x0c\n\x08\x65mission\x10\x06\x12\x0b\n\x07opacity\x10\x07\x12\n\n\x06normal\x10\tB\x07\n\x05value\"\x9c\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.pgex.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.pgex.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12\x1a\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08:\x05\x66\x61lse\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.pgex.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.pgex.Attenuation\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x02(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.pgex.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.pgex.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.pgex.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.pgex.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31\"\x18\n\nLightPoint\x12\n\n\x02id\x18\x01 \x02(\t\"I\n\x04Node\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\ntransforms\x18\x02 \x03(\x0b\x32\x0f.pgex.Transform\x12\x10\n\x08parentId\x18\x03 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.pgex.Vec3\"\x1c\n\x04Vec2\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"3\n\x05\x43olor\x12\t\n\x01r\x18\x01 \x02(\x02\x12\t\n\x01g\x18\x02 \x02(\x02\x12\t\n\x01\x62\x18\x03 \x02(\x02\x12\t\n\x01\x61\x18\x04 \x02(\x02\"X\n\x07Texture\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x05rpath\x18\x02 \x01(\tH\x00\x12&\n\x05tex2d\x18\x03 \x01(\x0b\x32\x15.pgex.Texture2DInlineH\x00\x42\x06\n\x04\x64\x61ta\"\x96\x01\n\x0fTexture2DInline\x12,\n\x06\x66ormat\x18\x01 \x02(\x0e\x32\x1c.pgex.Texture2DInline.Format\x12\r\n\x05width\x18\x02 \x02(\r\x12\x0e\n\x06height\x18\x03 \x02(\r\x12\x0c\n\x04\x64\x61ta\x18\x04 \x02(\x0c\"(\n\x06\x46ormat\x12\x08\n\x04rgb8\x10\x01\x12\t\n\x05rgba8\x10\x02\x12\t\n\x05\x62gra8\x10\x03\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -199,8 +199,8 @@ _LIGHT_KIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1858,
-  serialized_end=1915,
+  serialized_start=1870,
+  serialized_end=1927,
 )
 _sym_db.RegisterEnumDescriptor(_LIGHT_KIND)
 
@@ -225,8 +225,8 @@ _TEXTURE2DINLINE_FORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3120,
-  serialized_end=3160,
+  serialized_start=3079,
+  serialized_end=3119,
 )
 _sym_db.RegisterEnumDescriptor(_TEXTURE2DINLINE_FORMAT)
 
@@ -782,21 +782,21 @@ _LIGHT = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='attenuation', full_name='pgex.Light.attenuation', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='cast_shadow', full_name='pgex.Light.cast_shadow', index=5,
-      number=6, type=8, cpp_type=7, label=1,
+      name='cast_shadow', full_name='pgex.Light.cast_shadow', index=4,
+      number=5, type=8, cpp_type=7, label=1,
       has_default_value=True, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='direction', full_name='pgex.Light.direction', index=6,
+      name='radial_distance', full_name='pgex.Light.radial_distance', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='spot_angle', full_name='pgex.Light.spot_angle', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -815,7 +815,7 @@ _LIGHT = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1643,
-  serialized_end=1915,
+  serialized_end=1927,
 )
 
 
@@ -827,49 +827,35 @@ _ATTENUATION = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='distance', full_name='pgex.Attenuation.distance', index=0,
-      number=1, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='angle', full_name='pgex.Attenuation.angle', index=1,
-      number=2, type=2, cpp_type=6, label=1,
+      name='max', full_name='pgex.Attenuation.max', index=0,
+      number=1, type=2, cpp_type=6, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='cos_angle', full_name='pgex.Attenuation.cos_angle', index=2,
-      number=3, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='linear', full_name='pgex.Attenuation.linear', index=3,
+      name='linear', full_name='pgex.Attenuation.linear', index=1,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='smooth', full_name='pgex.Attenuation.smooth', index=4,
+      name='smooth', full_name='pgex.Attenuation.smooth', index=2,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='inverse', full_name='pgex.Attenuation.inverse', index=5,
+      name='inverse', full_name='pgex.Attenuation.inverse', index=3,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='inverse_square', full_name='pgex.Attenuation.inverse_square', index=6,
+      name='inverse_square', full_name='pgex.Attenuation.inverse_square', index=4,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -886,14 +872,11 @@ _ATTENUATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='kind', full_name='pgex.Attenuation.kind',
-      index=0, containing_type=None, fields=[]),
-    _descriptor.OneofDescriptor(
       name='curve', full_name='pgex.Attenuation.curve',
-      index=1, containing_type=None, fields=[]),
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1918,
-  serialized_end=2195,
+  serialized_start=1930,
+  serialized_end=2154,
 )
 
 
@@ -929,8 +912,8 @@ _ATTENUATIONLINEAR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2197,
-  serialized_end=2250,
+  serialized_start=2156,
+  serialized_end=2209,
 )
 
 
@@ -966,8 +949,8 @@ _ATTENUATIONSMOOTH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2252,
-  serialized_end=2305,
+  serialized_start=2211,
+  serialized_end=2264,
 )
 
 
@@ -1017,8 +1000,8 @@ _ATTENUATIONINVERSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2307,
-  serialized_end=2404,
+  serialized_start=2266,
+  serialized_end=2363,
 )
 
 
@@ -1075,8 +1058,8 @@ _ATTENUATIONINVERSESQUARE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2406,
-  serialized_end=2531,
+  serialized_start=2365,
+  serialized_end=2490,
 )
 
 
@@ -1105,8 +1088,8 @@ _LIGHTPOINT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2533,
-  serialized_end=2557,
+  serialized_start=2492,
+  serialized_end=2516,
 )
 
 
@@ -1149,8 +1132,8 @@ _NODE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2559,
-  serialized_end=2632,
+  serialized_start=2518,
+  serialized_end=2591,
 )
 
 
@@ -1193,8 +1176,8 @@ _TRANSFORM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2634,
-  serialized_end=2741,
+  serialized_start=2593,
+  serialized_end=2700,
 )
 
 
@@ -1230,8 +1213,8 @@ _VEC2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2743,
-  serialized_end=2771,
+  serialized_start=2702,
+  serialized_end=2730,
 )
 
 
@@ -1274,8 +1257,8 @@ _VEC3 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2773,
-  serialized_end=2812,
+  serialized_start=2732,
+  serialized_end=2771,
 )
 
 
@@ -1325,8 +1308,8 @@ _VEC4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2814,
-  serialized_end=2864,
+  serialized_start=2773,
+  serialized_end=2823,
 )
 
 
@@ -1376,8 +1359,8 @@ _COLOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2866,
-  serialized_end=2917,
+  serialized_start=2825,
+  serialized_end=2876,
 )
 
 
@@ -1423,8 +1406,8 @@ _TEXTURE = _descriptor.Descriptor(
       name='data', full_name='pgex.Texture.data',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2919,
-  serialized_end=3007,
+  serialized_start=2878,
+  serialized_end=2966,
 )
 
 
@@ -1475,8 +1458,8 @@ _TEXTURE2DINLINE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3010,
-  serialized_end=3160,
+  serialized_start=2969,
+  serialized_end=3119,
 )
 
 
@@ -1526,8 +1509,8 @@ _QUATERNION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3162,
-  serialized_end=3218,
+  serialized_start=3121,
+  serialized_end=3177,
 )
 
 
@@ -1661,8 +1644,8 @@ _MAT4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3221,
-  serialized_end=3435,
+  serialized_start=3180,
+  serialized_end=3394,
 )
 
 _DATA.fields_by_name['relations'].message_type = _RELATION
@@ -1730,22 +1713,13 @@ _MATERIALPARAM.oneofs_by_name['value'].fields.append(
 _MATERIALPARAM.fields_by_name['vbool'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
 _LIGHT.fields_by_name['kind'].enum_type = _LIGHT_KIND
 _LIGHT.fields_by_name['color'].message_type = _COLOR
-_LIGHT.fields_by_name['attenuation'].message_type = _ATTENUATION
-_LIGHT.fields_by_name['direction'].message_type = _VEC3
+_LIGHT.fields_by_name['radial_distance'].message_type = _ATTENUATION
+_LIGHT.fields_by_name['spot_angle'].message_type = _ATTENUATION
 _LIGHT_KIND.containing_type = _LIGHT
 _ATTENUATION.fields_by_name['linear'].message_type = _ATTENUATIONLINEAR
 _ATTENUATION.fields_by_name['smooth'].message_type = _ATTENUATIONSMOOTH
 _ATTENUATION.fields_by_name['inverse'].message_type = _ATTENUATIONINVERSE
 _ATTENUATION.fields_by_name['inverse_square'].message_type = _ATTENUATIONINVERSESQUARE
-_ATTENUATION.oneofs_by_name['kind'].fields.append(
-  _ATTENUATION.fields_by_name['distance'])
-_ATTENUATION.fields_by_name['distance'].containing_oneof = _ATTENUATION.oneofs_by_name['kind']
-_ATTENUATION.oneofs_by_name['kind'].fields.append(
-  _ATTENUATION.fields_by_name['angle'])
-_ATTENUATION.fields_by_name['angle'].containing_oneof = _ATTENUATION.oneofs_by_name['kind']
-_ATTENUATION.oneofs_by_name['kind'].fields.append(
-  _ATTENUATION.fields_by_name['cos_angle'])
-_ATTENUATION.fields_by_name['cos_angle'].containing_oneof = _ATTENUATION.oneofs_by_name['kind']
 _ATTENUATION.oneofs_by_name['curve'].fields.append(
   _ATTENUATION.fields_by_name['linear'])
 _ATTENUATION.fields_by_name['linear'].containing_oneof = _ATTENUATION.oneofs_by_name['curve']

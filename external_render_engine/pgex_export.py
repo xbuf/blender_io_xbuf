@@ -20,6 +20,7 @@ import mathutils
 import pgex
 import pgex.datas_pb2
 import pgex.cmds_pb2
+from . import helpers  # pylint: disable=W0406
 
 
 def cnv_vec3(src, dst):
@@ -107,7 +108,7 @@ def export(scene, data, isPreview):
         transform = node.transforms.add()
         # TODO convert zup only for child of root
         cnv_vec3ZupToYup(obj.location, transform.translation)
-        cnv_quatZupToYup(rot_quat(obj), transform.rotation)
+        cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
         cnv_vec3(obj.scale, transform.scale)
         if obj.parent is not None:
             node.parent = obj.parent.name
@@ -121,21 +122,11 @@ def export(scene, data, isPreview):
                 export_material(obj.material_slots[i].material, dst_mat)
                 add_relation(data.relations, node, dst_mat)
         elif obj.type == 'LAMP':
+            rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
+            cnv_quatZupToYup(rot, transform.rotation)
             light = data.lights.add()
             export_light(obj.data, light)
             add_relation(data.relations, node, light)
-
-
-def rot_quat(obj):
-    """ return the rotation of the object as quaternion"""
-    if obj.rotation_mode == 'QUATERNION':
-        return obj.rotation_quaternion
-    elif obj.rotation_mode == 'AXIS_ANGLE':
-        aa = obj.rotation_axis_angle
-        return mathutils.Quaternion((aa[1], aa[2], aa[3]), aa[0])
-    else:
-        # eurler
-        return obj.rotation_euler.to_quaternion()
 
 
 def add_relation(relations, e1, e2):
@@ -320,26 +311,30 @@ def export_light(src, dst):
         dst.kind = pgex.datas_pb2.Light.point
     else:
         dst.kind = pgex.datas_pb2.Light.spot
-        endAngle = src.spot_size * 0.5
-        # beginAngle = endAngle * (1.0 - src.spot_blend)
-        dst.attenuation.angle = endAngle
+        dst.spot_angle.max = src.spot_size * 0.5
+        dst.spot_angle.linear.begin = (1.0 - src.spot_blend)
     dst.cast_shadow = src.use_shadow
     cnv_color(src.color, dst.color)
     dst.intensity = src.energy
+    dst.radial_distance.max = src.distance
     falloff = src.falloff_type
     if falloff == 'INVERSE_LINEAR':
-        dst.attenuation.inverse.scale = src.distance
+        dst.radial_distance.max = src.distance
+        dst.radial_distance.inverse.scale = 1.0
     elif falloff == 'INVERSE_SQUARE':
-        dst.attenuation.inverse_square.scale = math.sqrt(src.distance)
+        dst.radial_distance.max = src.distance  # math.sqrt(src.distance)
+        dst.radial_distance.inverse_square.scale = 1.0
     elif falloff == 'LINEAR_QUADRATIC_WEIGHTED':
         if src.quadratic_attenuation == 0.0:
-            dst.attenuation.inverse.scale = src.distance
-            dst.attenuation.inverse.constant = 1.0
-            dst.attenuation.inverse.linear = src.linear_attenuation
+            dst.radial_distance.max = src.distance
+            dst.radial_distance.inverse.scale = 1.0
+            dst.radial_distance.inverse.constant = 1.0
+            dst.radial_distance.inverse.linear = src.linear_attenuation
         else:
-            dst.attenuation.inverse_square.scale = src.distance
-            dst.attenuation.inverse_square.constant = 1.0
-            dst.attenuation.inverse_square.linear = src.linear_attenuation
-            dst.attenuation.inverse_square.linear = src.quadratic_attenuation
+            dst.radial_distance.max = src.distance
+            dst.radial_distance.inverse_square.scale = 1.0
+            dst.radial_distance.inverse_square.constant = 1.0
+            dst.radial_distance.inverse_square.linear = src.linear_attenuation
+            dst.radial_distance.inverse_square.linear = src.quadratic_attenuation
     if src.use_sphere:
-        dst.attenuation.linear.end = src.distance
+        dst.radial_distance.linear.end = 1.0
