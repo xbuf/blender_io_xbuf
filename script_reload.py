@@ -32,6 +32,7 @@ imp.reload(pgex.datas_pb2)
 imp.reload(pgex.cmds_pb2)
 
 imp.reload(external_render_engine)
+imp.reload(external_render_engine.helpers)
 imp.reload(external_render_engine.pgex_export)
 imp.reload(external_render_engine.protocol)
 imp.reload(external_render_engine.renderengine)

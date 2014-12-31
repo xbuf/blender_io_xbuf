@@ -21,9 +21,8 @@ import atexit
 import pgex
 import pgex.datas_pb2
 import pgex.cmds_pb2
-import mathutils
 
-from . import pgex_export
+from . import pgex_export  # pylint: disable=W0406
 
 # TODO better management off the event loop (eg  on unregister)
 loop = asyncio.get_event_loop()

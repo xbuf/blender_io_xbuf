@@ -18,7 +18,9 @@
 from . import renderengine
 from . import protocol
 from . import pgex_export
+from . import helpers
 
+__all__ = ['renderengine', 'protocol', 'helpers', 'pgex_export']
 
 bl_info = {
     "name": "External Render Engine",
@@ -32,7 +34,6 @@ bl_info = {
     "tracker_url": "https://github.com/davidB/blender_external_renderer/issues",
     "category": "Render"}
 
-# __all__ = ['']
 
 
 def register():
