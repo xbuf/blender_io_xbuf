@@ -46,13 +46,18 @@ def register():
     # Otherwise most of the UI will be empty when the engine is selected.
     # In this example, we need to see the main render image button and
     # the material preview panel.
-    from bl_ui import properties_render
-    properties_render.RENDER_PT_render.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
-    del properties_render
-
-    from bl_ui import properties_material
-    properties_material.MATERIAL_PT_preview.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
-    del properties_material
+    import bl_ui
+    panels = [
+        bl_ui.properties_render.RENDER_PT_render,
+        # bl_ui.properties_material.MATERIAL_PT_preview,
+        bl_ui.properties_material.MATERIAL_PT_diffuse,
+        bl_ui.properties_material.MATERIAL_PT_specular,
+        bl_ui.properties_material.MATERIAL_PT_shadow,
+        bl_ui.properties_material.MATERIAL_PT_custom_props,
+        bl_ui.properties_data_lamp.DATA_PT_lamp,
+    ]
+    for p in panels:
+        p.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
 
 
 def unregister():
