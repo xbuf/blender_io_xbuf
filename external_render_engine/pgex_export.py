@@ -15,11 +15,12 @@
 
 # <pep8 compliant>
 
-import math
 import mathutils
 import pgex
 import pgex.datas_pb2
 import pgex.cmds_pb2
+import pgex_ext
+import pgex_ext.customparams_pb2
 from . import helpers  # pylint: disable=W0406
 
 
@@ -127,6 +128,7 @@ def export(scene, data, isPreview):
             light = data.lights.add()
             export_light(obj.data, light)
             add_relation(data.relations, node, light)
+        export_obj_customproperties(obj, node, data)
 
 
 def add_relation(relations, e1, e2):
@@ -339,3 +341,27 @@ def export_light(src, dst):
                 dst.radial_distance.inverse_square.linear = src.quadratic_attenuation
     if src.use_sphere:
         dst.radial_distance.linear.end = 1.0
+
+
+def export_obj_customproperties(src, dst_node, dst_data):
+    keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
+    if len(keys) > 0:
+        customparams = dst_data.Extensions[pgex_ext.customparams_pb2.customParams].add()
+        customparams.id = src.name + '_customparams'
+        for key in keys:
+            param = customparams.params.add()
+            param.name = key
+            value = src[key]
+            if type(value) == bool:
+                param.vbool = value
+            elif type(value) == str:
+                param.vstring = value
+            elif type(value) == float:
+                param.vfloat = value
+            elif type(value) == int:
+                param.vint = value
+            elif type(value) == mathutils.Vector:
+                cnv_vec3(value, param.vvec3)
+            elif type(value) == mathutils.Quaternion:
+                cnv_quat(value, param.vquat)
+        add_relation(dst_data.relations, dst_node, customparams)
