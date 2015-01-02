@@ -305,11 +305,11 @@ def export_tex(src, dst):
 def export_light(src, dst):
     dst.id = "light_" + src.name
     kind = src.type
-    if kind == 'SUN':
+    if kind == 'SUN' or kind == 'AREA':
         dst.kind = pgex.datas_pb2.Light.directional
     elif kind == 'POINT':
         dst.kind = pgex.datas_pb2.Light.point
-    else:
+    elif kind == 'SPOT':
         dst.kind = pgex.datas_pb2.Light.spot
         dst.spot_angle.max = src.spot_size * 0.5
         dst.spot_angle.linear.begin = (1.0 - src.spot_blend)
@@ -317,24 +317,25 @@ def export_light(src, dst):
     cnv_color(src.color, dst.color)
     dst.intensity = src.energy
     dst.radial_distance.max = src.distance
-    falloff = src.falloff_type
-    if falloff == 'INVERSE_LINEAR':
-        dst.radial_distance.max = src.distance
-        dst.radial_distance.inverse.scale = 1.0
-    elif falloff == 'INVERSE_SQUARE':
-        dst.radial_distance.max = src.distance  # math.sqrt(src.distance)
-        dst.radial_distance.inverse_square.scale = 1.0
-    elif falloff == 'LINEAR_QUADRATIC_WEIGHTED':
-        if src.quadratic_attenuation == 0.0:
+    if hasattr(src, 'falloff_type'):
+        falloff = src.falloff_type
+        if falloff == 'INVERSE_LINEAR':
             dst.radial_distance.max = src.distance
             dst.radial_distance.inverse.scale = 1.0
-            dst.radial_distance.inverse.constant = 1.0
-            dst.radial_distance.inverse.linear = src.linear_attenuation
-        else:
-            dst.radial_distance.max = src.distance
+        elif falloff == 'INVERSE_SQUARE':
+            dst.radial_distance.max = src.distance  # math.sqrt(src.distance)
             dst.radial_distance.inverse_square.scale = 1.0
-            dst.radial_distance.inverse_square.constant = 1.0
-            dst.radial_distance.inverse_square.linear = src.linear_attenuation
-            dst.radial_distance.inverse_square.linear = src.quadratic_attenuation
+        elif falloff == 'LINEAR_QUADRATIC_WEIGHTED':
+            if src.quadratic_attenuation == 0.0:
+                dst.radial_distance.max = src.distance
+                dst.radial_distance.inverse.scale = 1.0
+                dst.radial_distance.inverse.constant = 1.0
+                dst.radial_distance.inverse.linear = src.linear_attenuation
+            else:
+                dst.radial_distance.max = src.distance
+                dst.radial_distance.inverse_square.scale = 1.0
+                dst.radial_distance.inverse_square.constant = 1.0
+                dst.radial_distance.inverse_square.linear = src.linear_attenuation
+                dst.radial_distance.inverse_square.linear = src.quadratic_attenuation
     if src.use_sphere:
         dst.radial_distance.linear.end = 1.0
