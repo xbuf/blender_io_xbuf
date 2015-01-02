@@ -18,30 +18,34 @@
 - doc: write protocol
 - blender: display error
 - blender: display in render view, animation, preview, viewport (interactive)
-- server: add/remove/update geometries
-- blender: update/add/remove geometries
+- ~~server: add/remove/update geometries~~
+- ~~blender: update/add/remove geometries~~
 - server: add/remove/update custom properties
 - blender: update/add/remove custom properties
-- server: transform object (location, rotation, scale)
-- blender:  transform object (location, rotation, scale)
+- ~~server: transform object (location, rotation, scale)~~
+- ~~blender:  transform object (location, rotation, scale)~~
 - server: add/remove/update geometry placeholder
 - blender: update/add/remove geometry placeholder
 - server: add/remove/update lights
-- blender: update/add/remove lights
-- server: add/remove/update materials
-- blender: update/add/remove materials
-- server: add/remove/update link (material /geometries)
-- blender: update/add/remove link (material /geometries)
+- ~~blender: update/add/remove lights~~
+- ~~server: add/remove/update materials~~
+- ~~blender: update/add/remove materials~~
+- ~~server: add/remove/update link (material /geometries)~~
+- ~~blender: update/add/remove link (material /geometries)~~
 - server gui: enable/disable some remote control (camera,...)
 - doc: update
 - demo: scenario, screenshot, video
 
 ## TODO
 
+- custom properties
 - only send update not the full scene
 - only send update on change
-- one client (writer+reader) per RenderEngine
-- send correct info about eye view (fov, perspective, projection,...)
+- take care of blender metrics (define in world)
+- add a [panel](http://www.blender.org/api/blender_python_api_2_72_release/bpy.types.Panel.html) in blender's render properties to define properties : host, port, assets_folders
+- add support of texture via [pathlib](https://docs.python.org/3.4/library/pathlib.html#module-pathlib) + AssetFolder
+- provide an exporter for pgex
+- made a full pipeline demo from blender to jme
 
 # Protocol options
 
