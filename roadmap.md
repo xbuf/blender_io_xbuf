@@ -45,7 +45,9 @@
 - add a [panel](http://www.blender.org/api/blender_python_api_2_72_release/bpy.types.Panel.html) in blender's render properties to define properties : host, port, assets_folders
 - add support of texture via [pathlib](https://docs.python.org/3.4/library/pathlib.html#module-pathlib) + AssetFolder
 - provide an exporter for pgex
+- support for proxy, linked object
 - made a full pipeline demo from blender to jme
+- add custom property group dedicated [example] (http://blender.stackexchange.com/questions/6984/color-as-custom-property)
 
 # Protocol options
 
