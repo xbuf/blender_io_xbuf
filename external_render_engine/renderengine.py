@@ -73,7 +73,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         width = int(scene.render.resolution_x * scale)
         height = int(scene.render.resolution_y * scale)
         # context.space_data.camera
-        self.external_render(scene.camera, width, height, self.render_image)
+        # self.external_render(scene.camera, width, height, self.render_image)
 
     def update(self, data, scene):
         """Export scene data for render"""
