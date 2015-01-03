@@ -54,7 +54,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
             try:
                 self.report({'WARNING'}, "test remote host (%r:%r)" % (self.host, self.port))
                 yield from self.client.connect(self.host, self.port)
-                print('Send: %rx%r' % (width, height))
+                # print('Send: %rx%r' % (width, height))
                 protocol.setEye(self.client.writer, loc, rot, projection, near, far)
                 protocol.askScreenshot(self.client.writer, width, height)
                 # yield from writer.drain()

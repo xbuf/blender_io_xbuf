@@ -53,8 +53,7 @@ def extractEye(context_or_camera):
         near = camera.data.clip_start
         far = camera.data.clip_end
         projection = projection_matrix(camera.data)
-        print(projection)
-    print("%r | %r | %r | %r |%r" % (loc, rot, projection, near, far))
+    # print("%r | %r | %r | %r |%r" % (loc, rot, projection, near, far))
     return (loc, rot, projection, near, far)
 
 
@@ -94,7 +93,7 @@ def z_backward_to_forward(quat):
     qr0.normalize()
     qr0.rotate(quat)
     qr0.normalize()
-    print("z_backward_to_forward : %r --> %r" % (quat, qr0))
+    # print("z_backward_to_forward : %r --> %r" % (quat, qr0))
     return qr0
 
 
@@ -104,7 +103,7 @@ def y_up_to_backward(quat):
     qr1.normalize()
     qr1.rotate(quat)
     qr1.normalize()
-    print("y_up_to_backward : %r --> %r" % (quat, qr1))
+    # print("y_up_to_backward : %r --> %r" % (quat, qr1))
     return qr1
 
 
