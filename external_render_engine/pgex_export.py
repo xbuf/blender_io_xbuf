@@ -315,7 +315,7 @@ def export_light(src, dst):
         dst.kind = pgex.datas_pb2.Light.spot
         dst.spot_angle.max = src.spot_size * 0.5
         dst.spot_angle.linear.begin = (1.0 - src.spot_blend)
-    dst.cast_shadow = src.use_shadow
+    dst.cast_shadow = getattr(src, 'use_shadow', False)
     cnv_color(src.color, dst.color)
     dst.intensity = src.energy
     dst.radial_distance.max = src.distance
@@ -339,7 +339,7 @@ def export_light(src, dst):
                 dst.radial_distance.inverse_square.constant = 1.0
                 dst.radial_distance.inverse_square.linear = src.linear_attenuation
                 dst.radial_distance.inverse_square.linear = src.quadratic_attenuation
-    if src.use_sphere:
+    if getattr(src, 'use_sphere', False):
         dst.radial_distance.linear.end = 1.0
 
 
