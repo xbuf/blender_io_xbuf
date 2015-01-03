@@ -49,7 +49,8 @@ def register():
     import bl_ui
     panels = [
         bl_ui.properties_render.RENDER_PT_render,
-        bl_ui.properties_material.MATERIAL_PT_preview,
+        # bl_ui.properties_material.MATERIAL_PT_preview,
+        bl_ui.properties_material.MATERIAL_PT_context_material,
         bl_ui.properties_material.MATERIAL_PT_diffuse,
         bl_ui.properties_material.MATERIAL_PT_specular,
         bl_ui.properties_material.MATERIAL_PT_shadow,

@@ -31,7 +31,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     # RenderEngine; define its internal name, visible name and capabilities.
     bl_idname = "external_render"
     bl_label = "External Render"
-    bl_use_preview = True
+    bl_use_preview = False
 
     # moved assignment from execute() to the body of the class...
     port = bpy.props.IntProperty(name="port", default=4242, min=1024)
