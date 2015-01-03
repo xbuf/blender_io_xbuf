@@ -244,7 +244,7 @@ def export_texcoords(src_mesh, dst_mesh):
 
 
 def export_material(src_mat, dst_mat):
-    dst_mat.id = src_mat.name
+    dst_mat.id = 'mat_' + src_mat.name
 
     intensity = src_mat.diffuse_intensity
     diffuse = [src_mat.diffuse_color[0] * intensity, src_mat.diffuse_color[1] * intensity, src_mat.diffuse_color[2] * intensity]
@@ -347,7 +347,7 @@ def export_obj_customproperties(src, dst_node, dst_data):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
         customparams = dst_data.Extensions[pgex_ext.customparams_pb2.customParams].add()
-        customparams.id = src.name + '_customparams'
+        customparams.id = 'customparams_' + src.name
         for key in keys:
             param = customparams.params.add()
             param.name = key
