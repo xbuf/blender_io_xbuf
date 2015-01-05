@@ -15,6 +15,7 @@
 
 # <pep8 compliant>
 
+import uuid
 import mathutils
 import pgex
 import pgex.datas_pb2
@@ -101,34 +102,42 @@ def cnv_color(src, dst):
     dst.a = 1.0 if len(src) < 4 else src[3]
     return dst
 
+
+def id_of(v):
+    if not ('pgex_id' in v.keys()):
+        v['pgex_id'] = str(uuid.uuid4())
+    return v['pgex_id']
+
+
 # TODO avoid export obj with same id
 def export(scene, data, isPreview):
     for obj in scene.objects:
-        node = data.nodes.add()
-        node.id = obj.name
-        transform = node.transforms.add()
+        tobject = data.tobjects.add()
+        tobject.id = id_of(obj)
+        tobject.name = obj.name
+        transform = tobject.transforms.add()
         # TODO convert zup only for child of root
         cnv_vec3ZupToYup(obj.location, transform.translation)
         cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
         cnv_vec3(obj.scale, transform.scale)
         if obj.parent is not None:
-            node.parent = obj.parent.name
+            tobject.parent = obj.parent.name
         if obj.type == 'MESH':
             if len(obj.data.polygons) != 0:
                 geometry = data.geometries.add()
                 export_geometry(obj, geometry, scene, isPreview)
-                add_relation(data.relations, node, geometry)
+                add_relation(data.relations, tobject, geometry)
             for i in range(len(obj.material_slots)):
                 dst_mat = data.materials.add()
                 export_material(obj.material_slots[i].material, dst_mat)
-                add_relation(data.relations, node, dst_mat)
+                add_relation(data.relations, tobject, dst_mat)
         elif obj.type == 'LAMP':
             rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
             cnv_quatZupToYup(rot, transform.rotation)
             light = data.lights.add()
             export_light(obj.data, light)
-            add_relation(data.relations, node, light)
-        export_obj_customproperties(obj, node, data)
+            add_relation(data.relations, tobject, light)
+        export_obj_customproperties(obj, tobject, data)
 
 
 def add_relation(relations, e1, e2):
@@ -142,12 +151,14 @@ def add_relation(relations, e1, e2):
 
 
 def export_geometry(src, dst, scene, isPreview):
-    dst.id = "geo_" + src.name
+    dst.id = 'geo_' + id_of(src)
+    dst.name = src.name
     mesh = dst.meshes.add()
     mesh.primitive = pgex.datas_pb2.Mesh.triangles
     mode = 'PREVIEW' if isPreview else 'RENDER'
     src_mesh = src.to_mesh(scene, True, mode, True, False)
-    mesh.id = src_mesh.name
+    mesh.id = id_of(src_mesh)
+    mesh.name = src_mesh.name
     # unified_vertex_array = unify_vertices(vertex_array, index_table)
     export_positions(src_mesh, mesh)
     export_normals(src_mesh, mesh)
@@ -244,7 +255,8 @@ def export_texcoords(src_mesh, dst_mesh):
 
 
 def export_material(src_mat, dst_mat):
-    dst_mat.id = 'mat_' + src_mat.name
+    dst_mat.id = id_of(src_mat)
+    dst_mat.name = src_mat.name
 
     intensity = src_mat.diffuse_intensity
     diffuse = [src_mat.diffuse_color[0] * intensity, src_mat.diffuse_color[1] * intensity, src_mat.diffuse_color[2] * intensity]
@@ -305,7 +317,8 @@ def export_tex(src, dst):
 
 # TODO redo Light, more clear definition,...
 def export_light(src, dst):
-    dst.id = "light_" + src.name
+    dst.id = id_of(src)
+    dst.name = src.name
     kind = src.type
     if kind == 'SUN' or kind == 'AREA':
         dst.kind = pgex.datas_pb2.Light.directional

@@ -54,6 +54,7 @@ def register():
         bl_ui.properties_material.MATERIAL_PT_diffuse,
         bl_ui.properties_material.MATERIAL_PT_specular,
         bl_ui.properties_material.MATERIAL_PT_shadow,
+        bl_ui.properties_material.MATERIAL_PT_shading,
         bl_ui.properties_material.MATERIAL_PT_custom_props,
         bl_ui.properties_data_lamp.DATA_PT_lamp,
         bl_ui.properties_data_lamp.DATA_PT_spot,
