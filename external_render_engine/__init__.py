@@ -36,7 +36,7 @@ bl_info = {
 
 
 
-def register():
+def register_renderer():
 
     import bpy
     # Register the RenderEngine
@@ -64,9 +64,35 @@ def register():
         p.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
 
 
-def unregister():
+def unregister_renderer():
     import bpy
     bpy.utils.unregister_class(renderengine.ExternalRenderEngine)
+
+
+def menu_func_exporter(self, context):
+    self.layout.operator(pgex_export.PgexExporter.bl_idname, text="Pgex (.pgex)")
+
+
+def register_exporter():
+    import bpy
+    bpy.utils.register_class(pgex_export.PgexExporter)
+    bpy.types.INFO_MT_file_export.append(menu_func_exporter)
+
+
+def unregister_exporter():
+    import bpy
+    bpy.types.INFO_MT_file_export.remove(menu_func_exporter)
+    bpy.utils.unregister_class(pgex_export.PgexExporter)
+
+
+def register():
+    register_renderer()
+    register_exporter()
+
+
+def unregister():
+    unregister_renderer()
+    unregister_exporter()
 
 
 def main():

@@ -16,6 +16,7 @@
 # <pep8 compliant>
 
 import uuid
+import struct
 import mathutils
 import pgex
 import pgex.datas_pb2
@@ -105,7 +106,7 @@ def cnv_color(src, dst):
 
 def id_of(v):
     if not ('pgex_id' in v.keys()):
-        v['pgex_id'] = str(uuid.uuid4())
+        v['pgex_id'] = str(uuid.uuid4().clock_seq)
     return v['pgex_id']
 
 
@@ -151,7 +152,7 @@ def add_relation(relations, e1, e2):
 
 
 def export_geometry(src, dst, scene, isPreview):
-    dst.id = 'geo_' + id_of(src)
+    dst.id = 'G' + id_of(src)
     dst.name = src.name
     mesh = dst.meshes.add()
     mesh.primitive = pgex.datas_pb2.Mesh.triangles
@@ -360,7 +361,7 @@ def export_obj_customproperties(src, dst_node, dst_data):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
         customparams = dst_data.Extensions[pgex_ext.customparams_pb2.customParams].add()
-        customparams.id = 'customparams_' + src.name
+        customparams.id = 'CP' + id_of(src)
         for key in keys:
             param = customparams.params.add()
             param.name = key
@@ -378,3 +379,46 @@ def export_obj_customproperties(src, dst_node, dst_data):
             elif type(value) == mathutils.Quaternion:
                 cnv_quat(value, param.vquat)
         add_relation(dst_data.relations, dst_node, customparams)
+
+
+import bpy
+from bpy_extras.io_utils import ExportHelper
+
+
+class PgexExporter(bpy.types.Operator, ExportHelper):
+    """Export to pgex format"""
+    bl_idname = "export_scene.pgex"
+    bl_label = "Export pgex"
+    filename_ext = ".pgex"
+
+    # option_export_selection = bpy.props.BoolProperty(name = "Export Selection", description = "Export only selected objects", default = False)
+
+    def __init__(self):
+        pass
+
+    def execute(self, context):
+        scene = context.scene
+        originalFrame = scene.frame_current
+        originalSubframe = scene.frame_subframe
+        self.restoreFrame = False
+
+        self.beginFrame = scene.frame_start
+        self.endFrame = scene.frame_end
+        self.frameTime = 1.0 / (scene.render.fps_base * scene.render.fps)
+
+        # exportAllFlag = not self.option_export_selection
+        data = pgex.datas_pb2.Data()
+        export(scene, data, False)
+
+        self.file = open(self.filepath, "wb")
+        self.file.write(data.SerializeToString())
+        self.file.close()
+
+        if (self.restoreFrame):
+            scene.frame_set(originalFrame, originalSubframe)
+
+        return {'FINISHED'}
+
+    @classmethod
+    def poll(cls, context):
+        return (context.active_object is not None)
