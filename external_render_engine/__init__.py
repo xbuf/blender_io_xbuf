@@ -25,7 +25,7 @@ __all__ = ['renderengine', 'protocol', 'helpers', 'pgex_export']
 bl_info = {
     "name": "External Render Engine",
     "author": "David Bernard",
-    "version": (0, 2),
+    "version": (0, 3),
     "blender": (2, 72, 0),
     "location": "Render > Engine > External Render",
     "description": "Delegate rendering to an external render engine (eg provided by game engine)",
