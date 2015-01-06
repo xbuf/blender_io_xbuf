@@ -49,6 +49,7 @@ class Client:
     def close(self):
         if self.writer is not None:
             print('Close the socket/writer')
+            self.writer.write_eof()
             self.writer.close()
             self.writer = None
             self.reader = None
@@ -62,6 +63,7 @@ class Client:
             self.port = port
             (self.reader, self.writer) = yield from asyncio.open_connection(host, port, loop=loop)
         return self
+
 
 @asyncio.coroutine
 def readHeader(reader):
