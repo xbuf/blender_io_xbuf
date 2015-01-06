@@ -48,6 +48,8 @@
 - support for proxy, linked object
 - made a full pipeline demo from blender to jme
 - add custom property group dedicated [example] (http://blender.stackexchange.com/questions/6984/color-as-custom-property)
+- make a promo video #1
+- add 'shadeless', cast shadow, receive shadow to material
 
 # Protocol options
 
