@@ -122,7 +122,7 @@ def export(scene, data, isPreview):
         cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
         cnv_vec3(obj.scale, transform.scale)
         if obj.parent is not None:
-            tobject.parent = obj.parent.name
+            tobject.parentId = id_of(obj.parent)
         if obj.type == 'MESH':
             if len(obj.data.polygons) != 0:
                 geometry = data.geometries.add()
