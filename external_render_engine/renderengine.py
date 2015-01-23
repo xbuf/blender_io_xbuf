@@ -29,16 +29,16 @@ from . import helpers   # pylint: disable=W0406
 class ExternalRenderEngine(bpy.types.RenderEngine):
     # These three members are used by blender to set up the
     # RenderEngine; define its internal name, visible name and capabilities.
-    bl_idname = "external_render"
+    bl_idname = "EXTERNAL_RENDER"
     bl_label = "External Render"
     bl_use_preview = False
 
     # moved assignment from execute() to the body of the class...
-    port = bpy.props.IntProperty(name="port", default=4242, min=1024)
-    host = bpy.props.StringProperty(name="host", default="127.0.0.1")
 
     def __init__(self):
         print("__init__")
+        self.host = "127.0.0.1"
+        self.port = 4242
         self.client = protocol.Client()
 
     def __del__(self):
@@ -86,6 +86,8 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     def external_update(self, scene):
         self.report({'DEBUG'}, "external_update")
+        self.host = scene.external_render.host
+        self.port = scene.external_render.port
         for ob in scene.objects:
             if ob.is_updated:
                 print("updated =>", ob.name)

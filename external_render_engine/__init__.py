@@ -34,11 +34,82 @@ bl_info = {
     "tracker_url": "https://github.com/davidB/blender_external_renderer/issues",
     "category": "Render"}
 
+import bpy
+
+
+class RenderSettingsScene(bpy.types.PropertyGroup):
+
+    port = bpy.props.IntProperty(
+        name="port",
+        description="",
+        default=4242, min=1024)
+    host = bpy.props.StringProperty(
+        name="host",
+        description="",
+        default="127.0.0.1")
+
+    def __init__(self):
+        pass
+
+
+class PgexSettingsScene(bpy.types.PropertyGroup):
+
+    assets_path = bpy.props.StringProperty(
+        name="assets root folder path",
+        description="Full path to directory where the assets are saved",
+        maxlen=1024, subtype="DIR_PATH")
+
+    def __init__(self):
+        pass
+
+
+class ExternalRenderPanel(bpy.types.Panel):
+    bl_idname = "RENDER_PT_external_render"
+    bl_label = "External Render Config"
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "render"
+    bl_options = {'DEFAULT_CLOSED'}
+    COMPAT_ENGINES = {renderengine.ExternalRenderEngine.bl_idname}
+
+    def __init__(self):
+        pass
+
+    @classmethod
+    def poll(cls, context):
+        engine = context.scene.render.engine
+        return engine in cls.COMPAT_ENGINES
+
+    def draw(self, context):
+        layout = self.layout
+        render = context.scene.external_render
+        pgex = context.scene.pgex
+        row = layout.row()
+        row.prop(render, "host")
+        row.prop(render, "port")
+        col = layout.column()
+        col.prop(pgex, "assets_path")
+        # layout.label(text="Hello World")
+
+
+def register_settings():
+    bpy.utils.register_class(RenderSettingsScene)
+    bpy.types.Scene.external_render = bpy.props.PointerProperty(type=RenderSettingsScene)
+    bpy.utils.register_class(PgexSettingsScene)
+    bpy.types.Scene.pgex = bpy.props.PointerProperty(type=PgexSettingsScene)
+    bpy.utils.register_class(ExternalRenderPanel)
+
+
+def unregister_settings():
+    bpy.utils.unregister_class(ExternalRenderPanel)
+    # del bpy.types.Scene.pgex
+    bpy.utils.unregister_class(PgexSettingsScene)
+    # del bpy.types.Scene.external_renderer
+    bpy.utils.unregister_class(RenderSettingsScene)
 
 
 def register_renderer():
 
-    import bpy
     # Register the RenderEngine
     bpy.utils.register_class(renderengine.ExternalRenderEngine)
 
@@ -65,7 +136,6 @@ def register_renderer():
 
 
 def unregister_renderer():
-    import bpy
     bpy.utils.unregister_class(renderengine.ExternalRenderEngine)
 
 
@@ -74,25 +144,25 @@ def menu_func_exporter(self, context):
 
 
 def register_exporter():
-    import bpy
     bpy.utils.register_class(pgex_export.PgexExporter)
     bpy.types.INFO_MT_file_export.append(menu_func_exporter)
 
 
 def unregister_exporter():
-    import bpy
     bpy.types.INFO_MT_file_export.remove(menu_func_exporter)
     bpy.utils.unregister_class(pgex_export.PgexExporter)
 
 
 def register():
-    register_renderer()
+    register_settings()
     register_exporter()
+    register_renderer()
 
 
 def unregister():
     unregister_renderer()
     unregister_exporter()
+    unregister_settings()
 
 
 def main():
