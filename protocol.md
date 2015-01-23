@@ -39,6 +39,7 @@ In the sub-sections:
 | 0x03 | Ask Screenshot | client | X |
 | 0x04 | Raw Screenshot BGRA| server | X |
 | 0x05 | MessagePack encoded | client | |
+| 0x06 | [Pgex cmd](https://github.com/davidB/pgex/blob/master/src/main/proto/pgex/cmds.proto) encoded | client | |
 | ... | Unused | . |. |
 | 0xF0 | Reserved for future | .|. |
 | ... | Reserved for future | .|. |
@@ -107,6 +108,10 @@ method.
 |----|--------|-------------|
 | method | string | represents the method name |
 | args| any[] | the array of the function arguments. The elements of this array is arbitrary object. |
+
+### 0x06 : Pgex encoded
+
+The full body is encoded with [pgex' Cmd](https://github.com/davidB/pgex/blob/master/src/main/proto/pgex/cmds.proto)
 
 ### 0xF0..0xFF : Reserved for future
 
