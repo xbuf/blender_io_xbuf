@@ -119,6 +119,7 @@ class ExportCfg:
 # TODO avoid export obj with same id
 # TODO optimize unify vertex with (same position, color, normal, texcoord,...)
 # TODO optimize export only changeset
+# TODO check that size of
 def export(scene, data, cfg):
     print("export scene")
     for obj in scene.objects:
@@ -300,19 +301,18 @@ def export_material(src_mat, dst_mat, cfg):
     if (emission > 0.0):
         cnv_color([emission, emission, emission], dst_mat.emission)
 
-    print("export textures of mat :" + str(src_mat) + " .. " + src_mat.name)
     for textureSlot in src_mat.texture_slots:
         if ((textureSlot) and (textureSlot.use) and (textureSlot.texture.type == "IMAGE")):
             if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
                 export_tex(textureSlot, dst_mat.color_map, cfg)
-            # elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
-            #     export_tex(textureSlot, dst_mat.speculat_map, cfg)
-            # elif ((textureSlot.use_map_emit)):
-            #     export_tex(textureSlot, dst_mat.emission_map, cfg)
-            # elif ((textureSlot.use_map_translucency)):
-            #     export_tex(textureSlot, dst_mat.opacity_map, cfg)
-            # elif ((textureSlot.use_map_normal)):
-            #     export_tex(textureSlot, dst_mat.normal_map, cfg)
+            elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
+                export_tex(textureSlot, dst_mat.speculat_map, cfg)
+            elif ((textureSlot.use_map_emit)):
+                export_tex(textureSlot, dst_mat.emission_map, cfg)
+            elif ((textureSlot.use_map_translucency)):
+                export_tex(textureSlot, dst_mat.opacity_map, cfg)
+            elif ((textureSlot.use_map_normal)):
+                export_tex(textureSlot, dst_mat.normal_map, cfg)
 
 
 def export_tex(src, dst, cfg):
@@ -324,7 +324,7 @@ def export_tex(src, dst, cfg):
         abspath = Path(cfg.assets_path) / rpath
         if not abspath.parent.exists():
             abspath.parent.mkdir(parents=True)
-        print("path %r => %r " % (rpath, abspath))
+        # print("path %r => %r " % (rpath, abspath))
         with abspath.open('wb') as f:
             f.write(src.texture.image.packed_file.data)
         dst.rpath = str.join('/', rpath.parts)
