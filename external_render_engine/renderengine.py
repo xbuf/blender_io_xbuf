@@ -16,8 +16,9 @@
 import bpy
 import bgl
 import asyncio
-from . import protocol  # pylint: disable=W0406
-from . import helpers   # pylint: disable=W0406
+from . import protocol     # pylint: disable=W0406
+from . import helpers      # pylint: disable=W0406
+from . import pgex_export  # pylint: disable=W0406
 
 # gloop = external_render_engine.gloop
 
@@ -96,7 +97,9 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         def my_update():
             try:
                 yield from self.client.connect(self.host, self.port)
-                protocol.setData(self.client.writer, scene, False)
+                cfg = pgex_export.ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
+                protocol.changeAssetFolders(self.client.writer, cfg)
+                protocol.setData(self.client.writer, scene, cfg)
             except BrokenPipeError:
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()

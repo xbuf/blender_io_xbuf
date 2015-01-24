@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/datas.proto',
   package='pgex',
-  serialized_pb=_b('\n\x10pgex/datas.proto\x12\x04pgex\"\xca\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x30\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x1f\n\x08tobjects\x18\x03 \x03(\x0b\x32\r.pgex.TObject\x12\"\n\ngeometries\x18\x04 \x03(\x0b\x32\x0e.pgex.Geometry\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.pgex.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.pgex.Light*\x06\x08\xf4\x03\x10\xd1\x0f\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"@\n\x08Geometry\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.pgex.Mesh\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x80\x02\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.pgex.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.pgex.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.pgex.IndexArray\x12\x0c\n\x04name\x18\x06 \x01(\t\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.pgex.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.pgex.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.pgex.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"Y\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\x06params\x18\x02 \x03(\x0b\x32\x13.pgex.MaterialParam\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\"\xdf\x03\n\rMaterialParam\x12*\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x1a.pgex.MaterialParam.Attrib\x12\x1d\n\x06vcolor\x18\x02 \x01(\x0b\x32\x0b.pgex.ColorH\x00\x12\x10\n\x06vfloat\x18\x03 \x01(\x02H\x00\x12\x0e\n\x04vint\x18\x04 \x01(\x05H\x00\x12\x1b\n\x05vvec2\x18\x05 \x01(\x0b\x32\n.pgex.Vec2H\x00\x12\x1b\n\x05vvec3\x18\x06 \x01(\x0b\x32\n.pgex.Vec3H\x00\x12\x1b\n\x05vvec4\x18\x07 \x01(\x0b\x32\n.pgex.Vec4H\x00\x12!\n\x05vquat\x18\x08 \x01(\x0b\x32\x10.pgex.QuaternionH\x00\x12\x1b\n\x05vmat4\x18\t \x01(\x0b\x32\n.pgex.Mat4H\x00\x12\x11\n\x07vstring\x18\n \x01(\tH\x00\x12!\n\x08vtexture\x18\x0b \x01(\x0b\x32\r.pgex.TextureH\x00\x12\x0f\n\x05vbool\x18\x0c \x01(\x08H\x00\"z\n\x06\x41ttrib\x12\t\n\x05\x63olor\x10\x01\x12\r\n\troughness\x10\x02\x12\r\n\tmetalness\x10\x03\x12\x0c\n\x08specular\x10\x04\x12\x12\n\x0especular_power\x10\x05\x12\x0c\n\x08\x65mission\x10\x06\x12\x0b\n\x07opacity\x10\x07\x12\n\n\x06normal\x10\tB\x07\n\x05value\"\xaa\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.pgex.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.pgex.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12\x1a\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08:\x05\x66\x61lse\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.pgex.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.pgex.Attenuation\x12\x0c\n\x04name\x18\x08 \x01(\t\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x02(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.pgex.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.pgex.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.pgex.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.pgex.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31\"Z\n\x07TObject\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\ntransforms\x18\x02 \x03(\x0b\x32\x0f.pgex.Transform\x12\x10\n\x08parentId\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.pgex.Vec3\"\x1c\n\x04Vec2\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"3\n\x05\x43olor\x12\t\n\x01r\x18\x01 \x02(\x02\x12\t\n\x01g\x18\x02 \x02(\x02\x12\t\n\x01\x62\x18\x03 \x02(\x02\x12\t\n\x01\x61\x18\x04 \x02(\x02\"X\n\x07Texture\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x05rpath\x18\x02 \x01(\tH\x00\x12&\n\x05tex2d\x18\x03 \x01(\x0b\x32\x15.pgex.Texture2DInlineH\x00\x42\x06\n\x04\x64\x61ta\"\x96\x01\n\x0fTexture2DInline\x12,\n\x06\x66ormat\x18\x01 \x02(\x0e\x32\x1c.pgex.Texture2DInline.Format\x12\r\n\x05width\x18\x02 \x02(\r\x12\x0e\n\x06height\x18\x03 \x02(\r\x12\x0c\n\x04\x64\x61ta\x18\x04 \x02(\x0c\"(\n\x06\x46ormat\x12\x08\n\x04rgb8\x10\x01\x12\t\n\x05rgba8\x10\x02\x12\t\n\x05\x62gra8\x10\x03\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
+  serialized_pb=_b('\n\x10pgex/datas.proto\x12\x04pgex\"\xca\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x30\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x1f\n\x08tobjects\x18\x03 \x03(\x0b\x32\r.pgex.TObject\x12\"\n\ngeometries\x18\x04 \x03(\x0b\x32\x0e.pgex.Geometry\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.pgex.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.pgex.Light*\x06\x08\xf4\x03\x10\xd1\x0f\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"@\n\x08Geometry\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.pgex.Mesh\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x80\x02\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.pgex.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.pgex.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.pgex.IndexArray\x12\x0c\n\x04name\x18\x06 \x01(\t\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.pgex.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.pgex.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.pgex.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"\xbc\x04\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x17\n\tshadeless\x18\x05 \x01(\x08:\x04true\x12\x1a\n\x05\x63olor\x18\n \x01(\x0b\x32\x0b.pgex.Color\x12 \n\tcolor_map\x18\x0b \x01(\x0b\x32\r.pgex.Texture\x12\x0f\n\x07opacity\x18\x0c \x01(\x02\x12\"\n\x0bopacity_map\x18\r \x01(\x0b\x32\r.pgex.Texture\x12\x1a\n\x06normal\x18\x0e \x01(\x0b\x32\n.pgex.Vec3\x12!\n\nnormal_map\x18\x0f \x01(\x0b\x32\r.pgex.Texture\x12\x11\n\troughness\x18\x10 \x01(\x02\x12$\n\rroughness_map\x18\x11 \x01(\x0b\x32\r.pgex.Texture\x12\x11\n\tmetalness\x18\x12 \x01(\x02\x12$\n\rmetalness_map\x18\x13 \x01(\x0b\x32\r.pgex.Texture\x12\x1d\n\x08specular\x18\x14 \x01(\x0b\x32\x0b.pgex.Color\x12#\n\x0cspecular_map\x18\x15 \x01(\x0b\x32\r.pgex.Texture\x12\x16\n\x0especular_power\x18\x16 \x01(\x02\x12)\n\x12specular_power_map\x18\x17 \x01(\x0b\x32\r.pgex.Texture\x12\x1d\n\x08\x65mission\x18\x18 \x01(\x0b\x32\x0b.pgex.Color\x12#\n\x0c\x65mission_map\x18\x19 \x01(\x0b\x32\r.pgex.Texture\"\xaa\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.pgex.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.pgex.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12\x1a\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08:\x05\x66\x61lse\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.pgex.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.pgex.Attenuation\x12\x0c\n\x04name\x18\x08 \x01(\t\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x02(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.pgex.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.pgex.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.pgex.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.pgex.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31\"Z\n\x07TObject\x12\n\n\x02id\x18\x01 \x02(\t\x12#\n\ntransforms\x18\x02 \x03(\x0b\x32\x0f.pgex.Transform\x12\x10\n\x08parentId\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.pgex.Vec3\"\x1c\n\x04Vec2\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"3\n\x05\x43olor\x12\t\n\x01r\x18\x01 \x02(\x02\x12\t\n\x01g\x18\x02 \x02(\x02\x12\t\n\x01\x62\x18\x03 \x02(\x02\x12\t\n\x01\x61\x18\x04 \x02(\x02\"d\n\x07Texture\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x05rpath\x18\x03 \x01(\tH\x00\x12&\n\x05tex2d\x18\x04 \x01(\x0b\x32\x15.pgex.Texture2DInlineH\x00\x42\x06\n\x04\x64\x61ta\"\x96\x01\n\x0fTexture2DInline\x12,\n\x06\x66ormat\x18\x01 \x02(\x0e\x32\x1c.pgex.Texture2DInline.Format\x12\r\n\x05width\x18\x02 \x02(\r\x12\x0e\n\x06height\x18\x03 \x02(\r\x12\x0c\n\x04\x64\x61ta\x18\x04 \x02(\x0c\"(\n\x06\x46ormat\x12\x08\n\x04rgb8\x10\x01\x12\t\n\x05rgba8\x10\x02\x12\t\n\x05\x62gra8\x10\x03\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -128,52 +128,6 @@ _VERTEXARRAY_ATTRIB = _descriptor.EnumDescriptor(
 )
 _sym_db.RegisterEnumDescriptor(_VERTEXARRAY_ATTRIB)
 
-_MATERIALPARAM_ATTRIB = _descriptor.EnumDescriptor(
-  name='Attrib',
-  full_name='pgex.MaterialParam.Attrib',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='color', index=0, number=1,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='roughness', index=1, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='metalness', index=2, number=3,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='specular', index=3, number=4,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='specular_power', index=4, number=5,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='emission', index=5, number=6,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='opacity', index=6, number=7,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='normal', index=7, number=9,
-      options=None,
-      type=None),
-  ],
-  containing_type=None,
-  options=None,
-  serialized_start=1545,
-  serialized_end=1667,
-)
-_sym_db.RegisterEnumDescriptor(_MATERIALPARAM_ATTRIB)
-
 _LIGHT_KIND = _descriptor.EnumDescriptor(
   name='Kind',
   full_name='pgex.Light.Kind',
@@ -199,8 +153,8 @@ _LIGHT_KIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1920,
-  serialized_end=1977,
+  serialized_start=1922,
+  serialized_end=1979,
 )
 _sym_db.RegisterEnumDescriptor(_LIGHT_KIND)
 
@@ -225,8 +179,8 @@ _TEXTURE2DINLINE_FORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3120,
-  serialized_end=3160,
+  serialized_start=3134,
+  serialized_end=3174,
 )
 _sym_db.RegisterEnumDescriptor(_TEXTURE2DINLINE_FORMAT)
 
@@ -620,130 +574,135 @@ _MATERIAL = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='params', full_name='pgex.Material.params', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='family', full_name='pgex.Material.family', index=2,
+      name='family', full_name='pgex.Material.family', index=1,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='name', full_name='pgex.Material.name', index=3,
+      name='name', full_name='pgex.Material.name', index=2,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1105,
-  serialized_end=1194,
-)
-
-
-_MATERIALPARAM = _descriptor.Descriptor(
-  name='MaterialParam',
-  full_name='pgex.MaterialParam',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='attrib', full_name='pgex.MaterialParam.attrib', index=0,
-      number=1, type=14, cpp_type=8, label=2,
-      has_default_value=False, default_value=1,
+      name='shadeless', full_name='pgex.Material.shadeless', index=3,
+      number=5, type=8, cpp_type=7, label=1,
+      has_default_value=True, default_value=True,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='vcolor', full_name='pgex.MaterialParam.vcolor', index=1,
-      number=2, type=11, cpp_type=10, label=1,
+      name='color', full_name='pgex.Material.color', index=4,
+      number=10, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='vfloat', full_name='pgex.MaterialParam.vfloat', index=2,
-      number=3, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vint', full_name='pgex.MaterialParam.vint', index=3,
-      number=4, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vvec2', full_name='pgex.MaterialParam.vvec2', index=4,
-      number=5, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vvec3', full_name='pgex.MaterialParam.vvec3', index=5,
-      number=6, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vvec4', full_name='pgex.MaterialParam.vvec4', index=6,
-      number=7, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vquat', full_name='pgex.MaterialParam.vquat', index=7,
-      number=8, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vmat4', full_name='pgex.MaterialParam.vmat4', index=8,
-      number=9, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vstring', full_name='pgex.MaterialParam.vstring', index=9,
-      number=10, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='vtexture', full_name='pgex.MaterialParam.vtexture', index=10,
+      name='color_map', full_name='pgex.Material.color_map', index=5,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='vbool', full_name='pgex.MaterialParam.vbool', index=11,
-      number=12, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
+      name='opacity', full_name='pgex.Material.opacity', index=6,
+      number=12, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='opacity_map', full_name='pgex.Material.opacity_map', index=7,
+      number=13, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='normal', full_name='pgex.Material.normal', index=8,
+      number=14, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='normal_map', full_name='pgex.Material.normal_map', index=9,
+      number=15, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='roughness', full_name='pgex.Material.roughness', index=10,
+      number=16, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='roughness_map', full_name='pgex.Material.roughness_map', index=11,
+      number=17, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='metalness', full_name='pgex.Material.metalness', index=12,
+      number=18, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='metalness_map', full_name='pgex.Material.metalness_map', index=13,
+      number=19, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='specular', full_name='pgex.Material.specular', index=14,
+      number=20, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='specular_map', full_name='pgex.Material.specular_map', index=15,
+      number=21, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='specular_power', full_name='pgex.Material.specular_power', index=16,
+      number=22, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='specular_power_map', full_name='pgex.Material.specular_power_map', index=17,
+      number=23, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='emission', full_name='pgex.Material.emission', index=18,
+      number=24, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='emission_map', full_name='pgex.Material.emission_map', index=19,
+      number=25, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -752,18 +711,14 @@ _MATERIALPARAM = _descriptor.Descriptor(
   ],
   nested_types=[],
   enum_types=[
-    _MATERIALPARAM_ATTRIB,
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
   oneofs=[
-    _descriptor.OneofDescriptor(
-      name='value', full_name='pgex.MaterialParam.value',
-      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1197,
-  serialized_end=1676,
+  serialized_start=1106,
+  serialized_end=1678,
 )
 
 
@@ -842,8 +797,8 @@ _LIGHT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1679,
-  serialized_end=1977,
+  serialized_start=1681,
+  serialized_end=1979,
 )
 
 
@@ -903,8 +858,8 @@ _ATTENUATION = _descriptor.Descriptor(
       name='curve', full_name='pgex.Attenuation.curve',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1980,
-  serialized_end=2204,
+  serialized_start=1982,
+  serialized_end=2206,
 )
 
 
@@ -940,8 +895,8 @@ _ATTENUATIONLINEAR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2206,
-  serialized_end=2259,
+  serialized_start=2208,
+  serialized_end=2261,
 )
 
 
@@ -977,8 +932,8 @@ _ATTENUATIONSMOOTH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2261,
-  serialized_end=2314,
+  serialized_start=2263,
+  serialized_end=2316,
 )
 
 
@@ -1028,8 +983,8 @@ _ATTENUATIONINVERSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2316,
-  serialized_end=2413,
+  serialized_start=2318,
+  serialized_end=2415,
 )
 
 
@@ -1086,8 +1041,8 @@ _ATTENUATIONINVERSESQUARE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2415,
-  serialized_end=2540,
+  serialized_start=2417,
+  serialized_end=2542,
 )
 
 
@@ -1137,8 +1092,8 @@ _TOBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2542,
-  serialized_end=2632,
+  serialized_start=2544,
+  serialized_end=2634,
 )
 
 
@@ -1181,8 +1136,8 @@ _TRANSFORM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2634,
-  serialized_end=2741,
+  serialized_start=2636,
+  serialized_end=2743,
 )
 
 
@@ -1218,8 +1173,8 @@ _VEC2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2743,
-  serialized_end=2771,
+  serialized_start=2745,
+  serialized_end=2773,
 )
 
 
@@ -1262,8 +1217,8 @@ _VEC3 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2773,
-  serialized_end=2812,
+  serialized_start=2775,
+  serialized_end=2814,
 )
 
 
@@ -1313,8 +1268,8 @@ _VEC4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2814,
-  serialized_end=2864,
+  serialized_start=2816,
+  serialized_end=2866,
 )
 
 
@@ -1364,8 +1319,8 @@ _COLOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2866,
-  serialized_end=2917,
+  serialized_start=2868,
+  serialized_end=2919,
 )
 
 
@@ -1377,22 +1332,29 @@ _TEXTURE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='pgex.Texture.name', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='id', full_name='pgex.Texture.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='rpath', full_name='pgex.Texture.rpath', index=1,
+      name='name', full_name='pgex.Texture.name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='tex2d', full_name='pgex.Texture.tex2d', index=2,
-      number=3, type=11, cpp_type=10, label=1,
+      name='rpath', full_name='pgex.Texture.rpath', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='tex2d', full_name='pgex.Texture.tex2d', index=3,
+      number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1411,8 +1373,8 @@ _TEXTURE = _descriptor.Descriptor(
       name='data', full_name='pgex.Texture.data',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2919,
-  serialized_end=3007,
+  serialized_start=2921,
+  serialized_end=3021,
 )
 
 
@@ -1463,8 +1425,8 @@ _TEXTURE2DINLINE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3010,
-  serialized_end=3160,
+  serialized_start=3024,
+  serialized_end=3174,
 )
 
 
@@ -1514,8 +1476,8 @@ _QUATERNION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3162,
-  serialized_end=3218,
+  serialized_start=3176,
+  serialized_end=3232,
 )
 
 
@@ -1649,8 +1611,8 @@ _MAT4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3221,
-  serialized_end=3435,
+  serialized_start=3235,
+  serialized_end=3449,
 )
 
 _DATA.fields_by_name['relations'].message_type = _RELATION
@@ -1673,49 +1635,18 @@ _INDEXARRAY.fields_by_name['ints'].message_type = _UINTBUFFER
 _INDEXARRAY.oneofs_by_name['buffer'].fields.append(
   _INDEXARRAY.fields_by_name['ints'])
 _INDEXARRAY.fields_by_name['ints'].containing_oneof = _INDEXARRAY.oneofs_by_name['buffer']
-_MATERIAL.fields_by_name['params'].message_type = _MATERIALPARAM
-_MATERIALPARAM.fields_by_name['attrib'].enum_type = _MATERIALPARAM_ATTRIB
-_MATERIALPARAM.fields_by_name['vcolor'].message_type = _COLOR
-_MATERIALPARAM.fields_by_name['vvec2'].message_type = _VEC2
-_MATERIALPARAM.fields_by_name['vvec3'].message_type = _VEC3
-_MATERIALPARAM.fields_by_name['vvec4'].message_type = _VEC4
-_MATERIALPARAM.fields_by_name['vquat'].message_type = _QUATERNION
-_MATERIALPARAM.fields_by_name['vmat4'].message_type = _MAT4
-_MATERIALPARAM.fields_by_name['vtexture'].message_type = _TEXTURE
-_MATERIALPARAM_ATTRIB.containing_type = _MATERIALPARAM
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vcolor'])
-_MATERIALPARAM.fields_by_name['vcolor'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vfloat'])
-_MATERIALPARAM.fields_by_name['vfloat'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vint'])
-_MATERIALPARAM.fields_by_name['vint'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vvec2'])
-_MATERIALPARAM.fields_by_name['vvec2'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vvec3'])
-_MATERIALPARAM.fields_by_name['vvec3'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vvec4'])
-_MATERIALPARAM.fields_by_name['vvec4'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vquat'])
-_MATERIALPARAM.fields_by_name['vquat'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vmat4'])
-_MATERIALPARAM.fields_by_name['vmat4'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vstring'])
-_MATERIALPARAM.fields_by_name['vstring'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vtexture'])
-_MATERIALPARAM.fields_by_name['vtexture'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
-_MATERIALPARAM.oneofs_by_name['value'].fields.append(
-  _MATERIALPARAM.fields_by_name['vbool'])
-_MATERIALPARAM.fields_by_name['vbool'].containing_oneof = _MATERIALPARAM.oneofs_by_name['value']
+_MATERIAL.fields_by_name['color'].message_type = _COLOR
+_MATERIAL.fields_by_name['color_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['opacity_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['normal'].message_type = _VEC3
+_MATERIAL.fields_by_name['normal_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['roughness_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['metalness_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['specular'].message_type = _COLOR
+_MATERIAL.fields_by_name['specular_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['specular_power_map'].message_type = _TEXTURE
+_MATERIAL.fields_by_name['emission'].message_type = _COLOR
+_MATERIAL.fields_by_name['emission_map'].message_type = _TEXTURE
 _LIGHT.fields_by_name['kind'].enum_type = _LIGHT_KIND
 _LIGHT.fields_by_name['color'].message_type = _COLOR
 _LIGHT.fields_by_name['radial_distance'].message_type = _ATTENUATION
@@ -1759,7 +1690,6 @@ DESCRIPTOR.message_types_by_name['IndexArray'] = _INDEXARRAY
 DESCRIPTOR.message_types_by_name['FloatBuffer'] = _FLOATBUFFER
 DESCRIPTOR.message_types_by_name['UintBuffer'] = _UINTBUFFER
 DESCRIPTOR.message_types_by_name['Material'] = _MATERIAL
-DESCRIPTOR.message_types_by_name['MaterialParam'] = _MATERIALPARAM
 DESCRIPTOR.message_types_by_name['Light'] = _LIGHT
 DESCRIPTOR.message_types_by_name['Attenuation'] = _ATTENUATION
 DESCRIPTOR.message_types_by_name['AttenuationLinear'] = _ATTENUATIONLINEAR
@@ -1839,13 +1769,6 @@ Material = _reflection.GeneratedProtocolMessageType('Material', (_message.Messag
   # @@protoc_insertion_point(class_scope:pgex.Material)
   ))
 _sym_db.RegisterMessage(Material)
-
-MaterialParam = _reflection.GeneratedProtocolMessageType('MaterialParam', (_message.Message,), dict(
-  DESCRIPTOR = _MATERIALPARAM,
-  __module__ = 'pgex.datas_pb2'
-  # @@protoc_insertion_point(class_scope:pgex.MaterialParam)
-  ))
-_sym_db.RegisterMessage(MaterialParam)
 
 Light = _reflection.GeneratedProtocolMessageType('Light', (_message.Message,), dict(
   DESCRIPTOR = _LIGHT,

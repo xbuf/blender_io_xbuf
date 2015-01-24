@@ -110,8 +110,17 @@ def id_of(v):
     return v['pgex_id']
 
 
+class ExportCfg:
+    def __init__(self, is_preview=False, assets_path="/tmp"):
+        self.is_preview = is_preview
+        self.assets_path = assets_path
+
+
 # TODO avoid export obj with same id
-def export(scene, data, isPreview):
+# TODO optimize unify vertex with (same position, color, normal, texcoord,...)
+# TODO optimize export only changeset
+def export(scene, data, cfg):
+    print("export scene")
     for obj in scene.objects:
         tobject = data.tobjects.add()
         tobject.id = id_of(obj)
@@ -126,11 +135,11 @@ def export(scene, data, isPreview):
         if obj.type == 'MESH':
             if len(obj.data.polygons) != 0:
                 geometry = data.geometries.add()
-                export_geometry(obj, geometry, scene, isPreview)
+                export_geometry(obj, geometry, scene, cfg)
                 add_relation(data.relations, tobject, geometry)
             for i in range(len(obj.material_slots)):
                 dst_mat = data.materials.add()
-                export_material(obj.material_slots[i].material, dst_mat)
+                export_material(obj.material_slots[i].material, dst_mat, cfg)
                 add_relation(data.relations, tobject, dst_mat)
         elif obj.type == 'LAMP':
             rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
@@ -151,12 +160,12 @@ def add_relation(relations, e1, e2):
         rel.ref2 = e1.id
 
 
-def export_geometry(src, dst, scene, isPreview):
+def export_geometry(src, dst, scene, cfg):
     dst.id = 'G' + id_of(src)
     dst.name = src.name
     mesh = dst.meshes.add()
     mesh.primitive = pgex.datas_pb2.Mesh.triangles
-    mode = 'PREVIEW' if isPreview else 'RENDER'
+    mode = 'PREVIEW' if cfg.is_preview else 'RENDER'
     src_mesh = src.to_mesh(scene, True, mode, True, False)
     mesh.id = id_of(src_mesh)
     mesh.name = src_mesh.name
@@ -174,8 +183,16 @@ def export_positions(src_mesh, dst_mesh):
     dst.attrib = pgex.datas_pb2.VertexArray.position
     dst.floats.step = 3
     floats = []
-    for v in vertices:
-        floats.extend(v.co)
+    faces = src_mesh.tessfaces
+    for face in faces:
+        floats.extend(vertices[face.vertices[0]].co)
+        floats.extend(vertices[face.vertices[1]].co)
+        floats.extend(vertices[face.vertices[2]].co)
+        if (len(face.vertices) == 4):
+            floats.extend(vertices[face.vertices[3]].co)
+
+    # for v in vertices:
+    #     floats.extend(v.co)
     dst.floats.values.extend(floats)
 
 
@@ -185,8 +202,15 @@ def export_normals(src_mesh, dst_mesh):
     dst.attrib = pgex.datas_pb2.VertexArray.normal
     dst.floats.step = 3
     floats = []
-    for v in vertices:
-        floats.extend(v.normal)
+    faces = src_mesh.tessfaces
+    for face in faces:
+        floats.extend(vertices[face.vertices[0]].normal)
+        floats.extend(vertices[face.vertices[1]].normal)
+        floats.extend(vertices[face.vertices[2]].normal)
+        if (len(face.vertices) == 4):
+            floats.extend(vertices[face.vertices[3]].normal)
+    # for v in vertices:
+    #     floats.extend(v.normal)
     dst.floats.values.extend(floats)
 
 
@@ -195,14 +219,19 @@ def export_index(src_mesh, dst_mesh):
     dst = dst_mesh.indexArrays.add()
     dst.ints.step = 3
     ints = []
+    idx = 0
     for face in faces:
-        ints.append(face.vertices[0])
-        ints.append(face.vertices[1])
-        ints.append(face.vertices[2])
+        ints.append(idx)
+        idx += 1
+        ints.append(idx)
+        idx += 1
+        ints.append(idx)
+        idx += 1
         if (len(face.vertices) == 4):
-            ints.append(face.vertices[0])
-            ints.append(face.vertices[2])
-            ints.append(face.vertices[3])
+            ints.append(idx - 3)
+            ints.append(idx - 1)
+            ints.append(idx)
+            idx += 1
     dst.ints.values.extend(ints)
 
 
@@ -216,9 +245,8 @@ def export_colors(src_mesh, dst_mesh):
     dst.attrib = pgex.datas_pb2.VertexArray.color
     dst.floats.step = 4
     floats = []
-    faceIndex = 0
     for face in faces:
-        fc = face_colors[faceIndex]
+        fc = face_colors[face.index]
         floats.extend(fc.color1)
         floats.extend(fc.color2)
         floats.extend(fc.color3)
@@ -226,7 +254,6 @@ def export_colors(src_mesh, dst_mesh):
             floats.extend(fc.color1)
             floats.extend(fc.color3)
             floats.extend(fc.color4)
-        faceIndex += 1
     dst.floats.values.extend(floats)
 
 
@@ -241,74 +268,67 @@ def export_texcoords(src_mesh, dst_mesh):
         dst.attrib = pgex.datas_pb2.VertexArray.texcoord + uvI
         dst.floats.step = 2
         floats = []
-        faceIndex = 0
         for face in faces:
-            ftc = texcoordFace[faceIndex]
+            ftc = texcoordFace[face.index]
             floats.extend(ftc.uv1)
             floats.extend(ftc.uv2)
             floats.extend(ftc.uv3)
             if (len(face.vertices) == 4):
-                floats.extend(ftc.uv1)
-                floats.extend(ftc.uv3)
+                # floats.extend(ftc.uv1)
+                # floats.extend(ftc.uv3)
                 floats.extend(ftc.uv4)
-            faceIndex += 1
         dst.floats.values.extend(floats)
 
-
-def export_material(src_mat, dst_mat):
+def export_material(src_mat, dst_mat, cfg):
     dst_mat.id = id_of(src_mat)
     dst_mat.name = src_mat.name
 
+    dst_mat.shadeless = src_mat.use_shadeless
     intensity = src_mat.diffuse_intensity
     diffuse = [src_mat.diffuse_color[0] * intensity, src_mat.diffuse_color[1] * intensity, src_mat.diffuse_color[2] * intensity]
 
-    p = dst_mat.params.add()
-    p.attrib = pgex.datas_pb2.MaterialParam.color
-    cnv_color(diffuse, p.vcolor)
+    cnv_color(diffuse, dst_mat.color)
 
     intensity = src_mat.specular_intensity
     specular = [src_mat.specular_color[0] * intensity, src_mat.specular_color[1] * intensity, src_mat.specular_color[2] * intensity]
 
     if ((specular[0] > 0.0) or (specular[1] > 0.0) or (specular[2] > 0.0)):
-        p = dst_mat.params.add()
-        p.attrib = pgex.datas_pb2.MaterialParam.specular
-        cnv_color(specular, p.vcolor)
-        p = dst_mat.params.add()
-        p.attrib = pgex.datas_pb2.MaterialParam.specular_power
-        p.vfloat = src_mat.specular_hardness
+        cnv_color(specular, dst_mat.specular)
+        dst_mat.specular_power = src_mat.specular_hardness
 
     emission = src_mat.emit
     if (emission > 0.0):
-        p = dst_mat.params.add()
-        p.attrib = pgex.datas_pb2.MaterialParam.emission
-        cnv_color([emission, emission, emission], p.vcolor)
+        cnv_color([emission, emission, emission], dst_mat.emission)
 
+    print("export textures of mat :" + str(src_mat) + " .. " + src_mat.name)
     for textureSlot in src_mat.texture_slots:
         if ((textureSlot) and (textureSlot.use) and (textureSlot.texture.type == "IMAGE")):
             if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
-                p = dst_mat.params.add()
-                p.attrib = pgex.datas_pb2.MaterialParam.color
-                export_tex(textureSlot, p.vtexture)
-            elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
-                p = dst_mat.params.add()
-                p.attrib = pgex.datas_pb2.MaterialParam.specular
-                export_tex(textureSlot, p.vtexture)
-            elif ((textureSlot.use_map_emit)):
-                p = dst_mat.params.add()
-                p.attrib = pgex.datas_pb2.MaterialParam.emission
-                export_tex(textureSlot, p.vtexture)
-            elif ((textureSlot.use_map_translucency)):
-                p = dst_mat.params.add()
-                p.attrib = pgex.datas_pb2.MaterialParam.transparency
-                export_tex(textureSlot, p.vtexture)
-            elif ((textureSlot.use_map_normal)):
-                p = dst_mat.params.add()
-                p.attrib = pgex.datas_pb2.MaterialParam.normal
-                export_tex(textureSlot, p.vtexture)
+                export_tex(textureSlot, dst_mat.color_map, cfg)
+            # elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
+            #     export_tex(textureSlot, dst_mat.speculat_map, cfg)
+            # elif ((textureSlot.use_map_emit)):
+            #     export_tex(textureSlot, dst_mat.emission_map, cfg)
+            # elif ((textureSlot.use_map_translucency)):
+            #     export_tex(textureSlot, dst_mat.opacity_map, cfg)
+            # elif ((textureSlot.use_map_normal)):
+            #     export_tex(textureSlot, dst_mat.normal_map, cfg)
 
 
-def export_tex(src, dst):
-    dst.rpath = src.texture.image.filepath
+def export_tex(src, dst, cfg):
+    from pathlib import PurePath, Path
+    ispacked = src.texture.image.filepath.startswith('//')
+    dst.id = id_of(src.texture)
+    if ispacked:
+        rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:])
+        abspath = Path(cfg.assets_path) / rpath
+        if not abspath.parent.exists():
+            abspath.parent.mkdir(parents=True)
+        print("path %r => %r " % (rpath, abspath))
+        with abspath.open('wb') as f:
+            f.write(src.texture.image.packed_file.data)
+        dst.rpath = str.join('/', rpath.parts)
+    # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.
     # uscale = textureSlot.scale[0]
     # vscale = textureSlot.scale[1]

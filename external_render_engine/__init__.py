@@ -37,6 +37,7 @@ bl_info = {
 import bpy
 
 
+# TODO default the value from plugin preferences
 class RenderSettingsScene(bpy.types.PropertyGroup):
 
     port = bpy.props.IntProperty(
@@ -52,11 +53,14 @@ class RenderSettingsScene(bpy.types.PropertyGroup):
         pass
 
 
+# TODO default the value from plugin preferences
 class PgexSettingsScene(bpy.types.PropertyGroup):
+    import os
 
     assets_path = bpy.props.StringProperty(
         name="assets root folder path",
         description="Full path to directory where the assets are saved",
+        default=os.path.abspath(os.path.expanduser("~/assets")),
         maxlen=1024, subtype="DIR_PATH")
 
     def __init__(self):
