@@ -127,11 +127,17 @@ class ExportCfg:
 
 # TODO avoid export obj with same id
 # TODO optimize unify vertex with (same position, color, normal, texcoord,...)
-# TODO optimize export only changeset
-# TODO check that size of
 def export(scene, data, cfg):
-    # objects = scene.objects if len(cfg.objects_included) == 0 else cfg.objects_included
+    export_all_tobjects(scene, data, cfg)
+    export_all_geometries(scene, data, cfg)
+    export_all_materials(scene, data, cfg)
+    export_all_lights(scene, data, cfg)
+
+
+def export_all_tobjects(scene, data, cfg):
     for obj in scene.objects:
+        if obj.hide_render:
+            continue
         if need_update(obj, cfg.update_flag):
             tobject = data.tobjects.add()
             tobject.id = id_of(obj)
@@ -147,18 +153,43 @@ def export(scene, data, cfg):
                 rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
                 cnv_quatZupToYup(rot, transform.rotation)
             export_obj_customproperties(obj, tobject, data)
+
+
+def export_all_geometries(scene, data, cfg):
+    for obj in scene.objects:
+        if obj.hide_render:
+            continue
         if obj.type == 'MESH':
             if len(obj.data.polygons) != 0 and need_update(obj.data, cfg.update_flag):
                 geometry = data.geometries.add()
                 export_geometry(obj, geometry, scene, cfg)
                 add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Geometry.__name__, id_of(obj.data))
+        elif obj.type == 'LAMP':
+            src_light = obj.data
+            if need_update(src_light, cfg.update_flag):
+                dst_light = data.lights.add()
+                export_light(src_light, dst_light)
+            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Light.__name__, id_of(src_light))
+
+
+def export_all_materials(scene, data, cfg):
+    for obj in scene.objects:
+        if obj.hide_render:
+            continue
+        if obj.type == 'MESH':
             for i in range(len(obj.material_slots)):
                 src_mat = obj.material_slots[i].material
                 if need_update(src_mat, cfg.update_flag):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
                 add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Material.__name__, id_of(src_mat))
-        elif obj.type == 'LAMP':
+
+
+def export_all_lights(scene, data, cfg):
+    for obj in scene.objects:
+        if obj.hide_render:
+            continue
+        if obj.type == 'LAMP':
             src_light = obj.data
             if need_update(src_light, cfg.update_flag):
                 dst_light = data.lights.add()
