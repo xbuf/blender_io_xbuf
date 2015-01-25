@@ -109,7 +109,15 @@ def setEye(writer, location, rotation, projection_matrix, near, far):
 def setData(writer, scene, cfg):
     cmd = pgex.cmds_pb2.Cmd()
     pgex_export.export(scene, cmd.setData, cfg)
-    writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
+    send = (len(cmd.setData.relations) > 0 or
+            len(cmd.setData.tobjects) > 0 or
+            len(cmd.setData.geometries) > 0 or
+            len(cmd.setData.materials) > 0 or
+            len(cmd.setData.lights) > 0
+            )
+    if send:
+        # print("send setData")
+        writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
 
 
 def changeAssetFolders(writer, cfg):

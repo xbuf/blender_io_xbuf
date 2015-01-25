@@ -27,12 +27,42 @@ from . import pgex_export  # pylint: disable=W0406
 # http://www.blender.org/api/blender_python_api_2_72_release/bpy.types.RenderEngine.html
 
 
+class SceneChangeListener:
+
+    def __init__(self, update_flag):
+        self.update_flag = update_flag
+        self.first = True
+
+    def register(self):
+        print("register SceneChangeListener")
+        bpy.app.handlers.scene_update_post.append(self.scene_update_post)
+
+    def unregister(self):
+        print("unregister SceneChangeListener")
+        # bpy.app.handlers.scene_update_pre.remove(self.scene_update_pre)
+        bpy.app.handlers.scene_update_post.remove(self.scene_update_post)
+
+    def scene_update_post(self, scene):
+        # print("scene_update_post")
+        for obj in scene.objects:
+            if obj.is_updated or self.first:
+                obj[self.update_flag] = True
+            if (obj.data is not None) and (obj.is_updated_data or self.first):
+                obj.data[self.update_flag] = True
+            if obj.type == 'MESH':
+                for i in range(len(obj.material_slots)):
+                    src_mat = obj.material_slots[i].material
+                    if src_mat.is_updated or self.first:
+                        src_mat[self.update_flag] = True
+        self.first = False
+
 class ExternalRenderEngine(bpy.types.RenderEngine):
     # These three members are used by blender to set up the
     # RenderEngine; define its internal name, visible name and capabilities.
     bl_idname = "EXTERNAL_RENDER"
     bl_label = "External Render"
     bl_use_preview = False
+    is_animation = True
 
     # moved assignment from execute() to the body of the class...
 
@@ -41,11 +71,14 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.host = "127.0.0.1"
         self.port = 4242
         self.client = protocol.Client()
+        self.sceneChangeListener = None
 
     def __del__(self):
         print("__del__")
         if hasattr(self, 'client'):
             self.client.close()
+        if hasattr(self, 'client') and self.sceneChangeListener is not None:
+            self.sceneChangeListener.unregister()
 
     def external_render(self, context_or_camera, width, height, flocal):
         (loc, rot, projection, near, far) = helpers.extractEye(context_or_camera)
@@ -89,21 +122,36 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.report({'DEBUG'}, "external_update")
         self.host = scene.external_render.host
         self.port = scene.external_render.port
-        for ob in scene.objects:
-            if ob.is_updated:
-                print("updated =>", ob.name)
+        cfg = pgex_export.ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
+
+        # for ob in scene.objects:
+        #     if ob.is_updated:
+        #         print("updated =>", ob.name)
 
         @asyncio.coroutine
         def my_update():
             try:
                 yield from self.client.connect(self.host, self.port)
-                cfg = pgex_export.ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
                 protocol.changeAssetFolders(self.client.writer, cfg)
                 protocol.setData(self.client.writer, scene, cfg)
             except BrokenPipeError:
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
+
+        if self.sceneChangeListener is None:
+            self.sceneChangeListener = SceneChangeListener(cfg.update_flag)
+            self.sceneChangeListener.register()
+            self.sceneChangeListener.scene_update_post(scene)
         protocol.run_until_complete(my_update())
+        # else:
+        #     if len(self.sceneChangeListener.updated) > 0:
+        #         cfg.objects_included.extend(self.sceneChangeListener.updated)
+        #         for ob in self.sceneChangeListener.updated:
+        #             print("updated =>", ob.name)
+        #         self.sceneChangeListener.updated.clear()
+        #         protocol.run_until_complete(my_update())
+        #     for ob in self.sceneChangeListener.deleted:
+        #         print("deleted =>", ob)
 
     def view_draw(self, context):
         self.report({'DEBUG'}, "view_draw")

@@ -110,10 +110,19 @@ def id_of(v):
     return v['pgex_id']
 
 
+def need_update(v, update_flag):
+    old = True
+    if (update_flag in v.keys()):
+        old = v[update_flag]
+    v[update_flag] = False
+    return old
+
+
 class ExportCfg:
     def __init__(self, is_preview=False, assets_path="/tmp"):
         self.is_preview = is_preview
         self.assets_path = assets_path
+        self.update_flag = 'pgex_update'
 
 
 # TODO avoid export obj with same id
@@ -121,48 +130,58 @@ class ExportCfg:
 # TODO optimize export only changeset
 # TODO check that size of
 def export(scene, data, cfg):
-    print("export scene")
+    # objects = scene.objects if len(cfg.objects_included) == 0 else cfg.objects_included
     for obj in scene.objects:
-        tobject = data.tobjects.add()
-        tobject.id = id_of(obj)
-        tobject.name = obj.name
-        transform = tobject.transforms.add()
-        # TODO convert zup only for child of root
-        cnv_vec3ZupToYup(obj.location, transform.translation)
-        cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
-        cnv_vec3(obj.scale, transform.scale)
-        if obj.parent is not None:
-            tobject.parentId = id_of(obj.parent)
+        if need_update(obj, cfg.update_flag):
+            tobject = data.tobjects.add()
+            tobject.id = id_of(obj)
+            tobject.name = obj.name
+            transform = tobject.transforms.add()
+            # TODO convert zup only for child of root
+            cnv_vec3ZupToYup(obj.location, transform.translation)
+            cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
+            cnv_vec3(obj.scale, transform.scale)
+            if obj.parent is not None:
+                tobject.parentId = id_of(obj.parent)
+            if obj.type == 'LAMP':
+                rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
+                cnv_quatZupToYup(rot, transform.rotation)
+            export_obj_customproperties(obj, tobject, data)
         if obj.type == 'MESH':
-            if len(obj.data.polygons) != 0:
+            if len(obj.data.polygons) != 0 and need_update(obj.data, cfg.update_flag):
                 geometry = data.geometries.add()
                 export_geometry(obj, geometry, scene, cfg)
-                add_relation(data.relations, tobject, geometry)
+                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Geometry.__name__, id_of(obj.data))
             for i in range(len(obj.material_slots)):
-                dst_mat = data.materials.add()
-                export_material(obj.material_slots[i].material, dst_mat, cfg)
-                add_relation(data.relations, tobject, dst_mat)
+                src_mat = obj.material_slots[i].material
+                if need_update(src_mat, cfg.update_flag):
+                    dst_mat = data.materials.add()
+                    export_material(src_mat, dst_mat, cfg)
+                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Material.__name__, id_of(src_mat))
         elif obj.type == 'LAMP':
-            rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
-            cnv_quatZupToYup(rot, transform.rotation)
-            light = data.lights.add()
-            export_light(obj.data, light)
-            add_relation(data.relations, tobject, light)
-        export_obj_customproperties(obj, tobject, data)
+            src_light = obj.data
+            if need_update(src_light, cfg.update_flag):
+                dst_light = data.lights.add()
+                export_light(src_light, dst_light)
+            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Light.__name__, id_of(src_light))
 
 
 def add_relation(relations, e1, e2):
+    add_relation_raw(relations, type(e1).__name__, e1.id, type(e2).__name__, e2.id)
+
+
+def add_relation_raw(relations, t1, ref1, t2, ref2):
     rel = relations.add()
-    if type(e1).__name__ < type(e2).__name__:
-        rel.ref1 = e1.id
-        rel.ref2 = e2.id
+    if t1 < t2:
+        rel.ref1 = ref1
+        rel.ref2 = ref2
     else:
-        rel.ref1 = e2.id
-        rel.ref2 = e1.id
+        rel.ref1 = ref2
+        rel.ref2 = ref1
 
 
 def export_geometry(src, dst, scene, cfg):
-    dst.id = 'G' + id_of(src)
+    dst.id = id_of(src.data)
     dst.name = src.name
     mesh = dst.meshes.add()
     mesh.primitive = pgex.datas_pb2.Mesh.triangles
@@ -319,14 +338,16 @@ def export_tex(src, dst, cfg):
     from pathlib import PurePath, Path
     ispacked = src.texture.image.filepath.startswith('//')
     dst.id = id_of(src.texture)
+
     if ispacked:
         rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:])
-        abspath = Path(cfg.assets_path) / rpath
-        if not abspath.parent.exists():
-            abspath.parent.mkdir(parents=True)
-        # print("path %r => %r " % (rpath, abspath))
-        with abspath.open('wb') as f:
-            f.write(src.texture.image.packed_file.data)
+        if not need_update(src.texture, cfg.update_flag):
+            abspath = Path(cfg.assets_path) / rpath
+            if not abspath.parent.exists():
+                abspath.parent.mkdir(parents=True)
+            print("path %r => %r " % (rpath, abspath))
+            with abspath.open('wb') as f:
+                f.write(src.texture.image.packed_file.data)
         dst.rpath = str.join('/', rpath.parts)
     # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.
