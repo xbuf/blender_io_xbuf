@@ -49,6 +49,16 @@ def cnv_vec3ZupToYup(src, dst):
     return dst
 
 
+def cnv_toVec3ZupToYup(src):
+    # same as src.rotate(Quaternion((1,1,0,0))) # 90 deg CW axis X
+    # dst = src.copy()
+    # q = mathutils.Quaternion((1, 1, 0, 0))
+    # q.normalize()
+    # dst.rotate(q)
+    dst = [src[0], src[2], -src[1]]
+    return dst
+
+
 def cnv_quatZupToYup(src, dst):
     # dst = pgex.math_pb2.Quaternion()
     src0 = src.copy()
@@ -63,6 +73,15 @@ def cnv_quatZupToYup(src, dst):
     dst.x = src0.x  # [1]
     dst.y = src0.y  # [2]
     dst.z = src0.z  # [3]
+    return dst
+
+
+def cnv_quat2(src, dst):
+    # dst = pgex.math_pb2.Quaternion()
+    dst.w = src.w  # [0]
+    dst.x = src.x  # [1]
+    dst.y = src.z  # [2]
+    dst.z = -src.y  # [3]
     return dst
 
 
@@ -112,9 +131,10 @@ def id_of(v):
 
 def need_update(v, update_flag):
     old = True
-    if (update_flag in v.keys()):
-        old = v[update_flag]
-    v[update_flag] = False
+    if update_flag:
+        if (update_flag in v.keys()):
+            old = v[update_flag]
+        v[update_flag] = False
     return old
 
 
@@ -143,12 +163,25 @@ def export_all_tobjects(scene, data, cfg):
             tobject.id = id_of(obj)
             tobject.name = obj.name
             transform = tobject.transforms.add()
-            # TODO convert zup only for child of root
-            cnv_vec3ZupToYup(obj.location, transform.translation)
-            cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
             cnv_vec3(obj.scale, transform.scale)
+            # convert zup only for direct child of root (no parent)
+            cnv_vec3ZupToYup(obj.location, transform.translation)
+            #cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
+            #if obj.type == 'MESH':
+            #    cnv_vec3ZupToYup(obj.location, transform.translation)
+            #    cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
+            # if obj.parent is None:
+            #     cnv_vec3ZupToYup(obj.location, transform.translation)
+            #     cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
+            #else:
+            if obj.type == 'MESH':
+                #cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
+                cnv_quat2(helpers.rot_quat(obj), transform.rotation)
+            else:
+                cnv_quat2(helpers.rot_quat(obj), transform.rotation)
             if obj.parent is not None:
-                tobject.parentId = id_of(obj.parent)
+                #    tobject.parentId = id_of(obj.parent)
+                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj.parent), pgex.datas_pb2.TObject.__name__, id_of(obj))
             if obj.type == 'LAMP':
                 rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
                 cnv_quatZupToYup(rot, transform.rotation)
@@ -203,7 +236,7 @@ def add_relation(relations, e1, e2):
 
 def add_relation_raw(relations, t1, ref1, t2, ref2):
     rel = relations.add()
-    if t1 < t2:
+    if t1 <= t2:
         rel.ref1 = ref1
         rel.ref2 = ref2
     else:
@@ -236,11 +269,11 @@ def export_positions(src_mesh, dst_mesh):
     floats = []
     faces = src_mesh.tessfaces
     for face in faces:
-        floats.extend(vertices[face.vertices[0]].co)
-        floats.extend(vertices[face.vertices[1]].co)
-        floats.extend(vertices[face.vertices[2]].co)
+        floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[0]].co))
+        floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[1]].co))
+        floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[2]].co))
         if (len(face.vertices) == 4):
-            floats.extend(vertices[face.vertices[3]].co)
+            floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[3]].co))
 
     # for v in vertices:
     #     floats.extend(v.co)
@@ -255,11 +288,11 @@ def export_normals(src_mesh, dst_mesh):
     floats = []
     faces = src_mesh.tessfaces
     for face in faces:
-        floats.extend(vertices[face.vertices[0]].normal)
-        floats.extend(vertices[face.vertices[1]].normal)
-        floats.extend(vertices[face.vertices[2]].normal)
+        floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[0]].normal))
+        floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[1]].normal))
+        floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[2]].normal))
         if (len(face.vertices) == 4):
-            floats.extend(vertices[face.vertices[3]].normal)
+            floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[3]].normal))
     # for v in vertices:
     #     floats.extend(v.normal)
     dst.floats.values.extend(floats)
@@ -480,7 +513,9 @@ class PgexExporter(bpy.types.Operator, ExportHelper):
 
         # exportAllFlag = not self.option_export_selection
         data = pgex.datas_pb2.Data()
-        export(scene, data, False)
+        cfg = ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
+        cfg.update_flag = None
+        export(scene, data, cfg)
 
         self.file = open(self.filepath, "wb")
         self.file.write(data.SerializeToString())
