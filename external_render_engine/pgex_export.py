@@ -39,13 +39,16 @@ def cnv_vec3(src, dst):
 
 def cnv_vec3ZupToYup(src, dst):
     # same as src.rotate(Quaternion((1,1,0,0))) # 90 deg CW axis X
-    src0 = src.copy()
-    q = mathutils.Quaternion((-1, 1, 0, 0))
-    q.normalize()
-    src0.rotate(q)
-    dst.x = src0[0]
-    dst.y = src0[1]
-    dst.z = src0[2]
+    # src0 = src.copy()
+    # q = mathutils.Quaternion((-1, 1, 0, 0))
+    # q.normalize()
+    # src0.rotate(q)
+    # dst.x = src0[0]
+    # dst.y = src0[1]
+    # dst.z = src0[2]
+    dst.x = src[0]
+    dst.y = src[2]
+    dst.z = -src[1]
     return dst
 
 
@@ -152,6 +155,7 @@ def export(scene, data, cfg):
     export_all_geometries(scene, data, cfg)
     export_all_materials(scene, data, cfg)
     export_all_lights(scene, data, cfg)
+    export_all_skeletons(scene, data, cfg)
 
 
 def export_all_tobjects(scene, data, cfg):
@@ -162,7 +166,7 @@ def export_all_tobjects(scene, data, cfg):
             tobject = data.tobjects.add()
             tobject.id = id_of(obj)
             tobject.name = obj.name
-            transform = tobject.transforms.add()
+            transform = tobject.transform
             cnv_vec3(obj.scale, transform.scale)
             # convert zup only for direct child of root (no parent)
             cnv_vec3ZupToYup(obj.location, transform.translation)
@@ -177,14 +181,16 @@ def export_all_tobjects(scene, data, cfg):
             if obj.type == 'MESH':
                 #cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
                 cnv_quat2(helpers.rot_quat(obj), transform.rotation)
+            elif obj.type == 'Armature':
+                cnv_quat2(helpers.rot_quat(obj), transform.rotation)
+            elif obj.type == 'LAMP':
+                rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
+                cnv_quatZupToYup(rot, transform.rotation)
             else:
                 cnv_quat2(helpers.rot_quat(obj), transform.rotation)
             if obj.parent is not None:
                 #    tobject.parentId = id_of(obj.parent)
                 add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj.parent), pgex.datas_pb2.TObject.__name__, id_of(obj))
-            if obj.type == 'LAMP':
-                rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
-                cnv_quatZupToYup(rot, transform.rotation)
             export_obj_customproperties(obj, tobject, data)
 
 
@@ -460,6 +466,43 @@ def export_light(src, dst):
                 dst.radial_distance.inverse_square.linear = src.quadratic_attenuation
     if getattr(src, 'use_sphere', False):
         dst.radial_distance.linear.end = 1.0
+
+
+def export_all_skeletons(scene, data, cfg):
+    for obj in scene.objects:
+        if obj.type == 'ARMATURE':
+            src_skeleton = obj.data
+            if need_update(src_skeleton, cfg.update_flag):
+                dst_skeleton = data.skeletons.add()
+                export_skeleton(src_skeleton, dst_skeleton, obj.matrix_world)
+            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Skeleton.__name__, id_of(src_skeleton))
+
+
+def export_skeleton(src, dst, mw):
+    dst.id = id_of(src)
+    dst.name = src.name
+    for src_bone in src.bones:
+        dst_bone = dst.bones.add()
+        dst_bone.id = id_of(src_bone)
+        dst_bone.name = src_bone.name
+        transform = dst_bone.transform
+        # mat4 = mw * src_bone.matrix_local
+        mat4 = src_bone.matrix_local
+        cnv_vec3(mat4.to_scale(), transform.scale)
+        cnv_vec3ZupToYup(mat4.translation, transform.translation)
+        # cnv_vec3(mat4.translation, transform.translation)
+        # cnv_quat(mat4.to_quaternion(), transform.rotation)
+        # cnv_quatZupToYup(mat4.to_quaternion(), transform.rotation)
+        if src_bone.parent:
+            cnv_quat2(mat4.to_quaternion(), transform.rotation)
+        else:
+            # cnv_quat(mat4.to_quaternion(), transform.rotation)
+            cnv_quat(mathutils.Quaternion((1, 0, 0, 0)), transform.rotation)
+        print("%s : %s" % (dst_bone.name, transform))
+        if src_bone.parent:
+            rel = dst.bones_graph.add()
+            rel.ref1 = id_of(src_bone.parent)
+            rel.ref2 = id_of(src_bone)
 
 
 def export_obj_customproperties(src, dst_node, dst_data):
