@@ -29,8 +29,8 @@ from . import pgex_export  # pylint: disable=W0406
 
 class SceneChangeListener:
 
-    def __init__(self, update_flag):
-        self.update_flag = update_flag
+    def __init__(self, ctx):
+        self.ctx = ctx
         self.first = True
 
     def register(self):
@@ -46,14 +46,14 @@ class SceneChangeListener:
         # print("scene_update_post")
         for obj in scene.objects:
             if obj.is_updated or self.first:
-                obj[self.update_flag] = True
+                self.ctx.need_update(obj, True)
             if (obj.data is not None) and (obj.is_updated_data or self.first):
-                obj.data[self.update_flag] = True
+                self.ctx.need_update(obj.data, True)
             if obj.type == 'MESH':
                 for i in range(len(obj.material_slots)):
                     src_mat = obj.material_slots[i].material
                     if src_mat.is_updated or self.first:
-                        src_mat[self.update_flag] = True
+                        self.ctx.need_update(src_mat, True)
         self.first = False
 
 class ExternalRenderEngine(bpy.types.RenderEngine):
@@ -139,7 +139,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                 self.client.close()
 
         if self.sceneChangeListener is None:
-            self.sceneChangeListener = SceneChangeListener(cfg.update_flag)
+            self.sceneChangeListener = SceneChangeListener(cfg)
             self.sceneChangeListener.register()
             self.sceneChangeListener.scene_update_post(scene)
         protocol.run_until_complete(my_update())

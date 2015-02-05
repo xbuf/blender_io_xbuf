@@ -126,26 +126,32 @@ def cnv_color(src, dst):
     return dst
 
 
-def id_of(v):
-    if not ('pgex_id' in v.keys()):
-        v['pgex_id'] = str(uuid.uuid4().clock_seq)
-    return v['pgex_id']
-
-
-def need_update(v, update_flag):
-    old = True
-    if update_flag:
-        if (update_flag in v.keys()):
-            old = v[update_flag]
-        v[update_flag] = False
-    return old
-
-
 class ExportCfg:
     def __init__(self, is_preview=False, assets_path="/tmp"):
         self.is_preview = is_preview
         self.assets_path = assets_path
-        self.update_flag = 'pgex_update'
+        self._modified = {}
+        self._ids = {}
+
+    def _k_of(self, v):
+        # hash(v) or id(v) ?
+        return str(hash(v))
+
+    def id_of(self, v):
+        k = self._k_of(v)
+        if k in self._ids:
+            out = self._ids[k]
+        else:
+            # out = str(uuid.uuid4().clock_seq)
+            out = str(hash(v))
+            self._ids[k] = out
+        return out
+
+    def need_update(self, v, modified=False):
+        k = self._k_of(v)
+        old = k in self._modified and self._modified[k]
+        self._modified[k] = modified
+        return old
 
 
 # TODO avoid export obj with same id
@@ -162,9 +168,9 @@ def export_all_tobjects(scene, data, cfg):
     for obj in scene.objects:
         if obj.hide_render:
             continue
-        if need_update(obj, cfg.update_flag):
+        if cfg.need_update(obj):
             tobject = data.tobjects.add()
-            tobject.id = id_of(obj)
+            tobject.id = cfg.id_of(obj)
             tobject.name = obj.name
             transform = tobject.transform
             cnv_vec3(obj.scale, transform.scale)
@@ -189,9 +195,9 @@ def export_all_tobjects(scene, data, cfg):
             else:
                 cnv_quat2(helpers.rot_quat(obj), transform.rotation)
             if obj.parent is not None:
-                #    tobject.parentId = id_of(obj.parent)
-                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj.parent), pgex.datas_pb2.TObject.__name__, id_of(obj))
-            export_obj_customproperties(obj, tobject, data)
+                #    tobject.parentId = cfg.id_of(obj.parent)
+                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), pgex.datas_pb2.TObject.__name__, cfg.id_of(obj))
+            export_obj_customproperties(obj, tobject, data, cfg)
 
 
 def export_all_geometries(scene, data, cfg):
@@ -199,16 +205,16 @@ def export_all_geometries(scene, data, cfg):
         if obj.hide_render:
             continue
         if obj.type == 'MESH':
-            if len(obj.data.polygons) != 0 and need_update(obj.data, cfg.update_flag):
+            if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
                 geometry = data.geometries.add()
                 export_geometry(obj, geometry, scene, cfg)
-                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Geometry.__name__, id_of(obj.data))
+                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Geometry.__name__, cfg.id_of(obj.data))
         elif obj.type == 'LAMP':
             src_light = obj.data
-            if need_update(src_light, cfg.update_flag):
+            if cfg.need_update(src_light):
                 dst_light = data.lights.add()
-                export_light(src_light, dst_light)
-            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Light.__name__, id_of(src_light))
+                export_light(src_light, dst_light, cfg)
+            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Light.__name__, cfg.id_of(src_light))
 
 
 def export_all_materials(scene, data, cfg):
@@ -218,10 +224,10 @@ def export_all_materials(scene, data, cfg):
         if obj.type == 'MESH':
             for i in range(len(obj.material_slots)):
                 src_mat = obj.material_slots[i].material
-                if need_update(src_mat, cfg.update_flag):
+                if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
-                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Material.__name__, id_of(src_mat))
+                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Material.__name__, cfg.id_of(src_mat))
 
 
 def export_all_lights(scene, data, cfg):
@@ -230,10 +236,10 @@ def export_all_lights(scene, data, cfg):
             continue
         if obj.type == 'LAMP':
             src_light = obj.data
-            if need_update(src_light, cfg.update_flag):
+            if cfg.need_update(src_light):
                 dst_light = data.lights.add()
-                export_light(src_light, dst_light)
-            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Light.__name__, id_of(src_light))
+                export_light(src_light, dst_light, cfg)
+            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Light.__name__, cfg.id_of(src_light))
 
 
 def add_relation(relations, e1, e2):
@@ -251,13 +257,13 @@ def add_relation_raw(relations, t1, ref1, t2, ref2):
 
 
 def export_geometry(src, dst, scene, cfg):
-    dst.id = id_of(src.data)
+    dst.id = cfg.id_of(src.data)
     dst.name = src.name
     mesh = dst.meshes.add()
     mesh.primitive = pgex.datas_pb2.Mesh.triangles
     mode = 'PREVIEW' if cfg.is_preview else 'RENDER'
     src_mesh = src.to_mesh(scene, True, mode, True, False)
-    mesh.id = id_of(src_mesh)
+    mesh.id = cfg.id_of(src_mesh)
     mesh.name = src_mesh.name
     # unified_vertex_array = unify_vertices(vertex_array, index_table)
     export_positions(src_mesh, mesh)
@@ -370,7 +376,7 @@ def export_texcoords(src_mesh, dst_mesh):
         dst.floats.values.extend(floats)
 
 def export_material(src_mat, dst_mat, cfg):
-    dst_mat.id = id_of(src_mat)
+    dst_mat.id = cfg.id_of(src_mat)
     dst_mat.name = src_mat.name
 
     dst_mat.shadeless = src_mat.use_shadeless
@@ -407,11 +413,11 @@ def export_material(src_mat, dst_mat, cfg):
 def export_tex(src, dst, cfg):
     from pathlib import PurePath, Path
     ispacked = src.texture.image.filepath.startswith('//')
-    dst.id = id_of(src.texture)
+    dst.id = cfg.id_of(src.texture)
 
     if ispacked:
         rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:])
-        if not need_update(src.texture, cfg.update_flag):
+        if not cfg.need_update(src.texture):
             abspath = Path(cfg.assets_path) / rpath
             if not abspath.parent.exists():
                 abspath.parent.mkdir(parents=True)
@@ -428,8 +434,8 @@ def export_tex(src, dst, cfg):
 
 
 # TODO redo Light, more clear definition,...
-def export_light(src, dst):
-    dst.id = id_of(src)
+def export_light(src, dst, cfg):
+    dst.id = cfg.id_of(src)
     dst.name = src.name
     kind = src.type
     if kind == 'SUN' or kind == 'AREA':
@@ -472,44 +478,49 @@ def export_all_skeletons(scene, data, cfg):
     for obj in scene.objects:
         if obj.type == 'ARMATURE':
             src_skeleton = obj.data
-            if need_update(src_skeleton, cfg.update_flag):
+            if cfg.need_update(src_skeleton):
                 dst_skeleton = data.skeletons.add()
-                export_skeleton(src_skeleton, dst_skeleton, obj.matrix_world)
-            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, id_of(obj), pgex.datas_pb2.Skeleton.__name__, id_of(src_skeleton))
+                export_skeleton(src_skeleton, dst_skeleton, obj, cfg)
+            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton))
 
 
-def export_skeleton(src, dst, mw):
-    dst.id = id_of(src)
+def export_skeleton(src, dst, armature, cfg):
+    dst.id = cfg.id_of(src)
     dst.name = src.name
+    # for src_bone in armature.pose.bones:
     for src_bone in src.bones:
         dst_bone = dst.bones.add()
-        dst_bone.id = id_of(src_bone)
+        dst_bone.id = cfg.id_of(src_bone)
         dst_bone.name = src_bone.name
         transform = dst_bone.transform
-        # mat4 = mw * src_bone.matrix_local
-        mat4 = src_bone.matrix_local
-        cnv_vec3(mat4.to_scale(), transform.scale)
-        cnv_vec3ZupToYup(mat4.translation, transform.translation)
-        # cnv_vec3(mat4.translation, transform.translation)
-        # cnv_quat(mat4.to_quaternion(), transform.rotation)
-        # cnv_quatZupToYup(mat4.to_quaternion(), transform.rotation)
+
+        # retreive transform local to parent
+        boneMat = src_bone.matrix_local
         if src_bone.parent:
-            cnv_quat2(mat4.to_quaternion(), transform.rotation)
-        else:
-            # cnv_quat(mat4.to_quaternion(), transform.rotation)
-            cnv_quat(mathutils.Quaternion((1, 0, 0, 0)), transform.rotation)
-        print("%s : %s" % (dst_bone.name, transform))
+            boneMat = src_bone.parent.matrix_local.inverted() * src_bone.matrix_local
+        loc, quat, sca = boneMat.decompose()
+
+        # Can't use armature.convert_space
+        # boneMat = armature.convert_space(pose_bone=src_bone, matrix=src_bone.matrix, from_space='POSE', to_space='LOCAL_WITH_PARENT')
+        # loc, quat, sca = boneMat.decompose()
+
+        cnv_vec3(sca, transform.scale)
+        cnv_vec3ZupToYup(loc, transform.translation)
+        # cnv_vec3(loc, transform.translation)
+        cnv_quat2(quat, transform.rotation)
+        # cnv_quatZupToYup(quat, transform.rotation)
+        # cnv_quat(quat, transform.rotation)
+        # print("%s (%s) : %s" % (dst_bone.name, dst_bone.id, transform))
         if src_bone.parent:
             rel = dst.bones_graph.add()
-            rel.ref1 = id_of(src_bone.parent)
-            rel.ref2 = id_of(src_bone)
+            rel.ref1 = cfg.id_of(src_bone.parent)
+            rel.ref2 = dst_bone.id
 
-
-def export_obj_customproperties(src, dst_node, dst_data):
+def export_obj_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
         customparams = dst_data.Extensions[pgex_ext.customparams_pb2.customParams].add()
-        customparams.id = 'CP' + id_of(src)
+        customparams.id = 'CP' + cfg.id_of(src)
         for key in keys:
             param = customparams.params.add()
             param.name = key
@@ -557,7 +568,6 @@ class PgexExporter(bpy.types.Operator, ExportHelper):
         # exportAllFlag = not self.option_export_selection
         data = pgex.datas_pb2.Data()
         cfg = ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
-        cfg.update_flag = None
         export(scene, data, cfg)
 
         self.file = open(self.filepath, "wb")
