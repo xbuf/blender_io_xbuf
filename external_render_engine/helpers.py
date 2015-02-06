@@ -33,7 +33,7 @@ def rot_quat(obj):
 
 
 def extractEye(context_or_camera):
-    (loc, rot, projection, near, far) = (None, None, None, None, None)
+    (loc, rot, projection, near, far, is_ortho) = (None, None, None, None, None, False)
     if hasattr(context_or_camera, 'region_data'):
         context = context_or_camera
         # screen = context.screen.areas[2]
@@ -46,6 +46,7 @@ def extractEye(context_or_camera):
         projection = rv3d.perspective_matrix * rv3d.view_matrix.inverted()
         near = context.space_data.clip_start
         far = context.space_data.clip_end
+        is_ortho = rv3d.view_perspective == 'ORTHO'  # enum in [‘PERSP’, ‘ORTHO’, ‘CAMERA’]
     else:
         camera = context_or_camera
         loc = camera.location
@@ -53,8 +54,9 @@ def extractEye(context_or_camera):
         near = camera.data.clip_start
         far = camera.data.clip_end
         projection = projection_matrix(camera.data)
+        is_ortho = camera.type == 'ORTHO'  # enum in [‘PERSP’, ‘ORTHO’, ‘PANO’]
     # print("%r | %r | %r | %r |%r" % (loc, rot, projection, near, far))
-    return (loc, rot, projection, near, far)
+    return (loc, rot, projection, near, far, is_ortho)
 
 
 # from http://stackoverflow.com/questions/9028398/change-viewport-angle-in-blender-using-python

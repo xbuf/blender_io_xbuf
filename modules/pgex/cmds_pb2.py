@@ -20,12 +20,34 @@ from pgex.datas_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='pgex/cmds.proto',
   package='pgex',
-  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"\xab\x01\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12&\n\ndeleteData\x18\x04 \x01(\x0b\x32\x10.pgex.DeleteDataH\x00\x12\x36\n\x12\x63hangeAssetFolders\x18\x05 \x01(\x0b\x32\x18.pgex.ChangeAssetFoldersH\x00\x42\x05\n\x03\x63md\"\x85\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.pgex.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\"Z\n\x12\x43hangeAssetFolders\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x16\n\x08register\x18\x02 \x01(\x08:\x04true\x12\x1e\n\x0funregisterOther\x18\x03 \x01(\x08:\x05\x66\x61lse\"Q\n\nDeleteData\x12\x0c\n\x04refs\x18\x01 \x03(\t\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x12\n\x03\x61ll\x18\x03 \x01(\x08:\x05\x66\x61lseB\x02H\x03P\x00')
+  serialized_pb=_b('\n\x0fpgex/cmds.proto\x12\x04pgex\x1a\x10pgex/datas.proto\"\xab\x01\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.pgex.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.pgex.DataH\x00\x12&\n\ndeleteData\x18\x04 \x01(\x0b\x32\x10.pgex.DeleteDataH\x00\x12\x36\n\x12\x63hangeAssetFolders\x18\x05 \x01(\x0b\x32\x18.pgex.ChangeAssetFoldersH\x00\x42\x05\n\x03\x63md\"\xea\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.pgex.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.pgex.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.pgex.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\x12\x34\n\x08projMode\x18\x07 \x01(\x0e\x32\x15.pgex.SetEye.ProjMode:\x0bperspective\"-\n\x08ProjMode\x12\x0f\n\x0bperspective\x10\x01\x12\x10\n\x0corthographic\x10\x02\"Z\n\x12\x43hangeAssetFolders\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x16\n\x08register\x18\x02 \x01(\x08:\x04true\x12\x1e\n\x0funregisterOther\x18\x03 \x01(\x08:\x05\x66\x61lse\"Q\n\nDeleteData\x12\x0c\n\x04refs\x18\x01 \x03(\t\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.pgex.Relation\x12\x12\n\x03\x61ll\x18\x03 \x01(\x08:\x05\x66\x61lseB\x02H\x03P\x00')
   ,
   dependencies=[pgex.datas_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
+
+_SETEYE_PROJMODE = _descriptor.EnumDescriptor(
+  name='ProjMode',
+  full_name='pgex.SetEye.ProjMode',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    _descriptor.EnumValueDescriptor(
+      name='perspective', index=0, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='orthographic', index=1, number=2,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=407,
+  serialized_end=452,
+)
+_sym_db.RegisterEnumDescriptor(_SETEYE_PROJMODE)
 
 
 _CMD = _descriptor.Descriptor(
@@ -124,11 +146,19 @@ _SETEYE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='projMode', full_name='pgex.SetEye.projMode', index=5,
+      number=7, type=14, cpp_type=8, label=1,
+      has_default_value=True, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
+    _SETEYE_PROJMODE,
   ],
   options=None,
   is_extendable=False,
@@ -136,7 +166,7 @@ _SETEYE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=218,
-  serialized_end=351,
+  serialized_end=452,
 )
 
 
@@ -179,8 +209,8 @@ _CHANGEASSETFOLDERS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=353,
-  serialized_end=443,
+  serialized_start=454,
+  serialized_end=544,
 )
 
 
@@ -223,8 +253,8 @@ _DELETEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=445,
-  serialized_end=526,
+  serialized_start=546,
+  serialized_end=627,
 )
 
 _CMD.fields_by_name['setEye'].message_type = _SETEYE
@@ -246,6 +276,8 @@ _CMD.fields_by_name['changeAssetFolders'].containing_oneof = _CMD.oneofs_by_name
 _SETEYE.fields_by_name['location'].message_type = pgex.datas_pb2._VEC3
 _SETEYE.fields_by_name['rotation'].message_type = pgex.datas_pb2._QUATERNION
 _SETEYE.fields_by_name['projection'].message_type = pgex.datas_pb2._MAT4
+_SETEYE.fields_by_name['projMode'].enum_type = _SETEYE_PROJMODE
+_SETEYE_PROJMODE.containing_type = _SETEYE
 _DELETEDATA.fields_by_name['relations'].message_type = pgex.datas_pb2._RELATION
 DESCRIPTOR.message_types_by_name['Cmd'] = _CMD
 DESCRIPTOR.message_types_by_name['SetEye'] = _SETEYE

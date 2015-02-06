@@ -81,7 +81,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
             self.sceneChangeListener.unregister()
 
     def external_render(self, context_or_camera, width, height, flocal):
-        (loc, rot, projection, near, far) = helpers.extractEye(context_or_camera)
+        (loc, rot, projection, near, far, is_ortho) = helpers.extractEye(context_or_camera)
 
         @asyncio.coroutine
         def my_render():
@@ -89,7 +89,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                 self.report({'WARNING'}, "test remote host (%r:%r)" % (self.host, self.port))
                 yield from self.client.connect(self.host, self.port)
                 # print('Send: %rx%r' % (width, height))
-                protocol.setEye(self.client.writer, loc, rot, projection, near, far)
+                protocol.setEye(self.client.writer, loc, rot, projection, near, far, is_ortho)
                 protocol.askScreenshot(self.client.writer, width, height)
                 # yield from writer.drain()
 
