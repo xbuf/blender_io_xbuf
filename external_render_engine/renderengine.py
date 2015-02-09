@@ -34,11 +34,11 @@ class SceneChangeListener:
         self.first = True
 
     def register(self):
-        print("register SceneChangeListener")
+        # print("register SceneChangeListener")
         bpy.app.handlers.scene_update_post.append(self.scene_update_post)
 
     def unregister(self):
-        print("unregister SceneChangeListener")
+        # print("unregister SceneChangeListener")
         # bpy.app.handlers.scene_update_pre.remove(self.scene_update_pre)
         bpy.app.handlers.scene_update_post.remove(self.scene_update_post)
 
@@ -122,8 +122,12 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.report({'DEBUG'}, "external_update")
         self.host = scene.external_render.host
         self.port = scene.external_render.port
-        cfg = pgex_export.ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
-
+        if self.sceneChangeListener is None:
+            cfg0 = pgex_export.ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
+            self.sceneChangeListener = SceneChangeListener(cfg0)
+            self.sceneChangeListener.register()
+            self.sceneChangeListener.scene_update_post(scene)
+        cfg = self.sceneChangeListener.ctx
         # for ob in scene.objects:
         #     if ob.is_updated:
         #         print("updated =>", ob.name)
@@ -138,10 +142,6 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
 
-        if self.sceneChangeListener is None:
-            self.sceneChangeListener = SceneChangeListener(cfg)
-            self.sceneChangeListener.register()
-            self.sceneChangeListener.scene_update_post(scene)
         protocol.run_until_complete(my_update())
         # else:
         #     if len(self.sceneChangeListener.updated) > 0:
