@@ -15,14 +15,13 @@
 
 # <pep8 compliant>
 
-import uuid
-import struct
 import mathutils
 import pgex
 import pgex.datas_pb2
 import pgex.cmds_pb2
 import pgex_ext
-import pgex_ext.customparams_pb2
+import pgex_ext.custom_params_pb2
+import pgex_ext.animations_kf_pb2
 from . import helpers  # pylint: disable=W0406
 
 
@@ -149,9 +148,19 @@ class ExportCfg:
 
     def need_update(self, v, modified=False):
         k = self._k_of(v)
-        old = k in self._modified and self._modified[k]
+        old = (k in self._modified) and self._modified[k]
         self._modified[k] = modified
+        # print("modified : %r (%r)/ %r / %r /%r / %r" % (v, k, self._modified[k], old, modified, hash(self)))
         return old
+
+    def info(self, txt):
+        print("INFO: " + txt)
+
+    def warning(self, txt):
+        print("WARNING: " + txt)
+
+    def error(self, txt):
+        print("ERROR: " + txt)
 
 
 # TODO avoid export obj with same id
@@ -162,6 +171,7 @@ def export(scene, data, cfg):
     export_all_materials(scene, data, cfg)
     export_all_lights(scene, data, cfg)
     export_all_skeletons(scene, data, cfg)
+    export_all_actions(scene, data, cfg)
 
 
 def export_all_tobjects(scene, data, cfg):
@@ -375,6 +385,7 @@ def export_texcoords(src_mesh, dst_mesh):
                 floats.extend(ftc.uv4)
         dst.floats.values.extend(floats)
 
+
 def export_material(src_mat, dst_mat, cfg):
     dst_mat.id = cfg.id_of(src_mat)
     dst_mat.name = src_mat.name
@@ -516,13 +527,124 @@ def export_skeleton(src, dst, armature, cfg):
             rel.ref1 = cfg.id_of(src_bone.parent)
             rel.ref2 = dst_bone.id
 
+
+def export_all_actions(scene, dst_data, cfg):
+    fps = max(1.0, float(scene.render.fps))
+    for action in bpy.data.actions:
+        # if cfg.need_update(action):
+        if True:
+            dst = dst_data.Extensions[pgex_ext.animations_kf_pb2.animations_kf].add()
+            export_action(action, dst, fps, cfg)
+            print("exp action: %r" % (cfg.id_of(action)))
+    print(len(dst_data.Extensions[pgex_ext.animations_kf_pb2.animations_kf]))
+    for obj in scene.objects:
+        if obj.animation_data:
+            for tracks in obj.animation_data.nla_tracks:
+                for strip in tracks.strips:
+                    print("object action: %r" % (cfg.id_of(strip.action)))
+                    add_relation_raw(
+                        dst_data.relations,
+                        pgex.datas_pb2.TObject.__name__, cfg.id_of(obj),
+                        pgex_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(strip.action))
+
+
+def export_action(src, dst, fps, cfg):
+    dst.id = cfg.id_of(src)
+    dst.name = src.name
+    frames_duration = max(0.001, float(src.frame_range.y - src.frame_range.x))
+    dst.duration = frames_duration / fps
+    clip = dst.clips.add()
+
+    def frame_to_duration_ratio(f):
+        return float(f - src.frame_range.x) / frames_duration
+    for fcurve in src.fcurves:
+        target_name = fcurve.data_path
+        dst_kf = None
+        dst_kfs_coef = 1.0
+        if target_name == "location":
+            dst_kf, dst_kfs_coef = vec3_array_index(clip.transforms.translation, fcurve.array_index)
+        elif target_name == "scale":
+            dst_kf, dst_kfs_coef = vec3_array_index(clip.transforms.scale, fcurve.array_index)
+        elif target_name == "rotation_quaternion":
+            dst_kf, dst_kfs_coef = quat_array_index(clip.transforms.rotation, fcurve.array_index)
+        elif target_name == "rotation_euler":
+            cfg.warning("unsupported : rotation_euler , use rotation_quaternion")
+            continue
+        else:
+            cfg.warning("unsupported : " + target_name)
+            continue
+        if dst_kf is not None:
+            has_bezier = False
+            # curve.x => duration in [0,1] 1 is animation duration
+            durations = []
+            # values should be in ref Yup Zforward
+            values = []
+            # parameter of interpolation
+            interpolations = []
+            for src_kf in fcurve.keyframe_points:
+                durations.append(frame_to_duration_ratio(src_kf.co[0]))
+                values.append(src_kf.co[1] * dst_kfs_coef)
+                interpolations.append(cnv_interpolation(src_kf.interpolation))
+                has_bezier = has_bezier or ('BEZIER' == src_kf.interpolation)
+            dst_kf.duration_ratio.extend(durations)
+            dst_kf.value.extend(values)
+            dst_kf.interpolation.extend(interpolations)
+            # each interpolation segment as  x in [0,1], y in same ref as values[]
+            if has_bezier:
+                kps = fcurve.keyframe_points
+                for i in range(len(kps)):
+                    bp = dst_kf.bezier_params.add()
+                    if ('BEZIER' == kps[i].interpolation) and (i < (len(kps) - 1)):
+                        p0 = kps[i]
+                        p1 = kps[(i + 1)]
+                        seg_duration = p1.co[0] - p0.co[0]
+                        # print("kf co(%s) , left (%s), right(%s) : (%s, %s)" % ())
+                        bp.h0_x = (p0.handle_right[0] - p0.co[0]) / seg_duration
+                        bp.h0_y = p0.handle_right[1] * dst_kfs_coef
+                        bp.h1_x = (p1.handle_left[0] - p0.co[0]) / seg_duration
+                        bp.h1_y = p1.handle_left[1] * dst_kfs_coef
+            print("res dst_kf %r" % (dst_kf))
+
+
+def cnv_interpolation(inter):
+    if 'CONSTANT' == inter:
+        return pgex_ext.animations_kf_pb2.KeyPoints.constant
+    elif 'BEZIER' == inter:
+        return pgex_ext.animations_kf_pb2.KeyPoints.bezier
+    return pgex_ext.animations_kf_pb2.KeyPoints.linear
+
+
+def vec3_array_index(vec3, idx):
+    "find the target vec3 and take care of the axis change (to Y up, Z forward)"
+    if idx == 0:
+        # x => x
+        return (vec3.x, 1.0)
+    if idx == 1:
+        # y => -z
+        return (vec3.z, -1.0)
+    if idx == 2:
+        return (vec3.y, 1.0)
+
+
+def quat_array_index(vec3, idx):
+    "find the target quat and take care of the axis change (to Y up, Z forward)"
+    if idx == 0:
+        return (vec3.w, 1.0)
+    if idx == 1:
+        return (vec3.x, 1.0)
+    if idx == 2:
+        return (vec3.z, -1.0)
+    if idx == 3:
+        return (vec3.y, 1.0)
+
+
 def export_obj_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
-        customparams = dst_data.Extensions[pgex_ext.customparams_pb2.customParams].add()
-        customparams.id = 'CP' + cfg.id_of(src)
+        custom_params = dst_data.Extensions[pgex_ext.custom_params_pb2.custom_params].add()
+        custom_params.id = cfg.id_of(src)
         for key in keys:
-            param = customparams.params.add()
+            param = custom_params.params.add()
             param.name = key
             value = src[key]
             if type(value) == bool:
@@ -537,7 +659,7 @@ def export_obj_customproperties(src, dst_node, dst_data, cfg):
                 cnv_vec3(value, param.vvec3)
             elif type(value) == mathutils.Quaternion:
                 cnv_quat(value, param.vquat)
-        add_relation(dst_data.relations, dst_node, customparams)
+        add_relation(dst_data.relations, dst_node, custom_params)
 
 
 import bpy

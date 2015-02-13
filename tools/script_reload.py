@@ -18,7 +18,8 @@ if module_dir not in sys.path:
 import external_render_engine
 import pgex.datas_pb2
 import pgex.cmds_pb2
-import pgex_ext.customparams_pb2
+import pgex_ext.custom_params_pb2
+import pgex_ext.animations_kf_pb2
 
 # unregister previously code
 try:
@@ -31,7 +32,8 @@ import imp
 
 imp.reload(pgex.datas_pb2)
 imp.reload(pgex.cmds_pb2)
-imp.reload(pgex_ext.customparams_pb2)
+imp.reload(pgex_ext.custom_params_pb2)
+imp.reload(pgex_ext.animations_kf_pb2)
 
 imp.reload(external_render_engine)
 imp.reload(external_render_engine.helpers)
