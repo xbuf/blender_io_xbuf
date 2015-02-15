@@ -16,17 +16,17 @@
 # <pep8 compliant>
 
 import mathutils
-import pgex
-import pgex.datas_pb2
-import pgex.cmds_pb2
-import pgex_ext
-import pgex_ext.custom_params_pb2
-import pgex_ext.animations_kf_pb2
+import xbuf
+import xbuf.datas_pb2
+import xbuf.cmds_pb2
+import xbuf_ext
+import xbuf_ext.custom_params_pb2
+import xbuf_ext.animations_kf_pb2
 from . import helpers  # pylint: disable=W0406
 
 
 def cnv_vec3(src, dst):
-    # dst = pgex.math_pb2.Vec3()
+    # dst = xbuf.math_pb2.Vec3()
     # dst.x = src.x
     # dst.y = src.y
     # dst.z = src.z
@@ -62,7 +62,7 @@ def cnv_toVec3ZupToYup(src):
 
 
 def cnv_quatZupToYup(src, dst):
-    # dst = pgex.math_pb2.Quaternion()
+    # dst = xbuf.math_pb2.Quaternion()
     src0 = src.copy()
     q = mathutils.Quaternion((-1, 1, 0, 0))
     q.normalize()
@@ -79,7 +79,7 @@ def cnv_quatZupToYup(src, dst):
 
 
 def cnv_quat2(src, dst):
-    # dst = pgex.math_pb2.Quaternion()
+    # dst = xbuf.math_pb2.Quaternion()
     dst.w = src.w  # [0]
     dst.x = src.x  # [1]
     dst.y = src.z  # [2]
@@ -88,7 +88,7 @@ def cnv_quat2(src, dst):
 
 
 def cnv_quat(src, dst):
-    # dst = pgex.math_pb2.Quaternion()
+    # dst = xbuf.math_pb2.Quaternion()
     dst.w = src.w  # [0]
     dst.x = src.x  # [1]
     dst.y = src.y  # [2]
@@ -97,7 +97,7 @@ def cnv_quat(src, dst):
 
 
 def cnv_mat4(src, dst):
-    # dst = pgex.math_pb2.Quaternion()
+    # dst = xbuf.math_pb2.Quaternion()
     dst.c00 = src[0][0]
     dst.c10 = src[1][0]
     dst.c20 = src[2][0]
@@ -206,7 +206,7 @@ def export_all_tobjects(scene, data, cfg):
                 cnv_quat2(helpers.rot_quat(obj), transform.rotation)
             if obj.parent is not None:
                 #    tobject.parentId = cfg.id_of(obj.parent)
-                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), pgex.datas_pb2.TObject.__name__, cfg.id_of(obj))
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj))
             export_obj_customproperties(obj, tobject, data, cfg)
 
 
@@ -218,13 +218,13 @@ def export_all_geometries(scene, data, cfg):
             if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
                 geometry = data.geometries.add()
                 export_geometry(obj, geometry, scene, cfg)
-                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Geometry.__name__, cfg.id_of(obj.data))
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Geometry.__name__, cfg.id_of(obj.data))
         elif obj.type == 'LAMP':
             src_light = obj.data
             if cfg.need_update(src_light):
                 dst_light = data.lights.add()
                 export_light(src_light, dst_light, cfg)
-            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Light.__name__, cfg.id_of(src_light))
+            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light))
 
 
 def export_all_materials(scene, data, cfg):
@@ -237,7 +237,7 @@ def export_all_materials(scene, data, cfg):
                 if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
-                add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Material.__name__, cfg.id_of(src_mat))
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
 
 
 def export_all_lights(scene, data, cfg):
@@ -249,7 +249,7 @@ def export_all_lights(scene, data, cfg):
             if cfg.need_update(src_light):
                 dst_light = data.lights.add()
                 export_light(src_light, dst_light, cfg)
-            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Light.__name__, cfg.id_of(src_light))
+            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light))
 
 
 def add_relation(relations, e1, e2):
@@ -270,7 +270,7 @@ def export_geometry(src, dst, scene, cfg):
     dst.id = cfg.id_of(src.data)
     dst.name = src.name
     mesh = dst.meshes.add()
-    mesh.primitive = pgex.datas_pb2.Mesh.triangles
+    mesh.primitive = xbuf.datas_pb2.Mesh.triangles
     mode = 'PREVIEW' if cfg.is_preview else 'RENDER'
     src_mesh = src.to_mesh(scene, True, mode, True, False)
     mesh.id = cfg.id_of(src_mesh)
@@ -286,7 +286,7 @@ def export_geometry(src, dst, scene, cfg):
 def export_positions(src_mesh, dst_mesh):
     vertices = src_mesh.vertices
     dst = dst_mesh.vertexArrays.add()
-    dst.attrib = pgex.datas_pb2.VertexArray.position
+    dst.attrib = xbuf.datas_pb2.VertexArray.position
     dst.floats.step = 3
     floats = []
     faces = src_mesh.tessfaces
@@ -305,7 +305,7 @@ def export_positions(src_mesh, dst_mesh):
 def export_normals(src_mesh, dst_mesh):
     vertices = src_mesh.vertices
     dst = dst_mesh.vertexArrays.add()
-    dst.attrib = pgex.datas_pb2.VertexArray.normal
+    dst.attrib = xbuf.datas_pb2.VertexArray.normal
     dst.floats.step = 3
     floats = []
     faces = src_mesh.tessfaces
@@ -348,7 +348,7 @@ def export_colors(src_mesh, dst_mesh):
     faces = src_mesh.tessfaces
     face_colors = src_mesh.tessface_vertex_colors[0].data
     dst = dst_mesh.vertexArrays.add()
-    dst.attrib = pgex.datas_pb2.VertexArray.color
+    dst.attrib = xbuf.datas_pb2.VertexArray.color
     dst.floats.step = 4
     floats = []
     for face in faces:
@@ -371,7 +371,7 @@ def export_texcoords(src_mesh, dst_mesh):
     for uvI in range(min(9, len(src_mesh.tessface_uv_textures))):
         texcoordFace = src_mesh.tessface_uv_textures[uvI].data
         dst = dst_mesh.vertexArrays.add()
-        dst.attrib = pgex.datas_pb2.VertexArray.texcoord + uvI
+        dst.attrib = xbuf.datas_pb2.VertexArray.texcoord + uvI
         dst.floats.step = 2
         floats = []
         for face in faces:
@@ -450,11 +450,11 @@ def export_light(src, dst, cfg):
     dst.name = src.name
     kind = src.type
     if kind == 'SUN' or kind == 'AREA':
-        dst.kind = pgex.datas_pb2.Light.directional
+        dst.kind = xbuf.datas_pb2.Light.directional
     elif kind == 'POINT':
-        dst.kind = pgex.datas_pb2.Light.point
+        dst.kind = xbuf.datas_pb2.Light.point
     elif kind == 'SPOT':
-        dst.kind = pgex.datas_pb2.Light.spot
+        dst.kind = xbuf.datas_pb2.Light.spot
         dst.spot_angle.max = src.spot_size * 0.5
         dst.spot_angle.linear.begin = (1.0 - src.spot_blend)
     dst.cast_shadow = getattr(src, 'use_shadow', False)
@@ -492,7 +492,7 @@ def export_all_skeletons(scene, data, cfg):
             if cfg.need_update(src_skeleton):
                 dst_skeleton = data.skeletons.add()
                 export_skeleton(src_skeleton, dst_skeleton, obj, cfg)
-            add_relation_raw(data.relations, pgex.datas_pb2.TObject.__name__, cfg.id_of(obj), pgex.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton))
+            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton))
 
 
 def export_skeleton(src, dst, armature, cfg):
@@ -533,10 +533,10 @@ def export_all_actions(scene, dst_data, cfg):
     for action in bpy.data.actions:
         # if cfg.need_update(action):
         if True:
-            dst = dst_data.Extensions[pgex_ext.animations_kf_pb2.animations_kf].add()
+            dst = dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf].add()
             export_action(action, dst, fps, cfg)
             print("exp action: %r" % (cfg.id_of(action)))
-    print(len(dst_data.Extensions[pgex_ext.animations_kf_pb2.animations_kf]))
+    print(len(dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf]))
     for obj in scene.objects:
         if obj.animation_data:
             for tracks in obj.animation_data.nla_tracks:
@@ -544,8 +544,8 @@ def export_all_actions(scene, dst_data, cfg):
                     print("object action: %r" % (cfg.id_of(strip.action)))
                     add_relation_raw(
                         dst_data.relations,
-                        pgex.datas_pb2.TObject.__name__, cfg.id_of(obj),
-                        pgex_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(strip.action))
+                        xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj),
+                        xbuf_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(strip.action))
 
 
 def export_action(src, dst, fps, cfg):
@@ -608,10 +608,10 @@ def export_action(src, dst, fps, cfg):
 
 def cnv_interpolation(inter):
     if 'CONSTANT' == inter:
-        return pgex_ext.animations_kf_pb2.KeyPoints.constant
+        return xbuf_ext.animations_kf_pb2.KeyPoints.constant
     elif 'BEZIER' == inter:
-        return pgex_ext.animations_kf_pb2.KeyPoints.bezier
-    return pgex_ext.animations_kf_pb2.KeyPoints.linear
+        return xbuf_ext.animations_kf_pb2.KeyPoints.bezier
+    return xbuf_ext.animations_kf_pb2.KeyPoints.linear
 
 
 def vec3_array_index(vec3, idx):
@@ -641,7 +641,7 @@ def quat_array_index(vec3, idx):
 def export_obj_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
-        custom_params = dst_data.Extensions[pgex_ext.custom_params_pb2.custom_params].add()
+        custom_params = dst_data.Extensions[xbuf_ext.custom_params_pb2.custom_params].add()
         custom_params.id = cfg.id_of(src)
         for key in keys:
             param = custom_params.params.add()
@@ -666,11 +666,11 @@ import bpy
 from bpy_extras.io_utils import ExportHelper
 
 
-class PgexExporter(bpy.types.Operator, ExportHelper):
-    """Export to pgex format"""
-    bl_idname = "export_scene.pgex"
-    bl_label = "Export pgex"
-    filename_ext = ".pgex"
+class xbufExporter(bpy.types.Operator, ExportHelper):
+    """Export to xbuf format"""
+    bl_idname = "export_scene.xbuf"
+    bl_label = "Export xbuf"
+    filename_ext = ".xbuf"
 
     # option_export_selection = bpy.props.BoolProperty(name = "Export Selection", description = "Export only selected objects", default = False)
 
@@ -688,8 +688,8 @@ class PgexExporter(bpy.types.Operator, ExportHelper):
         self.frameTime = 1.0 / (scene.render.fps_base * scene.render.fps)
 
         # exportAllFlag = not self.option_export_selection
-        data = pgex.datas_pb2.Data()
-        cfg = ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
+        data = xbuf.datas_pb2.Data()
+        cfg = ExportCfg(is_preview=False, assets_path=scene.xbuf.assets_path)
         export(scene, data, cfg)
 
         self.file = open(self.filepath, "wb")

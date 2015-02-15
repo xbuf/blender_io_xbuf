@@ -18,7 +18,7 @@ import bgl
 import asyncio
 from . import protocol     # pylint: disable=W0406
 from . import helpers      # pylint: disable=W0406
-from . import pgex_export  # pylint: disable=W0406
+from . import xbuf_export  # pylint: disable=W0406
 
 # gloop = external_render_engine.gloop
 
@@ -123,7 +123,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.host = scene.external_render.host
         self.port = scene.external_render.port
         if self.sceneChangeListener is None:
-            cfg0 = pgex_export.ExportCfg(is_preview=False, assets_path=scene.pgex.assets_path)
+            cfg0 = xbuf_export.ExportCfg(is_preview=False, assets_path=scene.xbuf.assets_path)
             self.sceneChangeListener = SceneChangeListener(cfg0)
             self.sceneChangeListener.register()
             self.sceneChangeListener.scene_update_post(scene)

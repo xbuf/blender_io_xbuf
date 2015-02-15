@@ -16,10 +16,10 @@ if module_dir not in sys.path:
     sys.path.append(module_dir)
 
 import external_render_engine
-import pgex.datas_pb2
-import pgex.cmds_pb2
-import pgex_ext.custom_params_pb2
-import pgex_ext.animations_kf_pb2
+import xbuf.datas_pb2
+import xbuf.cmds_pb2
+import xbuf_ext.custom_params_pb2
+import xbuf_ext.animations_kf_pb2
 
 # unregister previously code
 try:
@@ -30,14 +30,14 @@ except (RuntimeError):
 # register with new code
 import imp
 
-imp.reload(pgex.datas_pb2)
-imp.reload(pgex.cmds_pb2)
-imp.reload(pgex_ext.custom_params_pb2)
-imp.reload(pgex_ext.animations_kf_pb2)
+imp.reload(xbuf.datas_pb2)
+imp.reload(xbuf.cmds_pb2)
+imp.reload(xbuf_ext.custom_params_pb2)
+imp.reload(xbuf_ext.animations_kf_pb2)
 
 imp.reload(external_render_engine)
 imp.reload(external_render_engine.helpers)
-imp.reload(external_render_engine.pgex_export)
+imp.reload(external_render_engine.xbuf_export)
 imp.reload(external_render_engine.protocol)
 imp.reload(external_render_engine.renderengine)
 external_render_engine.register()

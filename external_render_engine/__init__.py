@@ -17,10 +17,10 @@
 
 from . import renderengine
 from . import protocol
-from . import pgex_export
+from . import xbuf_export
 from . import helpers
 
-__all__ = ['renderengine', 'protocol', 'helpers', 'pgex_export']
+__all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
 
 bl_info = {
     "name": "External Render Engine",
@@ -54,7 +54,7 @@ class RenderSettingsScene(bpy.types.PropertyGroup):
 
 
 # TODO default the value from plugin preferences
-class PgexSettingsScene(bpy.types.PropertyGroup):
+class xbufSettingsScene(bpy.types.PropertyGroup):
     import os
 
     assets_path = bpy.props.StringProperty(
@@ -87,27 +87,27 @@ class ExternalRenderPanel(bpy.types.Panel):
     def draw(self, context):
         layout = self.layout
         render = context.scene.external_render
-        pgex = context.scene.pgex
+        xbuf = context.scene.xbuf
         row = layout.row()
         row.prop(render, "host")
         row.prop(render, "port")
         col = layout.column()
-        col.prop(pgex, "assets_path")
+        col.prop(xbuf, "assets_path")
         # layout.label(text="Hello World")
 
 
 def register_settings():
     bpy.utils.register_class(RenderSettingsScene)
     bpy.types.Scene.external_render = bpy.props.PointerProperty(type=RenderSettingsScene)
-    bpy.utils.register_class(PgexSettingsScene)
-    bpy.types.Scene.pgex = bpy.props.PointerProperty(type=PgexSettingsScene)
+    bpy.utils.register_class(xbufSettingsScene)
+    bpy.types.Scene.xbuf = bpy.props.PointerProperty(type=xbufSettingsScene)
     bpy.utils.register_class(ExternalRenderPanel)
 
 
 def unregister_settings():
     bpy.utils.unregister_class(ExternalRenderPanel)
-    # del bpy.types.Scene.pgex
-    bpy.utils.unregister_class(PgexSettingsScene)
+    # del bpy.types.Scene.xbuf
+    bpy.utils.unregister_class(xbufSettingsScene)
     # del bpy.types.Scene.external_renderer
     bpy.utils.unregister_class(RenderSettingsScene)
 
@@ -144,17 +144,17 @@ def unregister_renderer():
 
 
 def menu_func_exporter(self, context):
-    self.layout.operator(pgex_export.PgexExporter.bl_idname, text="Pgex (.pgex)")
+    self.layout.operator(xbuf_export.xbufExporter.bl_idname, text="xbuf (.xbuf)")
 
 
 def register_exporter():
-    bpy.utils.register_class(pgex_export.PgexExporter)
+    bpy.utils.register_class(xbuf_export.xbufExporter)
     bpy.types.INFO_MT_file_export.append(menu_func_exporter)
 
 
 def unregister_exporter():
     bpy.types.INFO_MT_file_export.remove(menu_func_exporter)
-    bpy.utils.unregister_class(pgex_export.PgexExporter)
+    bpy.utils.unregister_class(xbuf_export.xbufExporter)
 
 
 def register():

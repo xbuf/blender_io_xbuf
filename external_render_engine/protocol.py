@@ -18,11 +18,11 @@
 import struct
 import asyncio
 import atexit
-import pgex
-import pgex.datas_pb2
-import pgex.cmds_pb2
+import xbuf
+import xbuf.datas_pb2
+import xbuf.cmds_pb2
 
-from . import pgex_export  # pylint: disable=W0406
+from . import xbuf_export  # pylint: disable=W0406
 
 # TODO better management off the event loop (eg  on unregister)
 loop = asyncio.get_event_loop()
@@ -35,7 +35,7 @@ class Kind:
     ask_screenshot = 0x03
     raw_screenshot = 0x04
     msgpack = 0x05
-    pgex_cmd = 0x06
+    xbuf_cmd = 0x06
 
 
 class Client:
@@ -96,20 +96,20 @@ def askScreenshot(writer, width, height):
 
 def setEye(writer, location, rotation, projection_matrix, near, far, is_ortho):
     # sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
-    cmd = pgex.cmds_pb2.Cmd()
-    # cmd.setCamera = pgex.cmds_pb2.SetCamera()
-    pgex_export.cnv_vec3ZupToYup(location, cmd.setEye.location)
-    pgex_export.cnv_quatZupToYup(rotation, cmd.setEye.rotation)
-    pgex_export.cnv_mat4(projection_matrix, cmd.setEye.projection)
+    cmd = xbuf.cmds_pb2.Cmd()
+    # cmd.setCamera = xbuf.cmds_pb2.SetCamera()
+    xbuf_export.cnv_vec3ZupToYup(location, cmd.setEye.location)
+    xbuf_export.cnv_quatZupToYup(rotation, cmd.setEye.rotation)
+    xbuf_export.cnv_mat4(projection_matrix, cmd.setEye.projection)
     cmd.setEye.near = near
     cmd.setEye.far = far
-    cmd.setEye.projMode = pgex.cmds_pb2.SetEye.orthographic if is_ortho else pgex.cmds_pb2.SetEye.perspective
-    writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
+    cmd.setEye.projMode = xbuf.cmds_pb2.SetEye.orthographic if is_ortho else xbuf.cmds_pb2.SetEye.perspective
+    writeMessage(writer, Kind.xbuf_cmd, cmd.SerializeToString())
 
 
 def setData(writer, scene, cfg):
-    cmd = pgex.cmds_pb2.Cmd()
-    pgex_export.export(scene, cmd.setData, cfg)
+    cmd = xbuf.cmds_pb2.Cmd()
+    xbuf_export.export(scene, cmd.setData, cfg)
     send = (len(cmd.setData.relations) > 0 or
             len(cmd.setData.tobjects) > 0 or
             len(cmd.setData.geometries) > 0 or
@@ -118,15 +118,15 @@ def setData(writer, scene, cfg):
             )
     if send:
         # print("send setData")
-        writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
+        writeMessage(writer, Kind.xbuf_cmd, cmd.SerializeToString())
 
 
 def changeAssetFolders(writer, cfg):
-    cmd = pgex.cmds_pb2.Cmd()
+    cmd = xbuf.cmds_pb2.Cmd()
     cmd.changeAssetFolders.path.append(cfg.assets_path)
     cmd.changeAssetFolders.register = True
     cmd.changeAssetFolders.unregisterOther = True
-    writeMessage(writer, Kind.pgex_cmd, cmd.SerializeToString())
+    writeMessage(writer, Kind.xbuf_cmd, cmd.SerializeToString())
 
 
 def run_until_complete(f, *args, **kwargs):
