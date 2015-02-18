@@ -29,3 +29,8 @@ License: [GPL](LICENSE.txt)
 * Blender 2.72b
 * [blender_external_renderer 0.3.0](https://github.com/davidB/blender_external_renderer/releases/tag/0.3.0)
 * ModelViewer 0.3.0 for jMonkeyEngine from [jme3_ext_assettools](https://github.com/davidB/jme3_ext_assettools/releases/tag/0.3.0)
+
+# Inspirations
+
+* [GameKit](https://github.com/gamekit-developers/gamekit)
+* Blender Game Engine
