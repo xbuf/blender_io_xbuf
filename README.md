@@ -34,3 +34,4 @@ License: [GPL](LICENSE.txt)
 
 * [GameKit](https://github.com/gamekit-developers/gamekit)
 * Blender Game Engine
+* [b2ogre-0.5.5-anim-tracks.mp4 - YouTube](https://www.youtube.com/watch?v=5oVM0Lmeb68)
