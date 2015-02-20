@@ -20,7 +20,7 @@ from xbuf.datas_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf_ext/animations_kf.proto',
   package='xbuf_ext',
-  serialized_pb=_b('\n\x1cxbuf_ext/animations_kf.proto\x12\x08xbuf_ext\x1a\x10xbuf/datas.proto\"X\n\x0b\x41nimationKF\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\x02\x12\x1d\n\x05\x63lips\x18\x04 \x03(\x0b\x32\x0e.xbuf_ext.Clip\"e\n\x04\x43lip\x12+\n\ntransforms\x18\n \x01(\x0b\x32\x15.xbuf_ext.TransformKFH\x00\x12#\n\x06\x63olors\x18\x0b \x01(\x0b\x32\x11.xbuf_ext.ColorKFH\x00\x42\x0b\n\tkeyframes\"\x7f\n\x0bTransformKF\x12%\n\x0btranslation\x18\x01 \x01(\x0b\x32\x10.xbuf_ext.Vec3KF\x12(\n\x08rotation\x18\x02 \x01(\x0b\x32\x16.xbuf_ext.QuaternionKF\x12\x1f\n\x05scale\x18\x03 \x01(\x0b\x32\x10.xbuf_ext.Vec3KF\"h\n\x06Vec3KF\x12\x1e\n\x01x\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01y\x18\x02 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01z\x18\x03 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\"\x8e\x01\n\x0cQuaternionKF\x12\x1e\n\x01x\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01y\x18\x02 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01z\x18\x03 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01w\x18\x04 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\"\x89\x01\n\x07\x43olorKF\x12\x1e\n\x01r\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01g\x18\x02 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01\x62\x18\x03 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\x12\x1e\n\x01\x61\x18\x04 \x01(\x0b\x32\x13.xbuf_ext.KeyPoints\"\xe4\x01\n\tKeyPoints\x12\x1a\n\x0e\x64uration_ratio\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x11\n\x05value\x18\x02 \x03(\x02\x42\x02\x10\x01\x12?\n\rinterpolation\x18\x03 \x03(\x0e\x32$.xbuf_ext.KeyPoints.InterpolationFctB\x02\x10\x01\x12-\n\rbezier_params\x18\x04 \x03(\x0b\x32\x16.xbuf_ext.BezierParams\"8\n\x10InterpolationFct\x12\x0c\n\x08\x63onstant\x10\x01\x12\n\n\x06linear\x10\x02\x12\n\n\x06\x62\x65zier\x10\x03\"F\n\x0c\x42\x65zierParams\x12\x0c\n\x04h0_x\x18\x01 \x01(\x02\x12\x0c\n\x04h0_y\x18\x02 \x01(\x02\x12\x0c\n\x04h1_x\x18\x03 \x01(\x02\x12\x0c\n\x04h1_y\x18\x04 \x01(\x02:9\n\ranimations_kf\x12\n.xbuf.Data\x18\xf5\x03 \x03(\x0b\x32\x15.xbuf_ext.AnimationKFB\x02H\x03P\x00')
+  serialized_pb=_b('\n\x1cxbuf_ext/animations_kf.proto\x12\x08xbuf_ext\x1a\x10xbuf/datas.proto\"\xc1\x01\n\x0b\x41nimationKF\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\x05\x12\x1d\n\x05\x63lips\x18\x04 \x03(\x0b\x32\x0e.xbuf_ext.Clip\x12>\n\x0btarget_kind\x18\x05 \x01(\x0e\x32 .xbuf_ext.AnimationKF.TargetKind:\x07tobject\"\'\n\nTargetKind\x12\x0b\n\x07tobject\x10\x00\x12\x0c\n\x08skeleton\x10\x01\"L\n\x04\x43lip\x12\x37\n\x11sampled_transform\x18\x01 \x01(\x0b\x32\x1a.xbuf_ext.SampledTransformH\x00\x42\x0b\n\tkeyframes\"\xa5\x02\n\x10SampledTransform\x12\x0e\n\x02\x61t\x18\x01 \x03(\x05\x42\x02\x10\x01\x12\x19\n\rtranslation_x\x18\x02 \x03(\x02\x42\x02\x10\x01\x12\x19\n\rtranslation_y\x18\x03 \x03(\x02\x42\x02\x10\x01\x12\x19\n\rtranslation_z\x18\x04 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_x\x18\x05 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_y\x18\x06 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_z\x18\x07 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_w\x18\x08 \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_x\x18\t \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_y\x18\n \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_z\x18\x0b \x03(\x02\x42\x02\x10\x01\x12\x11\n\tbone_name\x18\x14 \x01(\t:9\n\ranimations_kf\x12\n.xbuf.Data\x18\xf5\x03 \x03(\x0b\x32\x15.xbuf_ext.AnimationKFB\x02H\x03P\x00')
   ,
   dependencies=[xbuf.datas_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -35,31 +35,27 @@ animations_kf = _descriptor.FieldDescriptor(
   is_extension=True, extension_scope=None,
   options=None)
 
-_KEYPOINTS_INTERPOLATIONFCT = _descriptor.EnumDescriptor(
-  name='InterpolationFct',
-  full_name='xbuf_ext.KeyPoints.InterpolationFct',
+_ANIMATIONKF_TARGETKIND = _descriptor.EnumDescriptor(
+  name='TargetKind',
+  full_name='xbuf_ext.AnimationKF.TargetKind',
   filename=None,
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='constant', index=0, number=1,
+      name='tobject', index=0, number=0,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='linear', index=1, number=2,
-      options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='bezier', index=2, number=3,
+      name='skeleton', index=1, number=1,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=946,
-  serialized_end=1002,
+  serialized_start=215,
+  serialized_end=254,
 )
-_sym_db.RegisterEnumDescriptor(_KEYPOINTS_INTERPOLATIONFCT)
+_sym_db.RegisterEnumDescriptor(_ANIMATIONKF_TARGETKIND)
 
 
 _ANIMATIONKF = _descriptor.Descriptor(
@@ -85,7 +81,7 @@ _ANIMATIONKF = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='duration', full_name='xbuf_ext.AnimationKF.duration', index=2,
-      number=3, type=2, cpp_type=6, label=1,
+      number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -97,19 +93,27 @@ _ANIMATIONKF = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='target_kind', full_name='xbuf_ext.AnimationKF.target_kind', index=4,
+      number=5, type=14, cpp_type=8, label=1,
+      has_default_value=True, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
+    _ANIMATIONKF_TARGETKIND,
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=60,
-  serialized_end=148,
+  serialized_start=61,
+  serialized_end=254,
 )
 
 
@@ -121,15 +125,8 @@ _CLIP = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='transforms', full_name='xbuf_ext.Clip.transforms', index=0,
-      number=10, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='colors', full_name='xbuf_ext.Clip.colors', index=1,
-      number=11, type=11, cpp_type=10, label=1,
+      name='sampled_transform', full_name='xbuf_ext.Clip.sampled_transform', index=0,
+      number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -148,337 +145,127 @@ _CLIP = _descriptor.Descriptor(
       name='keyframes', full_name='xbuf_ext.Clip.keyframes',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=150,
-  serialized_end=251,
+  serialized_start=256,
+  serialized_end=332,
 )
 
 
-_TRANSFORMKF = _descriptor.Descriptor(
-  name='TransformKF',
-  full_name='xbuf_ext.TransformKF',
+_SAMPLEDTRANSFORM = _descriptor.Descriptor(
+  name='SampledTransform',
+  full_name='xbuf_ext.SampledTransform',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='translation', full_name='xbuf_ext.TransformKF.translation', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='rotation', full_name='xbuf_ext.TransformKF.rotation', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='scale', full_name='xbuf_ext.TransformKF.scale', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=253,
-  serialized_end=380,
-)
-
-
-_VEC3KF = _descriptor.Descriptor(
-  name='Vec3KF',
-  full_name='xbuf_ext.Vec3KF',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='x', full_name='xbuf_ext.Vec3KF.x', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='y', full_name='xbuf_ext.Vec3KF.y', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='z', full_name='xbuf_ext.Vec3KF.z', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=382,
-  serialized_end=486,
-)
-
-
-_QUATERNIONKF = _descriptor.Descriptor(
-  name='QuaternionKF',
-  full_name='xbuf_ext.QuaternionKF',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='x', full_name='xbuf_ext.QuaternionKF.x', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='y', full_name='xbuf_ext.QuaternionKF.y', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='z', full_name='xbuf_ext.QuaternionKF.z', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='w', full_name='xbuf_ext.QuaternionKF.w', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=489,
-  serialized_end=631,
-)
-
-
-_COLORKF = _descriptor.Descriptor(
-  name='ColorKF',
-  full_name='xbuf_ext.ColorKF',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='r', full_name='xbuf_ext.ColorKF.r', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='g', full_name='xbuf_ext.ColorKF.g', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='b', full_name='xbuf_ext.ColorKF.b', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='a', full_name='xbuf_ext.ColorKF.a', index=3,
-      number=4, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=634,
-  serialized_end=771,
-)
-
-
-_KEYPOINTS = _descriptor.Descriptor(
-  name='KeyPoints',
-  full_name='xbuf_ext.KeyPoints',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='duration_ratio', full_name='xbuf_ext.KeyPoints.duration_ratio', index=0,
-      number=1, type=2, cpp_type=6, label=3,
+      name='at', full_name='xbuf_ext.SampledTransform.at', index=0,
+      number=1, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
     _descriptor.FieldDescriptor(
-      name='value', full_name='xbuf_ext.KeyPoints.value', index=1,
+      name='translation_x', full_name='xbuf_ext.SampledTransform.translation_x', index=1,
       number=2, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
     _descriptor.FieldDescriptor(
-      name='interpolation', full_name='xbuf_ext.KeyPoints.interpolation', index=2,
-      number=3, type=14, cpp_type=8, label=3,
+      name='translation_y', full_name='xbuf_ext.SampledTransform.translation_y', index=2,
+      number=3, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
     _descriptor.FieldDescriptor(
-      name='bezier_params', full_name='xbuf_ext.KeyPoints.bezier_params', index=3,
-      number=4, type=11, cpp_type=10, label=3,
+      name='translation_z', full_name='xbuf_ext.SampledTransform.translation_z', index=3,
+      number=4, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='rotation_x', full_name='xbuf_ext.SampledTransform.rotation_x', index=4,
+      number=5, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='rotation_y', full_name='xbuf_ext.SampledTransform.rotation_y', index=5,
+      number=6, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='rotation_z', full_name='xbuf_ext.SampledTransform.rotation_z', index=6,
+      number=7, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='rotation_w', full_name='xbuf_ext.SampledTransform.rotation_w', index=7,
+      number=8, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='scale_x', full_name='xbuf_ext.SampledTransform.scale_x', index=8,
+      number=9, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='scale_y', full_name='xbuf_ext.SampledTransform.scale_y', index=9,
+      number=10, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='scale_z', full_name='xbuf_ext.SampledTransform.scale_z', index=10,
+      number=11, type=2, cpp_type=6, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
+    _descriptor.FieldDescriptor(
+      name='bone_name', full_name='xbuf_ext.SampledTransform.bone_name', index=11,
+      number=20, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
       options=None),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
-    _KEYPOINTS_INTERPOLATIONFCT,
   ],
   options=None,
   is_extendable=False,
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=774,
-  serialized_end=1002,
-)
-
-
-_BEZIERPARAMS = _descriptor.Descriptor(
-  name='BezierParams',
-  full_name='xbuf_ext.BezierParams',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='h0_x', full_name='xbuf_ext.BezierParams.h0_x', index=0,
-      number=1, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='h0_y', full_name='xbuf_ext.BezierParams.h0_y', index=1,
-      number=2, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='h1_x', full_name='xbuf_ext.BezierParams.h1_x', index=2,
-      number=3, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='h1_y', full_name='xbuf_ext.BezierParams.h1_y', index=3,
-      number=4, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1004,
-  serialized_end=1074,
+  serialized_start=335,
+  serialized_end=628,
 )
 
 _ANIMATIONKF.fields_by_name['clips'].message_type = _CLIP
-_CLIP.fields_by_name['transforms'].message_type = _TRANSFORMKF
-_CLIP.fields_by_name['colors'].message_type = _COLORKF
+_ANIMATIONKF.fields_by_name['target_kind'].enum_type = _ANIMATIONKF_TARGETKIND
+_ANIMATIONKF_TARGETKIND.containing_type = _ANIMATIONKF
+_CLIP.fields_by_name['sampled_transform'].message_type = _SAMPLEDTRANSFORM
 _CLIP.oneofs_by_name['keyframes'].fields.append(
-  _CLIP.fields_by_name['transforms'])
-_CLIP.fields_by_name['transforms'].containing_oneof = _CLIP.oneofs_by_name['keyframes']
-_CLIP.oneofs_by_name['keyframes'].fields.append(
-  _CLIP.fields_by_name['colors'])
-_CLIP.fields_by_name['colors'].containing_oneof = _CLIP.oneofs_by_name['keyframes']
-_TRANSFORMKF.fields_by_name['translation'].message_type = _VEC3KF
-_TRANSFORMKF.fields_by_name['rotation'].message_type = _QUATERNIONKF
-_TRANSFORMKF.fields_by_name['scale'].message_type = _VEC3KF
-_VEC3KF.fields_by_name['x'].message_type = _KEYPOINTS
-_VEC3KF.fields_by_name['y'].message_type = _KEYPOINTS
-_VEC3KF.fields_by_name['z'].message_type = _KEYPOINTS
-_QUATERNIONKF.fields_by_name['x'].message_type = _KEYPOINTS
-_QUATERNIONKF.fields_by_name['y'].message_type = _KEYPOINTS
-_QUATERNIONKF.fields_by_name['z'].message_type = _KEYPOINTS
-_QUATERNIONKF.fields_by_name['w'].message_type = _KEYPOINTS
-_COLORKF.fields_by_name['r'].message_type = _KEYPOINTS
-_COLORKF.fields_by_name['g'].message_type = _KEYPOINTS
-_COLORKF.fields_by_name['b'].message_type = _KEYPOINTS
-_COLORKF.fields_by_name['a'].message_type = _KEYPOINTS
-_KEYPOINTS.fields_by_name['interpolation'].enum_type = _KEYPOINTS_INTERPOLATIONFCT
-_KEYPOINTS.fields_by_name['bezier_params'].message_type = _BEZIERPARAMS
-_KEYPOINTS_INTERPOLATIONFCT.containing_type = _KEYPOINTS
+  _CLIP.fields_by_name['sampled_transform'])
+_CLIP.fields_by_name['sampled_transform'].containing_oneof = _CLIP.oneofs_by_name['keyframes']
 DESCRIPTOR.message_types_by_name['AnimationKF'] = _ANIMATIONKF
 DESCRIPTOR.message_types_by_name['Clip'] = _CLIP
-DESCRIPTOR.message_types_by_name['TransformKF'] = _TRANSFORMKF
-DESCRIPTOR.message_types_by_name['Vec3KF'] = _VEC3KF
-DESCRIPTOR.message_types_by_name['QuaternionKF'] = _QUATERNIONKF
-DESCRIPTOR.message_types_by_name['ColorKF'] = _COLORKF
-DESCRIPTOR.message_types_by_name['KeyPoints'] = _KEYPOINTS
-DESCRIPTOR.message_types_by_name['BezierParams'] = _BEZIERPARAMS
+DESCRIPTOR.message_types_by_name['SampledTransform'] = _SAMPLEDTRANSFORM
 DESCRIPTOR.extensions_by_name['animations_kf'] = animations_kf
 
 AnimationKF = _reflection.GeneratedProtocolMessageType('AnimationKF', (_message.Message,), dict(
@@ -495,57 +282,38 @@ Clip = _reflection.GeneratedProtocolMessageType('Clip', (_message.Message,), dic
   ))
 _sym_db.RegisterMessage(Clip)
 
-TransformKF = _reflection.GeneratedProtocolMessageType('TransformKF', (_message.Message,), dict(
-  DESCRIPTOR = _TRANSFORMKF,
+SampledTransform = _reflection.GeneratedProtocolMessageType('SampledTransform', (_message.Message,), dict(
+  DESCRIPTOR = _SAMPLEDTRANSFORM,
   __module__ = 'xbuf_ext.animations_kf_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf_ext.TransformKF)
+  # @@protoc_insertion_point(class_scope:xbuf_ext.SampledTransform)
   ))
-_sym_db.RegisterMessage(TransformKF)
-
-Vec3KF = _reflection.GeneratedProtocolMessageType('Vec3KF', (_message.Message,), dict(
-  DESCRIPTOR = _VEC3KF,
-  __module__ = 'xbuf_ext.animations_kf_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf_ext.Vec3KF)
-  ))
-_sym_db.RegisterMessage(Vec3KF)
-
-QuaternionKF = _reflection.GeneratedProtocolMessageType('QuaternionKF', (_message.Message,), dict(
-  DESCRIPTOR = _QUATERNIONKF,
-  __module__ = 'xbuf_ext.animations_kf_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf_ext.QuaternionKF)
-  ))
-_sym_db.RegisterMessage(QuaternionKF)
-
-ColorKF = _reflection.GeneratedProtocolMessageType('ColorKF', (_message.Message,), dict(
-  DESCRIPTOR = _COLORKF,
-  __module__ = 'xbuf_ext.animations_kf_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf_ext.ColorKF)
-  ))
-_sym_db.RegisterMessage(ColorKF)
-
-KeyPoints = _reflection.GeneratedProtocolMessageType('KeyPoints', (_message.Message,), dict(
-  DESCRIPTOR = _KEYPOINTS,
-  __module__ = 'xbuf_ext.animations_kf_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf_ext.KeyPoints)
-  ))
-_sym_db.RegisterMessage(KeyPoints)
-
-BezierParams = _reflection.GeneratedProtocolMessageType('BezierParams', (_message.Message,), dict(
-  DESCRIPTOR = _BEZIERPARAMS,
-  __module__ = 'xbuf_ext.animations_kf_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf_ext.BezierParams)
-  ))
-_sym_db.RegisterMessage(BezierParams)
+_sym_db.RegisterMessage(SampledTransform)
 
 animations_kf.message_type = _ANIMATIONKF
 xbuf.datas_pb2.Data.RegisterExtension(animations_kf)
 
 DESCRIPTOR.has_options = True
 DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('H\003'))
-_KEYPOINTS.fields_by_name['duration_ratio'].has_options = True
-_KEYPOINTS.fields_by_name['duration_ratio']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
-_KEYPOINTS.fields_by_name['value'].has_options = True
-_KEYPOINTS.fields_by_name['value']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
-_KEYPOINTS.fields_by_name['interpolation'].has_options = True
-_KEYPOINTS.fields_by_name['interpolation']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['at'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['at']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['translation_x'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['translation_x']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['translation_y'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['translation_y']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['translation_z'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['translation_z']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['rotation_x'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['rotation_x']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['rotation_y'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['rotation_y']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['rotation_z'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['rotation_z']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['rotation_w'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['rotation_w']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['scale_x'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['scale_x']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['scale_y'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['scale_y']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
+_SAMPLEDTRANSFORM.fields_by_name['scale_z'].has_options = True
+_SAMPLEDTRANSFORM.fields_by_name['scale_z']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
 # @@protoc_insertion_point(module_scope)
