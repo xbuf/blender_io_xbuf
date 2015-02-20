@@ -36,7 +36,7 @@ def cnv_vec3(src, dst):
     return dst
 
 
-def cnv_vec3ZupToYup(src, dst):
+def cnv_translation(src, dst):
     # same as src.rotate(Quaternion((1,1,0,0))) # 90 deg CW axis X
     # src0 = src.copy()
     # q = mathutils.Quaternion((-1, 1, 0, 0))
@@ -48,6 +48,13 @@ def cnv_vec3ZupToYup(src, dst):
     dst.x = src[0]
     dst.y = src[2]
     dst.z = -src[1]
+    return dst
+
+
+def cnv_scale(src, dst):
+    dst.x = src[0]
+    dst.y = src[2]
+    dst.z = src[1]
     return dst
 
 
@@ -78,7 +85,7 @@ def cnv_quatZupToYup(src, dst):
     return dst
 
 
-def cnv_quat2(src, dst):
+def cnv_rotation(src, dst):
     # dst = xbuf.math_pb2.Quaternion()
     dst.w = src.w  # [0]
     dst.x = src.x  # [1]
@@ -183,27 +190,27 @@ def export_all_tobjects(scene, data, cfg):
             tobject.id = cfg.id_of(obj)
             tobject.name = obj.name
             transform = tobject.transform
-            cnv_vec3(obj.scale, transform.scale)
+            cnv_scale(obj.scale, transform.scale)
             # convert zup only for direct child of root (no parent)
-            cnv_vec3ZupToYup(obj.location, transform.translation)
-            #cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
+            cnv_translation(obj.location, transform.translation)
+            #cnv_scale(helpers.rot_quat(obj), transform.rotation)
             #if obj.type == 'MESH':
-            #    cnv_vec3ZupToYup(obj.location, transform.translation)
+            #    cnv_translation(obj.location, transform.translation)
             #    cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
             # if obj.parent is None:
-            #     cnv_vec3ZupToYup(obj.location, transform.translation)
+            #     cnv_translation(obj.location, transform.translation)
             #     cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
             #else:
             if obj.type == 'MESH':
-                #cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
-                cnv_quat2(helpers.rot_quat(obj), transform.rotation)
+                #cnv_scale(helpers.rot_quat(obj), transform.rotation)
+                cnv_rotation(helpers.rot_quat(obj), transform.rotation)
             elif obj.type == 'Armature':
-                cnv_quat2(helpers.rot_quat(obj), transform.rotation)
+                cnv_rotation(helpers.rot_quat(obj), transform.rotation)
             elif obj.type == 'LAMP':
                 rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
                 cnv_quatZupToYup(rot, transform.rotation)
             else:
-                cnv_quat2(helpers.rot_quat(obj), transform.rotation)
+                cnv_rotation(helpers.rot_quat(obj), transform.rotation)
             if obj.parent is not None:
                 #    tobject.parentId = cfg.id_of(obj.parent)
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj))
@@ -515,10 +522,10 @@ def export_skeleton(src, dst, armature, cfg):
         # boneMat = armature.convert_space(pose_bone=src_bone, matrix=src_bone.matrix, from_space='POSE', to_space='LOCAL_WITH_PARENT')
         # loc, quat, sca = boneMat.decompose()
 
-        cnv_vec3(sca, transform.scale)
-        cnv_vec3ZupToYup(loc, transform.translation)
-        # cnv_vec3(loc, transform.translation)
-        cnv_quat2(quat, transform.rotation)
+        cnv_scale(sca, transform.scale)
+        cnv_translation(loc, transform.translation)
+        # cnv_scale(loc, transform.translation)
+        cnv_rotation(quat, transform.rotation)
         # cnv_quatZupToYup(quat, transform.rotation)
         # cnv_quat(quat, transform.rotation)
         # print("%s (%s) : %s" % (dst_bone.name, dst_bone.id, transform))
@@ -530,112 +537,382 @@ def export_skeleton(src, dst, armature, cfg):
 
 def export_all_actions(scene, dst_data, cfg):
     fps = max(1.0, float(scene.render.fps))
-    for action in bpy.data.actions:
-        # if cfg.need_update(action):
-        if True:
-            dst = dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf].add()
-            export_action(action, dst, fps, cfg)
-            print("exp action: %r" % (cfg.id_of(action)))
+#    for action in bpy.data.actions:
     print(len(dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf]))
     for obj in scene.objects:
         if obj.animation_data:
             for tracks in obj.animation_data.nla_tracks:
                 for strip in tracks.strips:
-                    print("object action: %r" % (cfg.id_of(strip.action)))
+                    action = strip.action
+                    print("object action: %r" % (cfg.id_of(action)))
+                    # if cfg.need_update(action):
+                    if True:
+                        dst = dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf].add()
+                        export_action(action, dst, fps, cfg)
+                        print("exp action: %r" % (cfg.id_of(action)))
+                        # relativize_bones(dst, obj)
                     add_relation_raw(
                         dst_data.relations,
                         xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj),
-                        xbuf_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(strip.action))
+                        xbuf_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(action))
 
 
 def export_action(src, dst, fps, cfg):
+    def to_time(frame):
+        return int((frame * 1000) / fps)
+        # return float(f - src.frame_range.x) / frames_duration
     dst.id = cfg.id_of(src)
     dst.name = src.name
-    frames_duration = max(0.001, float(src.frame_range.y - src.frame_range.x))
-    dst.duration = frames_duration / fps
-    clip = dst.clips.add()
+    if src.id_root == 'OBJECT':
+        dst.target_kind = xbuf_ext.animations_kf_pb2.AnimationKF.tobject
+    elif src.id_root == 'ARMATURE':
+        dst.target_kind = xbuf_ext.animations_kf_pb2.AnimationKF.skeleton
+    else:
+        cfg.warning("unsupported id_roor => target_kind : " + src.id_root)
+        return
 
-    def frame_to_duration_ratio(f):
-        return float(f - src.frame_range.x) / frames_duration
-    for fcurve in src.fcurves:
+    frame_start = int(src.frame_range.x)
+    frame_end = int(src.frame_range.y)
+    dst.duration = to_time(max(1, float(frame_end - frame_start)))
+    anims = fcurves_to_animTransforms(src.fcurves, cfg)
+    export_animTransforms(dst, anims, frame_start, frame_end, to_time)
+
+
+def fcurves_to_animTransforms(fcurves, cfg):
+    import re
+
+    p = re.compile(r'pose.bones\["([^"]*)"\]\.(.*)')
+    anims = {}
+    for fcurve in fcurves:
+        anim_name = None
         target_name = fcurve.data_path
-        dst_kf = None
-        dst_kfs_coef = 1.0
+        m = p.match(target_name)
+        if m:
+            anim_name = m.group(1)
+            target_name = m.group(2)
+        if not (anim_name in anims):
+            anims[anim_name] = AnimTransform()
+        anim = anims[anim_name]
         if target_name == "location":
-            dst_kf, dst_kfs_coef = vec3_array_index(clip.transforms.translation, fcurve.array_index)
+            anim.fcurve_t[fcurve.array_index] = fcurve
         elif target_name == "scale":
-            dst_kf, dst_kfs_coef = vec3_array_index(clip.transforms.scale, fcurve.array_index)
+            anim.fcurve_s[fcurve.array_index] = fcurve
         elif target_name == "rotation_quaternion":
-            dst_kf, dst_kfs_coef = quat_array_index(clip.transforms.rotation, fcurve.array_index)
+            anim.fcurve_r[fcurve.array_index] = fcurve
         elif target_name == "rotation_euler":
-            cfg.warning("unsupported : rotation_euler , use rotation_quaternion")
-            continue
+            anim.fcurve_r[fcurve.array_index] = fcurve
         else:
             cfg.warning("unsupported : " + target_name)
             continue
-        if dst_kf is not None:
-            has_bezier = False
-            # curve.x => duration in [0,1] 1 is animation duration
-            durations = []
-            # values should be in ref Yup Zforward
-            values = []
-            # parameter of interpolation
-            interpolations = []
-            for src_kf in fcurve.keyframe_points:
-                durations.append(frame_to_duration_ratio(src_kf.co[0]))
-                values.append(src_kf.co[1] * dst_kfs_coef)
-                interpolations.append(cnv_interpolation(src_kf.interpolation))
-                has_bezier = has_bezier or ('BEZIER' == src_kf.interpolation)
-            dst_kf.duration_ratio.extend(durations)
-            dst_kf.value.extend(values)
-            dst_kf.interpolation.extend(interpolations)
-            # each interpolation segment as  x in [0,1], y in same ref as values[]
-            if has_bezier:
-                kps = fcurve.keyframe_points
-                for i in range(len(kps)):
-                    bp = dst_kf.bezier_params.add()
-                    if ('BEZIER' == kps[i].interpolation) and (i < (len(kps) - 1)):
-                        p0 = kps[i]
-                        p1 = kps[(i + 1)]
-                        seg_duration = p1.co[0] - p0.co[0]
-                        # print("kf co(%s) , left (%s), right(%s) : (%s, %s)" % ())
-                        bp.h0_x = (p0.handle_right[0] - p0.co[0]) / seg_duration
-                        bp.h0_y = p0.handle_right[1] * dst_kfs_coef
-                        bp.h1_x = (p1.handle_left[0] - p0.co[0]) / seg_duration
-                        bp.h1_y = p1.handle_left[1] * dst_kfs_coef
-            print("res dst_kf %r" % (dst_kf))
+    return anims
 
 
-def cnv_interpolation(inter):
-    if 'CONSTANT' == inter:
-        return xbuf_ext.animations_kf_pb2.KeyPoints.constant
-    elif 'BEZIER' == inter:
-        return xbuf_ext.animations_kf_pb2.KeyPoints.bezier
-    return xbuf_ext.animations_kf_pb2.KeyPoints.linear
+def export_animTransforms(dst, anims, frame_start, frame_end, to_time):
+    ats = []
+    for f in range(frame_start, frame_end):
+        ats.append(to_time(f))
+    for k in anims:
+        anim = anims[k]
+        if not anim.is_empty():
+            clip = dst.clips.add()
+            if k is not None:
+                clip.sampled_transform.bone_name = k
+            clip.sampled_transform.at.extend(ats)
+            anim.to_clip(clip, frame_start, frame_end)
 
 
-def vec3_array_index(vec3, idx):
-    "find the target vec3 and take care of the axis change (to Y up, Z forward)"
-    if idx == 0:
-        # x => x
-        return (vec3.x, 1.0)
-    if idx == 1:
-        # y => -z
-        return (vec3.z, -1.0)
-    if idx == 2:
-        return (vec3.y, 1.0)
+class AnimTransform:
+    def __init__(self):
+        # x, y, z, w
+        self.fcurve_t = [None, None, None]  # x,y,z
+        self.fcurve_r = [None, None, None, None]  # w,x,y,z
+        self.fcurve_s = [None, None, None]  # x,y,z
+
+    def is_empty(self):
+        b = True
+        for v in self.fcurve_t:
+            b = b and (v is None)
+        for v in self.fcurve_r:
+            b = b and (v is None)
+        for v in self.fcurve_s:
+            b = b and (v is None)
+        return b
+
+    def sample(self, frame_start, frame_end, coeff, fcurve):
+        b = []
+        if fcurve is not None:
+            for f in range(frame_start, frame_end):
+                b.append(fcurve.evaluate(f) * coeff)
+        return b
+
+    def cnv_translation(self, frame_start, frame_end):
+        return (
+            self.sample(frame_start, frame_end, 1, self.fcurve_t[0]),
+            self.sample(frame_start, frame_end, 1, self.fcurve_t[2]),
+            self.sample(frame_start, frame_end, -1, self.fcurve_t[1])
+        )
+
+    def cnv_scale(self, frame_start, frame_end):
+        return (
+            self.sample(frame_start, frame_end, 1, self.fcurve_s[0]),
+            self.sample(frame_start, frame_end, 1, self.fcurve_s[2]),
+            self.sample(frame_start, frame_end, 1, self.fcurve_s[1])
+        )
+
+    def cnv_rotation(self, frame_start, frame_end):
+        qx = []
+        qy = []
+        qz = []
+        qw = []
+        if (self.fcurve_r[3] is not None) and self.fcurve_r[3].data_path.endswith("rotation_quaternion"):
+            qw = self.sample(frame_start, frame_end, 1, self.fcurve_r[0])
+            qx = self.sample(frame_start, frame_end, 1, self.fcurve_r[1])
+            qy = self.sample(frame_start, frame_end, 1, self.fcurve_r[3])
+            qz = self.sample(frame_start, frame_end, -1, self.fcurve_r[2])
+        elif (self.fcurve_r[0] is not None) and self.fcurve_r[0].data_path.endswith("rotation_euler"):
+            # TODO use order of target
+            for f in range(frame_start, frame_end):
+                eul = mathutils.Euler()
+                eul.x = self.fcurve_r[0].evaluate(f)
+                eul.y = self.fcurve_r[1].evaluate(f)
+                eul.z = self.fcurve_r[2].evaluate(f)
+                q = eul.to_quaternion()
+                qw.append(q.w)
+                qx.append(q.x)
+                qy.append(q.z)
+                qz.append(-q.y)
+        return (qw, qx, qy, qz)
+
+    def to_clip(self, dst_clip, frame_start, frame_end):
+        t = self.cnv_translation(frame_start, frame_end)
+        dst_clip.sampled_transform.translation_x.extend(t[0])
+        dst_clip.sampled_transform.translation_y.extend(t[1])
+        dst_clip.sampled_transform.translation_z.extend(t[2])
+
+        s = self.cnv_scale(frame_start, frame_end)
+        dst_clip.sampled_transform.scale_x.extend(s[0])
+        dst_clip.sampled_transform.scale_y.extend(s[1])
+        dst_clip.sampled_transform.scale_z.extend(s[2])
+
+        r = self.cnv_rotation(frame_start, frame_end)
+        dst_clip.sampled_transform.rotation_w.extend(r[0])
+        dst_clip.sampled_transform.rotation_x.extend(r[1])
+        dst_clip.sampled_transform.rotation_y.extend(r[2])
+        dst_clip.sampled_transform.rotation_z.extend(r[3])
 
 
-def quat_array_index(vec3, idx):
-    "find the target quat and take care of the axis change (to Y up, Z forward)"
-    if idx == 0:
-        return (vec3.w, 1.0)
-    if idx == 1:
-        return (vec3.x, 1.0)
-    if idx == 2:
-        return (vec3.z, -1.0)
-    if idx == 3:
-        return (vec3.y, 1.0)
+# def relativize_bones(dst_anim, obj):
+#     if obj.type != 'ARMATURE':
+#         return
+#     src_skeleton = obj.data
+#     if not(src_skeleton.bones):
+#         return
+#
+#     def find_SampledTransform_by_bone_name(name):
+#         for clip in dst_anim.clips:
+#             if clip.sampled_transform.bone_name == name:
+#                 return clip.sampled_transform
+#         return None
+#
+#     def relativize_children_bone(parent, sampled_parent):
+#         for child in parent.children:
+#             sampled_child = find_SampledTransform_by_bone_name(child.name)
+#             # children first
+#             relativize_children_bone(child, sampled_child)
+#             if sampled_child:
+#                 relativize_scale(sampled_child, sampled_parent, parent)
+#                 relativize_rotation(sampled_child, sampled_parent, parent)
+#                 relativize_translation(sampled_child, sampled_parent, parent)
+#                 # pass
+#     for bone in src_skeleton.bones:
+#         # only parent
+#         if not(bone.parent):
+#             relativize_children_bone(bone, find_SampledTransform_by_bone_name(bone.name))
+#
+#
+# def relativize_rotation(sampled_child, sampled_parent, parent):
+#     def to_quat(l, i):
+#         return mathutils.Quaternion((l.rotation_w[i], l.rotation_x[i], l.rotation_y[i], l.rotation_z[i]))
+#     if not(sampled_child) or not(sampled_child.rotation_w):
+#         return
+#     lg = len(sampled_child.at)
+#     pq = parent.matrix_local.to_quaternion()
+#     # pq.normalize()
+#     t = pq.z
+#     pq.z = -pq.y
+#     pq.y = t
+#     #        if src_bone.parent:
+#     #            boneMat = src_bone.parent.matrix_local.inverted() * src_bone.matrix_local
+#     #        loc, quat, sca = boneMat.decompose()
+#     for i in range(0, lg):
+#         p = pq
+#         if sampled_parent and sampled_parent.rotation_w:
+#             p = to_quat(sampled_parent, i)
+#             p.invert()
+#             # p.normalize()
+#         c = to_quat(sampled_child, i)
+#         c = c * p
+#         sampled_child.rotation_w[i] = c.w
+#         sampled_child.rotation_x[i] = c.x
+#         sampled_child.rotation_y[i] = c.y
+#         sampled_child.rotation_z[i] = c.z
+#
+#
+# def relativize_translation(sampled_child, sampled_parent, parent):
+#     def r_axe1(lg, cl, pl):
+#         if cl:
+#             for i in range(0, lg):
+#                 p = pl[i]
+#                 c = cl[i]
+#                 cl[i] = c - p
+#
+#     def r_axe2(lg, cl, pdef):
+#         if cl:
+#             for i in range(0, lg):
+#                 c = cl[i]
+#                 cl[i] = c - pdef
+#
+#     def r_axe(lg, cs, ps, axe, pdef):
+#         if hasattr(sampled_parent, 'axe'):
+#             r_axe1(lg, getattr(cs, axe), getattr(ps, axe))
+#         else:
+#             r_axe2(lg, getattr(cs, axe), pdef)
+#
+#     lg = len(sampled_child.at)
+#     ploc = parent.matrix_local.to_translation()
+#     r_axe(lg, sampled_child, sampled_parent, 'translation_x', ploc.x)
+#     r_axe(lg, sampled_child, sampled_parent, 'translation_y', ploc.z)
+#     r_axe(lg, sampled_child, sampled_parent, 'translation_z', -ploc.y)
+#
+#
+# def relativize_scale(sampled_child, sampled_parent, parent):
+#     def r_axe1(lg, cl, pl):
+#         if cl:
+#             for i in range(0, lg):
+#                 p = pl[i]
+#                 c = cl[i]
+#                 cl[i] = c / p
+#
+#     def r_axe2(lg, cl, pdef):
+#         if cl:
+#             for i in range(0, lg):
+#                 c = cl[i]
+#                 cl[i] = c / pdef
+#
+#     def r_axe(lg, cs, ps, axe, pdef):
+#         if hasattr(sampled_parent, 'axe'):
+#             r_axe1(lg, getattr(cs, axe), getattr(ps, axe))
+#         else:
+#             r_axe2(lg, getattr(cs, axe), pdef)
+#
+#     lg = len(sampled_child.at)
+#     pscale = parent.matrix_local.to_scale()
+#     r_axe(lg, sampled_child, sampled_parent, 'scale_x', pscale.x)
+#     r_axe(lg, sampled_child, sampled_parent, 'scale_y', pscale.z)
+#     r_axe(lg, sampled_child, sampled_parent, 'scale_z', pscale.y)
+
+# def export_action(src, dst, fps, cfg):
+#     import re
+#
+#     def to_time(frame):
+#         return int((frame * 1000) / fps)
+#         # return float(f - src.frame_range.x) / frames_duration
+#     dst.id = cfg.id_of(src)
+#     dst.name = src.name
+#     if src.id_root == 'OBJECT':
+#         dst.target_kind = xbuf_ext.animations_kf_pb2.AnimationKF.tobject
+#     elif src.id_root == 'ARMATURE':
+#         dst.target_kind = xbuf_ext.animations_kf_pb2.AnimationKF.skeleton
+#     else:
+#         cfg.warning("unsupported id_roor => target_kind : " + src.id_root)
+#         return
+#
+#     frames_duration = max(0.001, float(src.frame_range.y - src.frame_range.x))
+#     dst.duration = to_time(frames_duration)
+#     clip = dst.clips.add()
+#     p = re.compile(r'pose.bones\["([^"]*)"\]\.(.*)')
+#     for fcurve in src.fcurves:
+#         target_name = fcurve.data_path
+#         dst_kf = None
+#         dst_kfs_coef = 1.0
+#         m = p.match(target_name)
+#         if m:
+#             clip.transforms.bone_name = m.group(1)
+#             target_name = m.group(2)
+#         if target_name == "location":
+#             dst_kf, dst_kfs_coef = vec3_array_index(clip.transforms.translation, fcurve.array_index)
+#         elif target_name == "scale":
+#             dst_kf, dst_kfs_coef = vec3_array_index(clip.transforms.scale, fcurve.array_index)
+#         elif target_name == "rotation_quaternion":
+#             dst_kf, dst_kfs_coef = quat_array_index(clip.transforms.rotation, fcurve.array_index)
+#         elif target_name == "rotation_euler":
+#             cfg.warning("unsupported : rotation_euler , use rotation_quaternion")
+#             continue
+#         else:
+#             cfg.warning("unsupported : " + target_name)
+#             continue
+#         if dst_kf is not None:
+#             has_bezier = False
+#             ats = []
+#             # values should be in ref Yup Zforward
+#             values = []
+#             # parameter of interpolation
+#             interpolations = []
+#             for src_kf in fcurve.keyframe_points:
+#                 ats.append(to_time(src_kf.co[0]))
+#                 values.append(src_kf.co[1] * dst_kfs_coef)
+#                 interpolations.append(cnv_interpolation(src_kf.interpolation))
+#                 has_bezier = has_bezier or ('BEZIER' == src_kf.interpolation)
+#             dst_kf.at.extend(ats)
+#             dst_kf.value.extend(values)
+#             dst_kf.interpolation.extend(interpolations)
+#             # each interpolation segment as  x in [0,1], y in same ref as values[]
+#             if has_bezier:
+#                 kps = fcurve.keyframe_points
+#                 for i in range(len(kps)):
+#                     bp = dst_kf.bezier_params.add()
+#                     if ('BEZIER' == kps[i].interpolation) and (i < (len(kps) - 1)):
+#                         p0 = kps[i]
+#                         p1 = kps[(i + 1)]
+#                         seg_duration = p1.co[0] - p0.co[0]
+#                         # print("kf co(%s) , left (%s), right(%s) : (%s, %s)" % ())
+#                         bp.h0_x = (p0.handle_right[0] - p0.co[0]) / seg_duration
+#                         bp.h0_y = p0.handle_right[1] * dst_kfs_coef
+#                         bp.h1_x = (p1.handle_left[0] - p0.co[0]) / seg_duration
+#                         bp.h1_y = p1.handle_left[1] * dst_kfs_coef
+#             # print("res dst_kf %r" % (dst_kf))
+#
+#
+# def cnv_interpolation(inter):
+#     if 'CONSTANT' == inter:
+#         return xbuf_ext.animations_kf_pb2.KeyPoints.constant
+#     elif 'BEZIER' == inter:
+#         return xbuf_ext.animations_kf_pb2.KeyPoints.bezier
+#     return xbuf_ext.animations_kf_pb2.KeyPoints.linear
+#
+#
+# def vec3_array_index(vec3, idx):
+#     "find the target vec3 and take care of the axis change (to Y up, Z forward)"
+#     if idx == 0:
+#         # x => x
+#         return (vec3.x, 1.0)
+#     if idx == 1:
+#         # y => -z
+#         return (vec3.z, -1.0)
+#     if idx == 2:
+#         return (vec3.y, 1.0)
+#
+#
+# def quat_array_index(vec3, idx):
+#     "find the target quat and take care of the axis change (to Y up, Z forward)"
+#     if idx == 0:
+#         return (vec3.w, 1.0)
+#     if idx == 1:
+#         return (vec3.x, 1.0)
+#     if idx == 2:
+#         return (vec3.z, -1.0)
+#     if idx == 3:
+#         return (vec3.y, 1.0)
 
 
 def export_obj_customproperties(src, dst_node, dst_data, cfg):
@@ -679,25 +956,24 @@ class xbufExporter(bpy.types.Operator, ExportHelper):
 
     def execute(self, context):
         scene = context.scene
-        originalFrame = scene.frame_current
-        originalSubframe = scene.frame_subframe
-        self.restoreFrame = False
 
-        self.beginFrame = scene.frame_start
-        self.endFrame = scene.frame_end
-        self.frameTime = 1.0 / (scene.render.fps_base * scene.render.fps)
+        # originalFrame = scene.frame_current
+        # originalSubframe = scene.frame_subframe
+        # self.restoreFrame = False
+        # self.beginFrame = scene.frame_start
+        # self.endFrame = scene.frame_end
+        # self.frameTime = 1.0 / (scene.render.fps_base * scene.render.fps)
 
-        # exportAllFlag = not self.option_export_selection
         data = xbuf.datas_pb2.Data()
         cfg = ExportCfg(is_preview=False, assets_path=scene.xbuf.assets_path)
         export(scene, data, cfg)
 
-        self.file = open(self.filepath, "wb")
-        self.file.write(data.SerializeToString())
-        self.file.close()
+        file = open(self.filepath, "wb")
+        file.write(data.SerializeToString())
+        file.close()
 
-        if (self.restoreFrame):
-            scene.frame_set(originalFrame, originalSubframe)
+        # if (self.restoreFrame):
+        #    scene.frame_set(originalFrame, originalSubframe)
 
         return {'FINISHED'}
 

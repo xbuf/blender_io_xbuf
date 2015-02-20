@@ -98,7 +98,7 @@ def setEye(writer, location, rotation, projection_matrix, near, far, is_ortho):
     # sendCmd(writer, 'updateCamera', (_encode_vec3(location), _encode_quat(rotation), _encode_mat4(projection_matrix)))
     cmd = xbuf.cmds_pb2.Cmd()
     # cmd.setCamera = xbuf.cmds_pb2.SetCamera()
-    xbuf_export.cnv_vec3ZupToYup(location, cmd.setEye.location)
+    xbuf_export.cnv_translation(location, cmd.setEye.location)
     xbuf_export.cnv_quatZupToYup(rotation, cmd.setEye.rotation)
     xbuf_export.cnv_mat4(projection_matrix, cmd.setEye.projection)
     cmd.setEye.near = near
