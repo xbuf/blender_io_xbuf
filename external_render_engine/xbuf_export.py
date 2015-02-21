@@ -273,13 +273,28 @@ def add_relation_raw(relations, t1, ref1, t2, ref2):
         rel.ref2 = ref1
 
 
-def export_geometry(src, dst, scene, cfg):
-    dst.id = cfg.id_of(src.data)
-    dst.name = src.name
+def export_geometry(src_geometry, dst, scene, cfg):
+    dst.id = cfg.id_of(src_geometry.data)
+    dst.name = src_geometry.name
     mesh = dst.meshes.add()
     mesh.primitive = xbuf.datas_pb2.Mesh.triangles
     mode = 'PREVIEW' if cfg.is_preview else 'RENDER'
-    src_mesh = src.to_mesh(scene, True, mode, True, False)
+    # Set up modifiers whether to apply deformation or not
+    # tips from https://code.google.com/p/blender-cod/source/browse/blender_26/export_xmodel.py#185
+    mod_armature = []
+    mod_state_attr = 'show_viewport' if cfg.is_preview else 'show_render'
+    for mod in src_geometry.modifiers:
+        if mod.type == 'ARMATURE':
+            mod_armature.append((mod, getattr(mod, mod_state_attr)))
+
+    # -- without armature applied
+    for mod in mod_armature:
+        setattr(mod[0], mod_state_attr, False)
+    src_mesh = src_geometry.to_mesh(scene, True, mode, True, False)
+    # Restore modifier settings
+    for mod in mod_armature:
+        setattr(mod[0], mod_state_attr, mod[1])
+
     mesh.id = cfg.id_of(src_mesh)
     mesh.name = src_mesh.name
     # unified_vertex_array = unify_vertices(vertex_array, index_table)
@@ -288,6 +303,15 @@ def export_geometry(src, dst, scene, cfg):
     export_index(src_mesh, mesh)
     export_colors(src_mesh, mesh)
     export_texcoords(src_mesh, mesh)
+
+    # # -- with armature applied
+    # for mod in mod_armature:
+    #     setattr(mod[0], mod_state_attr, True)
+    # src_mesh = src_geometry.to_mesh(scene, True, mode, True, False)
+    # # Restore modifier settings
+    # for mod in mod_armature:
+    #     setattr(mod[0], mod_state_attr, mod[1])
+    export_skin(src_mesh, src_geometry, mesh, cfg)
 
 
 def export_positions(src_mesh, dst_mesh):
@@ -496,13 +520,14 @@ def export_all_skeletons(scene, data, cfg):
     for obj in scene.objects:
         if obj.type == 'ARMATURE':
             src_skeleton = obj.data
+            # src_skeleton = obj.pose
             if cfg.need_update(src_skeleton):
                 dst_skeleton = data.skeletons.add()
-                export_skeleton(src_skeleton, dst_skeleton, obj, cfg)
+                export_skeleton(src_skeleton, dst_skeleton, cfg)
             add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton))
 
 
-def export_skeleton(src, dst, armature, cfg):
+def export_skeleton(src, dst, cfg):
     dst.id = cfg.id_of(src)
     dst.name = src.name
     # for src_bone in armature.pose.bones:
@@ -528,11 +553,80 @@ def export_skeleton(src, dst, armature, cfg):
         cnv_rotation(quat, transform.rotation)
         # cnv_quatZupToYup(quat, transform.rotation)
         # cnv_quat(quat, transform.rotation)
-        # print("%s (%s) : %s" % (dst_bone.name, dst_bone.id, transform))
         if src_bone.parent:
             rel = dst.bones_graph.add()
             rel.ref1 = cfg.id_of(src_bone.parent)
             rel.ref2 = dst_bone.id
+
+
+def export_skin(src_mesh, src_geometry, dst_mesh, cfg):
+    armature = src_geometry.find_armature()
+    if not(armature):
+        return
+
+    vertices = src_mesh.vertices
+    boneCount = []
+    boneIndex = []
+    boneWeight = []
+    groupToBoneIndex = make_group_to_bone_index(armature, src_geometry, cfg)
+    faces = src_mesh.tessfaces
+
+    for face in faces:
+        find_influence(vertices, face.vertices[0], groupToBoneIndex, boneCount, boneIndex, boneWeight)
+        find_influence(vertices, face.vertices[1], groupToBoneIndex, boneCount, boneIndex, boneWeight)
+        find_influence(vertices, face.vertices[2], groupToBoneIndex, boneCount, boneIndex, boneWeight)
+        if (len(face.vertices) == 4):
+            find_influence(vertices, face.vertices[3], groupToBoneIndex, boneCount, boneIndex, boneWeight)
+
+    dst_skin = dst_mesh.skin
+    dst_skin.boneCount.extend(boneCount)
+    dst_skin.boneIndex.extend(boneIndex)
+    dst_skin.boneWeightPer100.extend(boneWeight)
+
+
+def make_group_to_bone_index(armature, src_geometry, cfg):
+    groupToBoneIndex = []
+    bones = armature.data.bones
+    # Look up table for bone indices
+    bones_table = [b.name for b in bones]
+
+    for group in src_geometry.vertex_groups:
+        groupName = group.name
+        try:
+            index = bones_table.index(group.name)
+        except (ValueError):
+            index = -1  # bind to nothing if not found
+        # for i in range(len(boneArray)):
+        #     if (boneArray[i].name == groupName):
+        #         index = i
+        #         break
+        groupToBoneIndex.append(index)
+        if index < 0:
+            cfg.warning("groupVertex can't be bind to bone %s -> %s" % (groupName, index))
+    return groupToBoneIndex
+
+
+def find_influence(vertices, index, groupToBoneIndex, boneCount, boneIndex, boneWeight):
+    totalWeight = 0.0
+    indexArray = []
+    weightArray = []
+    groups = sorted(vertices[index].groups, key=lambda x: x.weight, reverse=True)
+    for el in groups:
+        index = groupToBoneIndex[el.group]
+        weight = el.weight
+        if ((index >= 0) and (weight > 0)):
+            totalWeight += weight
+            indexArray.append(index)
+            weightArray.append(weight)
+    if (totalWeight >= 0):
+        normalizer = 100 / totalWeight
+        boneCount.append(len(weightArray))
+        for i in range(0, len(weightArray)):
+            boneIndex.append(indexArray[i])
+            boneWeight.append(int(weightArray[i] * normalizer))
+    else:
+        print("vertex without influence")
+        boneCount.append(0)
 
 
 def export_all_actions(scene, dst_data, cfg):
