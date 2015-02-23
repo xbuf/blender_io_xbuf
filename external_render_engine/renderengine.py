@@ -70,6 +70,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         print("__init__")
         self.host = "127.0.0.1"
         self.port = 4242
+        self.auto_redraw = False
         self.client = protocol.Client()
         self.sceneChangeListener = None
 
@@ -97,6 +98,8 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                 # raw = [[128, 255, 0, 255]] * (width * height)
                 if kind == protocol.Kind.raw_screenshot:
                     flocal(width, height, raw)
+                    if self.auto_redraw:
+                        self.tag_redraw()
             except BrokenPipeError:
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
@@ -122,6 +125,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.report({'DEBUG'}, "external_update")
         self.host = scene.external_render.host
         self.port = scene.external_render.port
+        self.auto_redraw = scene.external_render.auto_redraw
         if self.sceneChangeListener is None:
             cfg0 = xbuf_export.ExportCfg(is_preview=False, assets_path=scene.xbuf.assets_path)
             self.sceneChangeListener = SceneChangeListener(cfg0)
