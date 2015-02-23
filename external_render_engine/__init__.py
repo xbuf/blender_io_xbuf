@@ -25,7 +25,7 @@ __all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
 bl_info = {
     "name": "External Render Engine",
     "author": "David Bernard",
-    "version": (0, 3),
+    "version": (0, 4),
     "blender": (2, 72, 0),
     "location": "Render > Engine > External Render",
     "description": "Delegate rendering to an external render engine (eg provided by game engine)",
@@ -57,6 +57,7 @@ class RenderSettingsScene(bpy.types.PropertyGroup):
 class xbufSettingsScene(bpy.types.PropertyGroup):
     import os
 
+    # TODO use user_cache_dir like in https://pypi.python.org/pypi/appdirs
     assets_path = bpy.props.StringProperty(
         name="assets root folder path",
         description="Full path to directory where the assets are saved",
