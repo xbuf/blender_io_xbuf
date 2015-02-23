@@ -20,9 +20,24 @@ License: [GPL](LICENSE.txt)
 
 ## Usage
 
-1. start your external render engine
+1. start your external render engine (eg: [jme3_ext's ModelViewer](https://github.com/davidB/jme3_ext_assettools/releases))
 2. in Blender : Select "External Render" in the render list
-3. in Blender : Select "Rendered" in the viewport shading button of 3D View
+3. in Blender : Check properties of Render > External Render Config
+  * the connection parameters : host + port
+  * the auto redraw : usefull to see animation in viewport, else disable it (note that some other addon like screenshot_key_view have same effects)
+  * the path where to store textures and third party files
+4. in Blender : Select "Rendered" in the viewport shading button of 3D View
+5. in your external render engine :
+  * refresh UI if needed (ModelViewer's spatial explorer right-click)
+  * display bounding, skeleton,...
+  * explore, play animation
+  * every action possible by your external render
+
+Notes:
+
+* Some properties panel could not be available with External Render, switch to "Blender Render" to access them (and open an issue, so I'll add them).
+* Only animation (action) stored in an NLA's strip are sent to the external render engine.
+* The addon includes an exporter for .xbuf (the default format use to send scene to external render engine). But .xbuf need the files store in your assets path to be loaded.
 
 ## Setup used for the video-demo
 

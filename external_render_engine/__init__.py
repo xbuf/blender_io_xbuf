@@ -42,12 +42,16 @@ class RenderSettingsScene(bpy.types.PropertyGroup):
 
     port = bpy.props.IntProperty(
         name="port",
-        description="",
+        description="network port of the external renderer",
         default=4242, min=1024)
     host = bpy.props.StringProperty(
         name="host",
-        description="",
+        description="hostname or ip of the external renderer",
         default="127.0.0.1")
+    auto_redraw = bpy.props.BoolProperty(
+        name="auto_redraw",
+        description="continously request external to renderer, usefull if update on external side, like playing animation but require more resource",
+        default=False)
 
     def __init__(self):
         pass
@@ -92,6 +96,8 @@ class ExternalRenderPanel(bpy.types.Panel):
         row = layout.row()
         row.prop(render, "host")
         row.prop(render, "port")
+        row = layout.row()
+        row.prop(render, "auto_redraw")
         col = layout.column()
         col.prop(xbuf, "assets_path")
         # layout.label(text="Hello World")
