@@ -129,6 +129,13 @@ def changeAssetFolders(writer, cfg):
     writeMessage(writer, Kind.xbuf_cmd, cmd.SerializeToString())
 
 
+def playAnimation(writer, ref, anims):
+    cmd = xbuf.cmds_pb2.Cmd()
+    cmd.playAnimation.ref = ref
+    cmd.playAnimation.animationsNames.extend(anims)
+    writeMessage(writer, Kind.xbuf_cmd, cmd.SerializeToString())
+
+
 def run_until_complete(f, *args, **kwargs):
     if asyncio.iscoroutine(f):
         loop.run_until_complete(f)

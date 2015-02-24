@@ -29,9 +29,10 @@ from . import xbuf_export  # pylint: disable=W0406
 
 class SceneChangeListener:
 
-    def __init__(self, ctx):
+    def __init__(self, ctx, screen):
         self.ctx = ctx
         self.first = True
+        self.screen = screen
 
     def register(self):
         # print("register SceneChangeListener")
@@ -43,6 +44,8 @@ class SceneChangeListener:
         bpy.app.handlers.scene_update_post.remove(self.scene_update_post)
 
     def scene_update_post(self, scene):
+        if self.screen.is_animation_playing:
+            return
         # print("scene_update_post")
         for obj in scene.objects:
             if obj.is_updated or self.first:
@@ -55,6 +58,7 @@ class SceneChangeListener:
                     if src_mat.is_updated or self.first:
                         self.ctx.need_update(src_mat, True)
         self.first = False
+
 
 class ExternalRenderEngine(bpy.types.RenderEngine):
     # These three members are used by blender to set up the
@@ -73,11 +77,14 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         self.auto_redraw = False
         self.client = protocol.Client()
         self.sceneChangeListener = None
+        self.last_selected_strips = {}
 
     def __del__(self):
         print("__del__")
         if hasattr(self, 'client'):
-            self.client.close()
+            if self.client is not None:
+                self.client.close()
+                self.client = None
         if hasattr(self, 'client') and self.sceneChangeListener is not None:
             self.sceneChangeListener.unregister()
 
@@ -90,6 +97,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                 self.report({'WARNING'}, "test remote host (%r:%r)" % (self.host, self.port))
                 yield from self.client.connect(self.host, self.port)
                 # print('Send: %rx%r' % (width, height))
+
                 protocol.setEye(self.client.writer, loc, rot, projection, near, far, is_ortho)
                 protocol.askScreenshot(self.client.writer, width, height)
                 # yield from writer.drain()
@@ -103,50 +111,84 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
             except BrokenPipeError:
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
-        protocol.run_until_complete(my_render())
+                self.client = None
+        if self.client is not None:
+            protocol.run_until_complete(my_render())
 
     def render(self, scene):
-        scale = scene.render.resolution_percentage / 100.0
-        width = int(scene.render.resolution_x * scale)
-        height = int(scene.render.resolution_y * scale)
+        # scale = scene.render.resolution_percentage / 100.0
+        # width = int(scene.render.resolution_x * scale)
+        # height = int(scene.render.resolution_y * scale)
         # context.space_data.camera
         # self.external_render(scene.camera, width, height, self.render_image)
+        pass
+
+    def check_strip_selection(self, scene):
+        if self.sceneChangeListener is None:
+            return
+
+        cfg = self.sceneChangeListener.ctx
+        for obj in scene.objects:
+            if obj.animation_data is not None and obj.animation_data.nla_tracks:
+                try:
+                    selected_strips = [strip.action.name for strip in obj.animation_data.nla_tracks.active.strips if strip.select]
+                except AttributeError:
+                    selected_strips = []
+                selected_strips.sort()
+                objid = cfg.id_of(obj)
+                if (objid not in self.last_selected_strips) or (self.last_selected_strips[objid] != selected_strips):
+                    self.last_selected_strips[objid] = selected_strips
+                    if selected_strips:
+                        self.external_notify_strip_change(objid, selected_strips)
+
+    def external_notify_strip_change(self, objid, selected_strips):
+        @asyncio.coroutine
+        def my_cmd():
+            try:
+                yield from self.client.connect(self.host, self.port)
+                protocol.playAnimation(self.client.writer, objid, selected_strips)
+            except BrokenPipeError:
+                self.client.close()
+                self.client = None
+        if self.client is not None:
+            protocol.run_until_complete(my_cmd)
 
     def update(self, data, scene):
         """Export scene data for render"""
         self.report({'DEBUG'}, "update")
-        self.external_update(scene)
+        # self.external_update(scene)
 
     def view_update(self, context):
         self.report({'DEBUG'}, "view_update")
-        self.external_update(context.scene)
+        if not context.screen.is_animation_playing:
+            self.external_update(context)
 
-    def external_update(self, scene):
+    def external_update(self, context):
         self.report({'DEBUG'}, "external_update")
+        scene = context.scene
         self.host = scene.external_render.host
         self.port = scene.external_render.port
         self.auto_redraw = scene.external_render.auto_redraw
         if self.sceneChangeListener is None:
             cfg0 = xbuf_export.ExportCfg(is_preview=False, assets_path=scene.xbuf.assets_path)
-            self.sceneChangeListener = SceneChangeListener(cfg0)
+            self.sceneChangeListener = SceneChangeListener(cfg0, context.screen)
             self.sceneChangeListener.register()
             self.sceneChangeListener.scene_update_post(scene)
         cfg = self.sceneChangeListener.ctx
-        # for ob in scene.objects:
-        #     if ob.is_updated:
-        #         print("updated =>", ob.name)
 
         @asyncio.coroutine
         def my_update():
             try:
                 yield from self.client.connect(self.host, self.port)
+                # TODO avoid to request changeAssetFolders if same as before
                 protocol.changeAssetFolders(self.client.writer, cfg)
                 protocol.setData(self.client.writer, scene, cfg)
             except BrokenPipeError:
                 self.report({'WARNING'}, "failed to connect to remote host (%r:%r)" % (self.host, self.port))
                 self.client.close()
-
-        protocol.run_until_complete(my_update())
+                self.client = None
+        if self.client is not None:
+            protocol.run_until_complete(my_update())
         # else:
         #     if len(self.sceneChangeListener.updated) > 0:
         #         cfg.objects_included.extend(self.sceneChangeListener.updated)
@@ -176,6 +218,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         width = int(region.width)
         height = int(region.height)
         self.external_render(context, width, height, self.view_draw_image)
+        self.check_strip_selection(context.scene)
 
     def render_image(self, width, height, raw):
         # TODO optimize the loading/convertion of raw (other renderegine use load_from_file instead of rect)
