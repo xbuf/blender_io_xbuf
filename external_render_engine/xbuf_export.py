@@ -667,7 +667,7 @@ def export_obj_action(scene, obj, src, dst, fps, cfg):
     dst.id = cfg.id_of(src)
     dst.name = src.name
     frame_start = int(src.frame_range.x)
-    frame_end = int(src.frame_range.y)
+    frame_end = int(src.frame_range.y + 1)
     dst.duration = to_time(max(1, float(frame_end - frame_start)))
     samplers = []
     if src.id_root == 'OBJECT':
@@ -684,7 +684,7 @@ def export_obj_action(scene, obj, src, dst, fps, cfg):
         cfg.warning("unsupported id_roor => target_kind : " + src.id_root)
         return
 
-    for f in range(frame_start, frame_end + 1):
+    for f in range(frame_start, frame_end):
         scene.frame_set(f)
         for sampler in samplers:
             sampler.capture(to_time(f))
@@ -699,6 +699,7 @@ class Sampler:
         if pose_bone_idx is not None:
             self.clip.sampled_transform.bone_name = self.obj.pose.bones[self.pose_bone_idx].name
         self.previous_mat4 = None
+        self.last_equals = None
 
     def capture(self, t):
         if self.pose_bone_idx is not None:
@@ -707,21 +708,29 @@ class Sampler:
         else:
             mat4 = self.obj.matrix_local
         if self.previous_mat4 is None or not equals_mat4(mat4, self.previous_mat4, 0.000001):
+            if self.last_equals is not None:
+                self._store(self.last_equals, self.previous_mat4)
+                self.last_equals = None
             self.previous_mat4 = mat4.copy()
-            loc, quat, sca = mat4.decompose()
-            # print("capture : %r, %r, %r, %r, %r, %r " % (t, self.obj, self.pose_bone_idx, loc, quat, sca))
-            dst_clip = self.clip
-            dst_clip.sampled_transform.at.append(t)
-            dst_clip.sampled_transform.translation_x.append(loc.x)
-            dst_clip.sampled_transform.translation_y.append(loc.z)
-            dst_clip.sampled_transform.translation_z.append(-loc.y)
-            dst_clip.sampled_transform.scale_x.append(sca.x)
-            dst_clip.sampled_transform.scale_y.append(sca.z)
-            dst_clip.sampled_transform.scale_z.append(sca.y)
-            dst_clip.sampled_transform.rotation_w.append(quat.w)
-            dst_clip.sampled_transform.rotation_x.append(quat.x)
-            dst_clip.sampled_transform.rotation_y.append(quat.z)
-            dst_clip.sampled_transform.rotation_z.append(-quat.y)
+            self._store(t, mat4)
+        else:
+            self.last_equals = t
+
+    def _store(self, t, mat4):
+        loc, quat, sca = mat4.decompose()
+        # print("capture : %r, %r, %r, %r, %r, %r " % (t, self.obj, self.pose_bone_idx, loc, quat, sca))
+        dst_clip = self.clip
+        dst_clip.sampled_transform.at.append(t)
+        dst_clip.sampled_transform.translation_x.append(loc.x)
+        dst_clip.sampled_transform.translation_y.append(loc.z)
+        dst_clip.sampled_transform.translation_z.append(-loc.y)
+        dst_clip.sampled_transform.scale_x.append(sca.x)
+        dst_clip.sampled_transform.scale_y.append(sca.z)
+        dst_clip.sampled_transform.scale_z.append(sca.y)
+        dst_clip.sampled_transform.rotation_w.append(quat.w)
+        dst_clip.sampled_transform.rotation_x.append(quat.x)
+        dst_clip.sampled_transform.rotation_y.append(quat.z)
+        dst_clip.sampled_transform.rotation_z.append(-quat.y)
 
 
 def equals_mat4(m0, m1, max_cell_delta):
