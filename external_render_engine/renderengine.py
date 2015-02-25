@@ -138,8 +138,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                 objid = cfg.id_of(obj)
                 if (objid not in self.last_selected_strips) or (self.last_selected_strips[objid] != selected_strips):
                     self.last_selected_strips[objid] = selected_strips
-                    if selected_strips:
-                        self.external_notify_strip_change(objid, selected_strips)
+                    self.external_notify_strip_change(objid, selected_strips)
 
     def external_notify_strip_change(self, objid, selected_strips):
         @asyncio.coroutine
@@ -160,7 +159,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     def view_update(self, context):
         self.report({'DEBUG'}, "view_update")
-        if not context.screen.is_animation_playing:
+        if (not context.screen.is_animation_playing) or (self.sceneChangeListener is None):
             self.external_update(context)
 
     def external_update(self, context):
