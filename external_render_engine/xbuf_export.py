@@ -377,7 +377,7 @@ def export_colors(src_mesh, dst_mesh):
     if (colorCount < 1):
         return
     faces = src_mesh.tessfaces
-    face_colors = src_mesh.tessface_vertex_colors[0].data
+    face_colors = src_mesh.tessface_vertex_colors.active.data
     dst = dst_mesh.vertexArrays.add()
     dst.attrib = xbuf.datas_pb2.VertexArray.color
     dst.floats.step = 4
@@ -385,12 +385,14 @@ def export_colors(src_mesh, dst_mesh):
     for face in faces:
         fc = face_colors[face.index]
         floats.extend(fc.color1)
+        floats.append(1.0)
         floats.extend(fc.color2)
+        floats.append(1.0)
         floats.extend(fc.color3)
+        floats.append(1.0)
         if (len(face.vertices) == 4):
-            floats.extend(fc.color1)
-            floats.extend(fc.color3)
             floats.extend(fc.color4)
+            floats.append(1.0)
     dst.floats.values.extend(floats)
 
 
@@ -411,8 +413,6 @@ def export_texcoords(src_mesh, dst_mesh):
             floats.extend(ftc.uv2)
             floats.extend(ftc.uv3)
             if (len(face.vertices) == 4):
-                # floats.extend(ftc.uv1)
-                # floats.extend(ftc.uv3)
                 floats.extend(ftc.uv4)
         dst.floats.values.extend(floats)
 
