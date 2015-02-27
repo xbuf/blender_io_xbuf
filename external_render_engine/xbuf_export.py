@@ -1104,7 +1104,7 @@ def export_obj_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
         custom_params = dst_data.Extensions[xbuf_ext.custom_params_pb2.custom_params].add()
-        custom_params.id = cfg.id_of(src)
+        custom_params.id = "params_" + cfg.id_of(src)
         for key in keys:
             param = custom_params.params.add()
             param.name = key
