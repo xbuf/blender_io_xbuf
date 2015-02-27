@@ -46,6 +46,9 @@ class Client:
         self.host = None
         self.port = None
 
+    def __del__(self):
+        self.close()
+
     def close(self):
         if self.writer is not None:
             print('Close the socket/writer')
