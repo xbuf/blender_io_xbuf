@@ -1,4 +1,4 @@
-# This file is part of external_render_engine.  external_render_engine is free software: you can
+# This file is part of blender_io_xbuf.  blender_io_xbuf is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
 #
@@ -23,16 +23,16 @@ from . import helpers
 __all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
 
 bl_info = {
-    "name": "External Render Engine",
+    "name": "Xbuf Exporter & Render Engine",
     "author": "David Bernard",
-    "version": (0, 4),
-    "blender": (2, 72, 0),
-    "location": "Render > Engine > External Render",
-    "description": "Delegate rendering to an external render engine (eg provided by game engine)",
+    "version": (0, 5),
+    "blender": (2, 73, 0),
+    #"location": "Render > Engine > Xbuf Render",
+    "description": "Xbuf exporter and renderer (via an external xbuf compatible render engine (eg provided by game engine))",
     "warning": "This script is Alpha",
-    "wiki_url": "https://github.com/davidB/blender_external_renderer",
-    "tracker_url": "https://github.com/davidB/blender_external_renderer/issues",
-    "category": "Render"}
+    "wiki_url": "https://github.com/xbuf/blender_io_xbuf",
+    "tracker_url": "https://github.com/xbuf/blender_io_xbuf/issues",
+    "category": "Import-Export"}
 
 import bpy
 
@@ -74,7 +74,7 @@ class xbufSettingsScene(bpy.types.PropertyGroup):
 
 class ExternalRenderPanel(bpy.types.Panel):
     bl_idname = "RENDER_PT_external_render"
-    bl_label = "External Render Config"
+    bl_label = "Xbuf Render Config"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "render"

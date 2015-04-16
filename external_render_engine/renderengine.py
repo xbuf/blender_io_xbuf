@@ -1,4 +1,4 @@
-# This file is part of external_render_engine.  external_render_engine is free software: you can
+# This file is part of blender_io_xbuf.  blender_io_xbuf is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
 #
@@ -20,7 +20,7 @@ from . import protocol     # pylint: disable=W0406
 from . import helpers      # pylint: disable=W0406
 from . import xbuf_export  # pylint: disable=W0406
 
-# gloop = external_render_engine.gloop
+# gloop = blender_io_xbuf.gloop
 
 # http://wiki.blender.org/index.php/Dev:2.6/Source/Render/RenderEngineAPI
 # http://wiki.blender.org/index.php/Dev:2.6/Source/Render/UpdateAPI
@@ -64,7 +64,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
     # These three members are used by blender to set up the
     # RenderEngine; define its internal name, visible name and capabilities.
     bl_idname = "EXTERNAL_RENDER"
-    bl_label = "External Render"
+    bl_label = "Xbuf Render"
     bl_use_preview = False
     is_animation = True
 
