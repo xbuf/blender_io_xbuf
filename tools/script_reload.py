@@ -8,14 +8,14 @@ import sys
 # import bpy
 
 # module_dir = os.path.dirname(bpy.data.filepath)
-module_dir = "/home/dwayne/work/oss/blender_external_renderer"
+module_dir = "/home/dwayne/work/oss/blender_io_xbuf"
 if module_dir not in sys.path:
     sys.path.append(module_dir)
-module_dir = "/home/dwayne/work/oss/blender_external_renderer/modules"
+module_dir = "/home/dwayne/work/oss/blender_io_xbuf/modules"
 if module_dir not in sys.path:
     sys.path.append(module_dir)
 
-import external_render_engine
+import blender_io_xbuf
 import xbuf.datas_pb2
 import xbuf.cmds_pb2
 import xbuf_ext.custom_params_pb2
@@ -23,7 +23,7 @@ import xbuf_ext.animations_kf_pb2
 
 # unregister previously code
 try:
-    external_render_engine.unregister()
+    blender_io_xbuf.unregister()
 except (RuntimeError):
     pass
 
@@ -35,9 +35,9 @@ imp.reload(xbuf.cmds_pb2)
 imp.reload(xbuf_ext.custom_params_pb2)
 imp.reload(xbuf_ext.animations_kf_pb2)
 
-imp.reload(external_render_engine)
-imp.reload(external_render_engine.helpers)
-imp.reload(external_render_engine.xbuf_export)
-imp.reload(external_render_engine.protocol)
-imp.reload(external_render_engine.renderengine)
-external_render_engine.register()
+imp.reload(blender_io_xbuf)
+imp.reload(blender_io_xbuf.helpers)
+imp.reload(blender_io_xbuf.xbuf_export)
+imp.reload(blender_io_xbuf.protocol)
+imp.reload(blender_io_xbuf.renderengine)
+blender_io_xbuf.register()
