@@ -8,10 +8,10 @@ import sys
 # import bpy
 
 # module_dir = os.path.dirname(bpy.data.filepath)
-module_dir = "/home/dwayne/work/oss/blender_io_xbuf"
+module_dir = "/home/dwayne/work/xbuf/blender_io_xbuf"
 if module_dir not in sys.path:
     sys.path.append(module_dir)
-module_dir = "/home/dwayne/work/oss/blender_io_xbuf/modules"
+module_dir = "/home/dwayne/work/xbuf/blender_io_xbuf/modules"
 if module_dir not in sys.path:
     sys.path.append(module_dir)
 
