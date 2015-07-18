@@ -15,12 +15,6 @@
 
 # <pep8 compliant>
 
-from . import renderengine
-from . import protocol
-from . import xbuf_export
-from . import helpers
-
-__all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
 
 bl_info = {
     "name": "Xbuf Exporter & Render Engine",
@@ -33,6 +27,35 @@ bl_info = {
     "wiki_url": "https://github.com/xbuf/blender_io_xbuf",
     "tracker_url": "https://github.com/xbuf/blender_io_xbuf/issues",
     "category": "Import-Export"}
+
+import sys, os
+# Python dependencies are bundled inside the xxxxx/../modules folder
+_modules_path = os.path.join(os.path.dirname(__file__), "modules")
+if not _modules_path in sys.path:
+    sys.path.append(_modules_path)
+del _modules_path
+
+# Use F8 to reload (see http://wiki.blender.org/index.php/Dev:2.5/Py/Scripts/Cookbook/Code_snippets/Multi-File_packages)
+if "bpy" in locals():
+    import imp
+    imp.reload(xbuf.datas_pb2)
+    imp.reload(xbuf.cmds_pb2)
+    imp.reload(xbuf_ext.custom_params_pb2)
+    imp.reload(xbuf_ext.animations_kf_pb2)
+
+    imp.reload(blender_io_xbuf)
+    imp.reload(blender_io_xbuf.helpers)
+    imp.reload(blender_io_xbuf.xbuf_export)
+    imp.reload(blender_io_xbuf.protocol)
+    imp.reload(blender_io_xbuf.renderengine)
+    print("Reloaded multifiles")
+else:
+    from . import renderengine
+    from . import protocol
+    from . import xbuf_export
+    from . import helpers
+    
+__all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
 
 import bpy
 
