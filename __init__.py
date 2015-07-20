@@ -38,23 +38,23 @@ del _modules_path
 # Use F8 to reload (see http://wiki.blender.org/index.php/Dev:2.5/Py/Scripts/Cookbook/Code_snippets/Multi-File_packages)
 if "bpy" in locals():
     import imp
-    imp.reload(xbuf.datas_pb2)
-    imp.reload(xbuf.cmds_pb2)
-    imp.reload(xbuf_ext.custom_params_pb2)
-    imp.reload(xbuf_ext.animations_kf_pb2)
+    # imp.reload(xbuf.datas_pb2)
+    # imp.reload(xbuf.cmds_pb2)
+    # imp.reload(xbuf_ext.custom_params_pb2)
+    # imp.reload(xbuf_ext.animations_kf_pb2)
 
-    imp.reload(blender_io_xbuf)
-    imp.reload(blender_io_xbuf.helpers)
-    imp.reload(blender_io_xbuf.xbuf_export)
-    imp.reload(blender_io_xbuf.protocol)
-    imp.reload(blender_io_xbuf.renderengine)
+    #imp.reload(blender_io_xbuf)
+    imp.reload(helpers)
+    imp.reload(xbuf_export)
+    imp.reload(protocol)
+    imp.reload(renderengine)
     print("Reloaded multifiles")
 else:
     from . import renderengine
     from . import protocol
     from . import xbuf_export
     from . import helpers
-    
+
 __all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
 
 import bpy
