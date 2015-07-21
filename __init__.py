@@ -21,41 +21,39 @@ bl_info = {
     "author": "David Bernard",
     "version": (0, 5),
     "blender": (2, 73, 0),
-    #"location": "Render > Engine > Xbuf Render",
+    # "location": "Render > Engine > Xbuf Render",
     "description": "Xbuf exporter and renderer (via an external xbuf compatible render engine (eg provided by game engine))",
     "warning": "This script is Alpha",
     "wiki_url": "https://github.com/xbuf/blender_io_xbuf",
     "tracker_url": "https://github.com/xbuf/blender_io_xbuf/issues",
     "category": "Import-Export"}
 
-import sys, os
+import sys
+import os
 # Python dependencies are bundled inside the xxxxx/../modules folder
 _modules_path = os.path.join(os.path.dirname(__file__), "modules")
-if not _modules_path in sys.path:
+if _modules_path not in sys.path:
     sys.path.append(_modules_path)
 del _modules_path
 
 # Use F8 to reload (see http://wiki.blender.org/index.php/Dev:2.5/Py/Scripts/Cookbook/Code_snippets/Multi-File_packages)
-if "bpy" in locals():
-    import imp
-    # imp.reload(xbuf.datas_pb2)
-    # imp.reload(xbuf.cmds_pb2)
-    # imp.reload(xbuf_ext.custom_params_pb2)
-    # imp.reload(xbuf_ext.animations_kf_pb2)
+from blender_io_xbuf import renderengine
+from blender_io_xbuf import protocol
+from blender_io_xbuf import xbuf_export
+from blender_io_xbuf import helpers
 
-    #imp.reload(blender_io_xbuf)
-    imp.reload(helpers)
-    imp.reload(xbuf_export)
-    imp.reload(protocol)
-    imp.reload(renderengine)
-    print("Reloaded multifiles")
-else:
-    from . import renderengine
-    from . import protocol
-    from . import xbuf_export
-    from . import helpers
-
-__all__ = ['renderengine', 'protocol', 'helpers', 'xbuf_export']
+"""If the module is reloaded, reload all submodules as well
+   This will reload all modules at the initial import as well but
+   that should not be a problem
+"""
+import imp
+import types
+locals_copy = dict(locals())
+for var in locals_copy:
+    tmp = locals_copy[var]
+    if isinstance(tmp, types.ModuleType) and tmp.__package__ == "blender_io_xbuf":
+        # print("Reloading: %s" % (var))
+        imp.reload(tmp)
 
 import bpy
 
@@ -154,17 +152,27 @@ def register_renderer():
     import bl_ui
     panels = [
         bl_ui.properties_render.RENDER_PT_render,
-        # bl_ui.properties_material.MATERIAL_PT_preview,
-        bl_ui.properties_material.MATERIAL_PT_context_material,
-        bl_ui.properties_material.MATERIAL_PT_diffuse,
-        bl_ui.properties_material.MATERIAL_PT_specular,
-        bl_ui.properties_material.MATERIAL_PT_shadow,
-        bl_ui.properties_material.MATERIAL_PT_shading,
-        bl_ui.properties_material.MATERIAL_PT_custom_props,
-        bl_ui.properties_data_lamp.DATA_PT_lamp,
-        bl_ui.properties_data_lamp.DATA_PT_spot,
-        bl_ui.properties_data_lamp.DATA_PT_custom_props_lamp,
+        # # bl_ui.properties_material.MATERIAL_PT_preview,
+        # bl_ui.properties_material.MATERIAL_PT_context_material,
+        # bl_ui.properties_material.MATERIAL_PT_diffuse,
+        # bl_ui.properties_material.MATERIAL_PT_specular,
+        # bl_ui.properties_material.MATERIAL_PT_shadow,
+        # bl_ui.properties_material.MATERIAL_PT_shading,
+        # bl_ui.properties_material.MATERIAL_PT_custom_props,
+        # bl_ui.properties_data_lamp.DATA_PT_lamp,
+        # bl_ui.properties_data_lamp.DATA_PT_spot,
+        # bl_ui.properties_data_lamp.DATA_PT_custom_props_lamp,
     ]
+    # register in every properties'panels already compatible with BLENDER_RENDER (except render)
+    for k1 in dir(bl_ui):
+        if k1.startswith('properties_') and k1 not in ['properties_render', 'properties_freestyle']:
+            v1 = getattr(bl_ui, k1)
+            for k2 in dir(v1):
+                if k2.find('_PT_') > 0:
+                    v2 = getattr(v1, k2)
+                    if hasattr(v2, 'COMPAT_ENGINES') and 'BLENDER_RENDER' in getattr(v2, 'COMPAT_ENGINES'):
+                        panels.append(v2)
+
     for p in panels:
         p.COMPAT_ENGINES.add(renderengine.ExternalRenderEngine.bl_idname)
 
