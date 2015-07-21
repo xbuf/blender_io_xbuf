@@ -55,7 +55,7 @@ class SceneChangeListener:
             if obj.type == 'MESH':
                 for i in range(len(obj.material_slots)):
                     src_mat = obj.material_slots[i].material
-                    if src_mat.is_updated or self.first:
+                    if (src_mat is not None) and (src_mat.is_updated or self.first):
                         self.ctx.need_update(src_mat, True)
         self.first = False
 
