@@ -454,18 +454,21 @@ def export_material(src_mat, dst_mat, cfg):
 
 def export_tex(src, dst, cfg):
     from pathlib import PurePath, Path
-    ispacked = src.texture.image.filepath.startswith('//')
+    #ispacked = src.texture.image.filepath.startswith('//')
+    ispacked = not (not src.texture.image.packed_file)
     dst.id = cfg.id_of(src.texture)
 
     if ispacked:
-        rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:])
-        if not cfg.need_update(src.texture):
+        rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
+        if cfg.need_update(src.texture):
             abspath = Path(cfg.assets_path) / rpath
             if not abspath.parent.exists():
                 abspath.parent.mkdir(parents=True)
             print("path %r => %r " % (rpath, abspath))
             with abspath.open('wb') as f:
                 f.write(src.texture.image.packed_file.data)
+        else:
+            print("no update of %r .. %r" % (dst.id, rpath))
         dst.rpath = str.join('/', rpath.parts)
     # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.
