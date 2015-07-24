@@ -193,16 +193,16 @@ def export_all_tobjects(scene, data, cfg):
             cnv_scale(obj.scale, transform.scale)
             # convert zup only for direct child of root (no parent)
             cnv_translation(obj.location, transform.translation)
-            #cnv_scale(helpers.rot_quat(obj), transform.rotation)
-            #if obj.type == 'MESH':
+            # cnv_scale(helpers.rot_quat(obj), transform.rotation)
+            # if obj.type == 'MESH':
             #    cnv_translation(obj.location, transform.translation)
             #    cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
             # if obj.parent is None:
             #     cnv_translation(obj.location, transform.translation)
             #     cnv_quatZupToYup(helpers.rot_quat(obj), transform.rotation)
-            #else:
+            # else:
             if obj.type == 'MESH':
-                #cnv_scale(helpers.rot_quat(obj), transform.rotation)
+                # cnv_scale(helpers.rot_quat(obj), transform.rotation)
                 cnv_rotation(helpers.rot_quat(obj), transform.rotation)
             elif obj.type == 'Armature':
                 cnv_rotation(helpers.rot_quat(obj), transform.rotation)
@@ -244,6 +244,7 @@ def export_all_materials(scene, data, cfg):
                 if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
+                print("add %r (%r) to %r (%r)" % (xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj)))
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
 
 
@@ -442,6 +443,7 @@ def export_material(src_mat, dst_mat, cfg):
         if ((textureSlot) and (textureSlot.use) and (textureSlot.texture.type == "IMAGE")):
             if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
                 export_tex(textureSlot, dst_mat.color_map, cfg)
+                print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
             elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
                 export_tex(textureSlot, dst_mat.speculat_map, cfg)
             elif ((textureSlot.use_map_emit)):
@@ -454,22 +456,28 @@ def export_material(src_mat, dst_mat, cfg):
 
 def export_tex(src, dst, cfg):
     from pathlib import PurePath, Path
-    #ispacked = src.texture.image.filepath.startswith('//')
+    # ispacked = src.texture.image.filepath.startswith('//')
     ispacked = not (not src.texture.image.packed_file)
     dst.id = cfg.id_of(src.texture)
 
-    if ispacked:
-        rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
-        if cfg.need_update(src.texture):
-            abspath = Path(cfg.assets_path) / rpath
-            if not abspath.parent.exists():
-                abspath.parent.mkdir(parents=True)
-            print("path %r => %r " % (rpath, abspath))
+
+    rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
+    if cfg.need_update(src.texture):
+        abspath = Path(cfg.assets_path) / rpath
+        if not abspath.parent.exists():
+            abspath.parent.mkdir(parents=True)
+        print("path %r => %r " % (rpath, abspath))
+        if ispacked:
             with abspath.open('wb') as f:
                 f.write(src.texture.image.packed_file.data)
         else:
-            print("no update of %r .. %r" % (dst.id, rpath))
-        dst.rpath = str.join('/', rpath.parts)
+            print("no packed texture %r // %r" % (src.texture, src.texture.image.filepath_from_user()))
+            # TODO check if file exists,...
+            import shutil
+            shutil.copyfile(str(src.texture.image.filepath_from_user()), str(abspath))
+    else:
+        print("no update of %r .. %r" % (dst.id, rpath))
+    dst.rpath = str.join('/', rpath.parts)
     # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.
     # uscale = textureSlot.scale[0]
@@ -645,7 +653,7 @@ def export_all_actions(scene, dst_data, cfg):
                     action = strip.action
                     if cfg.need_update(action):
                         dst = dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf].add()
-                        #export_action(action, dst, fps, cfg)
+                        # export_action(action, dst, fps, cfg)
                         export_obj_action(scene, obj, action, dst, fps, cfg)
                         # relativize_bones(dst, obj)
                     add_relation_raw(
@@ -1103,6 +1111,7 @@ def equals_mat4(m0, m1, max_cell_delta):
 #         return (vec3.y, 1.0)
 # ------------------------------------------------------------------------------
 
+
 def export_obj_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
@@ -1112,17 +1121,17 @@ def export_obj_customproperties(src, dst_node, dst_data, cfg):
             param = custom_params.params.add()
             param.name = key
             value = src[key]
-            if type(value) == bool:
+            if isinstance(value, bool):
                 param.vbool = value
-            elif type(value) == str:
+            elif isinstance(value, str):
                 param.vstring = value
-            elif type(value) == float:
+            elif isinstance(value, float):
                 param.vfloat = value
-            elif type(value) == int:
+            elif isinstance(value) == int:
                 param.vint = value
-            elif type(value) == mathutils.Vector:
+            elif isinstance(value, mathutils.Vector):
                 cnv_vec3(value, param.vvec3)
-            elif type(value) == mathutils.Quaternion:
+            elif isinstance(value, mathutils.Quaternion):
                 cnv_quat(value, param.vquat)
         add_relation(dst_data.relations, dst_node, custom_params)
 
