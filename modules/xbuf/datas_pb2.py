@@ -18,7 +18,7 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/datas.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x10xbuf/datas.proto\x12\x04xbuf\"\xed\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x30\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.xbuf.Relation\x12\x1f\n\x08tobjects\x18\x03 \x03(\x0b\x32\r.xbuf.TObject\x12\"\n\ngeometries\x18\x04 \x03(\x0b\x32\x0e.xbuf.Geometry\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.xbuf.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.xbuf.Light\x12!\n\tskeletons\x18\x07 \x03(\x0b\x32\x0e.xbuf.Skeleton*\x06\x08\xf4\x03\x10\xd1\x0f\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"@\n\x08Geometry\x12\n\n\x02id\x18\x01 \x02(\t\x12\x1a\n\x06meshes\x18\x02 \x03(\x0b\x32\n.xbuf.Mesh\x12\x0c\n\x04name\x18\x03 \x01(\t\"\x9a\x02\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.xbuf.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.xbuf.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.xbuf.IndexArray\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x18\n\x04skin\x18\x07 \x01(\x0b\x32\n.xbuf.Skin\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.xbuf.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.xbuf.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.xbuf.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"L\n\x04Skin\x12\x15\n\tboneCount\x18\x02 \x03(\x05\x42\x02\x10\x01\x12\x15\n\tboneIndex\x18\x03 \x03(\x05\x42\x02\x10\x01\x12\x16\n\nboneWeight\x18\x04 \x03(\x02\x42\x02\x10\x01\"\xbc\x04\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x17\n\tshadeless\x18\x05 \x01(\x08:\x04true\x12\x1a\n\x05\x63olor\x18\n \x01(\x0b\x32\x0b.xbuf.Color\x12 \n\tcolor_map\x18\x0b \x01(\x0b\x32\r.xbuf.Texture\x12\x0f\n\x07opacity\x18\x0c \x01(\x02\x12\"\n\x0bopacity_map\x18\r \x01(\x0b\x32\r.xbuf.Texture\x12\x1a\n\x06normal\x18\x0e \x01(\x0b\x32\n.xbuf.Vec3\x12!\n\nnormal_map\x18\x0f \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\troughness\x18\x10 \x01(\x02\x12$\n\rroughness_map\x18\x11 \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\tmetalness\x18\x12 \x01(\x02\x12$\n\rmetalness_map\x18\x13 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08specular\x18\x14 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0cspecular_map\x18\x15 \x01(\x0b\x32\r.xbuf.Texture\x12\x16\n\x0especular_power\x18\x16 \x01(\x02\x12)\n\x12specular_power_map\x18\x17 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08\x65mission\x18\x18 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0c\x65mission_map\x18\x19 \x01(\x0b\x32\r.xbuf.Texture\"\xaa\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.xbuf.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.xbuf.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12\x1a\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08:\x05\x66\x61lse\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.xbuf.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.xbuf.Attenuation\x12\x0c\n\x04name\x18\x08 \x01(\t\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x02(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.xbuf.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.xbuf.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.xbuf.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.xbuf.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31\"d\n\x08Skeleton\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x19\n\x05\x62ones\x18\x03 \x03(\x0b\x32\n.xbuf.Bone\x12#\n\x0b\x62ones_graph\x18\x04 \x03(\x0b\x32\x0e.xbuf.Relation\"D\n\x04\x42one\x12\n\n\x02id\x18\x01 \x02(\t\x12\"\n\ttransform\x18\x02 \x02(\x0b\x32\x0f.xbuf.Transform\x12\x0c\n\x04name\x18\x04 \x01(\t\"G\n\x07TObject\x12\n\n\x02id\x18\x01 \x02(\t\x12\"\n\ttransform\x18\x02 \x02(\x0b\x32\x0f.xbuf.Transform\x12\x0c\n\x04name\x18\x04 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.xbuf.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.xbuf.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.xbuf.Vec3\"\x1c\n\x04Vec2\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"3\n\x05\x43olor\x12\t\n\x01r\x18\x01 \x02(\x02\x12\t\n\x01g\x18\x02 \x02(\x02\x12\t\n\x01\x62\x18\x03 \x02(\x02\x12\t\n\x01\x61\x18\x04 \x02(\x02\"d\n\x07Texture\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x05rpath\x18\x03 \x01(\tH\x00\x12&\n\x05tex2d\x18\x04 \x01(\x0b\x32\x15.xbuf.Texture2DInlineH\x00\x42\x06\n\x04\x64\x61ta\"\x96\x01\n\x0fTexture2DInline\x12,\n\x06\x66ormat\x18\x01 \x02(\x0e\x32\x1c.xbuf.Texture2DInline.Format\x12\r\n\x05width\x18\x02 \x02(\r\x12\x0e\n\x06height\x18\x03 \x02(\r\x12\x0c\n\x04\x64\x61ta\x18\x04 \x02(\x0c\"(\n\x06\x46ormat\x12\x08\n\x04rgb8\x10\x01\x12\t\n\x05rgba8\x10\x02\x12\t\n\x05\x62gra8\x10\x03\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02\x42\x02H\x03')
+  serialized_pb=_b('\n\x10xbuf/datas.proto\x12\x04xbuf\"\xe5\x01\n\x04\x44\x61ta\x12\x12\n\x07version\x18\x01 \x01(\r:\x01\x30\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.xbuf.Relation\x12\x1f\n\x08tobjects\x18\x03 \x03(\x0b\x32\r.xbuf.TObject\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.xbuf.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.xbuf.Light\x12!\n\tskeletons\x18\x07 \x03(\x0b\x32\x0e.xbuf.Skeleton\x12\x1a\n\x06meshes\x18\x08 \x03(\x0b\x32\n.xbuf.Mesh*\x06\x08\xf4\x03\x10\xd1\x0f\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t\"\x9a\x02\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.xbuf.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.xbuf.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.xbuf.IndexArray\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x18\n\x04skin\x18\x07 \x01(\x0b\x32\n.xbuf.Skin\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.xbuf.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.xbuf.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.xbuf.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"L\n\x04Skin\x12\x15\n\tboneCount\x18\x02 \x03(\x05\x42\x02\x10\x01\x12\x15\n\tboneIndex\x18\x03 \x03(\x05\x42\x02\x10\x01\x12\x16\n\nboneWeight\x18\x04 \x03(\x02\x42\x02\x10\x01\"\xbc\x04\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x17\n\tshadeless\x18\x05 \x01(\x08:\x04true\x12\x1a\n\x05\x63olor\x18\n \x01(\x0b\x32\x0b.xbuf.Color\x12 \n\tcolor_map\x18\x0b \x01(\x0b\x32\r.xbuf.Texture\x12\x0f\n\x07opacity\x18\x0c \x01(\x02\x12\"\n\x0bopacity_map\x18\r \x01(\x0b\x32\r.xbuf.Texture\x12\x1a\n\x06normal\x18\x0e \x01(\x0b\x32\n.xbuf.Vec3\x12!\n\nnormal_map\x18\x0f \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\troughness\x18\x10 \x01(\x02\x12$\n\rroughness_map\x18\x11 \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\tmetalness\x18\x12 \x01(\x02\x12$\n\rmetalness_map\x18\x13 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08specular\x18\x14 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0cspecular_map\x18\x15 \x01(\x0b\x32\r.xbuf.Texture\x12\x16\n\x0especular_power\x18\x16 \x01(\x02\x12)\n\x12specular_power_map\x18\x17 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08\x65mission\x18\x18 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0c\x65mission_map\x18\x19 \x01(\x0b\x32\r.xbuf.Texture\"\xaa\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.xbuf.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.xbuf.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12\x1a\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08:\x05\x66\x61lse\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.xbuf.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.xbuf.Attenuation\x12\x0c\n\x04name\x18\x08 \x01(\t\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x02(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.xbuf.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.xbuf.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.xbuf.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.xbuf.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31\"d\n\x08Skeleton\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x19\n\x05\x62ones\x18\x03 \x03(\x0b\x32\n.xbuf.Bone\x12#\n\x0b\x62ones_graph\x18\x04 \x03(\x0b\x32\x0e.xbuf.Relation\"D\n\x04\x42one\x12\n\n\x02id\x18\x01 \x02(\t\x12\"\n\ttransform\x18\x02 \x02(\x0b\x32\x0f.xbuf.Transform\x12\x0c\n\x04name\x18\x04 \x01(\t\"G\n\x07TObject\x12\n\n\x02id\x18\x01 \x02(\t\x12\"\n\ttransform\x18\x02 \x02(\x0b\x32\x0f.xbuf.Transform\x12\x0c\n\x04name\x18\x04 \x01(\t\"k\n\tTransform\x12\x1f\n\x0btranslation\x18\x01 \x02(\x0b\x32\n.xbuf.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.xbuf.Quaternion\x12\x19\n\x05scale\x18\x03 \x02(\x0b\x32\n.xbuf.Vec3\"\x1c\n\x04Vec2\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\"\'\n\x04Vec3\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\"2\n\x04Vec4\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"3\n\x05\x43olor\x12\t\n\x01r\x18\x01 \x02(\x02\x12\t\n\x01g\x18\x02 \x02(\x02\x12\t\n\x01\x62\x18\x03 \x02(\x02\x12\t\n\x01\x61\x18\x04 \x02(\x02\"d\n\x07Texture\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x05rpath\x18\x03 \x01(\tH\x00\x12&\n\x05tex2d\x18\x04 \x01(\x0b\x32\x15.xbuf.Texture2DInlineH\x00\x42\x06\n\x04\x64\x61ta\"\x96\x01\n\x0fTexture2DInline\x12,\n\x06\x66ormat\x18\x01 \x02(\x0e\x32\x1c.xbuf.Texture2DInline.Format\x12\r\n\x05width\x18\x02 \x02(\r\x12\x0e\n\x06height\x18\x03 \x02(\r\x12\x0c\n\x04\x64\x61ta\x18\x04 \x02(\x0c\"(\n\x06\x46ormat\x12\x08\n\x04rgb8\x10\x01\x12\t\n\x05rgba8\x10\x02\x12\t\n\x05\x62gra8\x10\x03\"8\n\nQuaternion\x12\t\n\x01x\x18\x01 \x02(\x02\x12\t\n\x01y\x18\x02 \x02(\x02\x12\t\n\x01z\x18\x03 \x02(\x02\x12\t\n\x01w\x18\x04 \x02(\x02\"\xd6\x01\n\x04Mat4\x12\x0b\n\x03\x63\x30\x30\x18\x01 \x02(\x02\x12\x0b\n\x03\x63\x31\x30\x18\x02 \x02(\x02\x12\x0b\n\x03\x63\x32\x30\x18\x03 \x02(\x02\x12\x0b\n\x03\x63\x33\x30\x18\x04 \x02(\x02\x12\x0b\n\x03\x63\x30\x31\x18\x05 \x02(\x02\x12\x0b\n\x03\x63\x31\x31\x18\x06 \x02(\x02\x12\x0b\n\x03\x63\x32\x31\x18\x07 \x02(\x02\x12\x0b\n\x03\x63\x33\x31\x18\x08 \x02(\x02\x12\x0b\n\x03\x63\x30\x32\x18\t \x02(\x02\x12\x0b\n\x03\x63\x31\x32\x18\n \x02(\x02\x12\x0b\n\x03\x63\x32\x32\x18\x0b \x02(\x02\x12\x0b\n\x03\x63\x33\x32\x18\x0c \x02(\x02\x12\x0b\n\x03\x63\x30\x33\x18\r \x02(\x02\x12\x0b\n\x03\x63\x31\x33\x18\x0e \x02(\x02\x12\x0b\n\x03\x63\x32\x33\x18\x0f \x02(\x02\x12\x0b\n\x03\x63\x33\x33\x18\x10 \x02(\x02')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -53,8 +53,8 @@ _MESH_PRIMITIVE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=585,
-  serialized_end=670,
+  serialized_start=511,
+  serialized_end=596,
 )
 _sym_db.RegisterEnumDescriptor(_MESH_PRIMITIVE)
 
@@ -123,8 +123,8 @@ _VERTEXARRAY_ATTRIB = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=786,
-  serialized_end=993,
+  serialized_start=712,
+  serialized_end=919,
 )
 _sym_db.RegisterEnumDescriptor(_VERTEXARRAY_ATTRIB)
 
@@ -153,8 +153,8 @@ _LIGHT_KIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=2061,
-  serialized_end=2118,
+  serialized_start=1987,
+  serialized_end=2044,
 )
 _sym_db.RegisterEnumDescriptor(_LIGHT_KIND)
 
@@ -179,8 +179,8 @@ _TEXTURE2DINLINE_FORMAT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=3426,
-  serialized_end=3466,
+  serialized_start=3352,
+  serialized_end=3392,
 )
 _sym_db.RegisterEnumDescriptor(_TEXTURE2DINLINE_FORMAT)
 
@@ -214,29 +214,29 @@ _DATA = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='geometries', full_name='xbuf.Data.geometries', index=3,
-      number=4, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='materials', full_name='xbuf.Data.materials', index=4,
+      name='materials', full_name='xbuf.Data.materials', index=3,
       number=5, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='lights', full_name='xbuf.Data.lights', index=5,
+      name='lights', full_name='xbuf.Data.lights', index=4,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='skeletons', full_name='xbuf.Data.skeletons', index=6,
+      name='skeletons', full_name='xbuf.Data.skeletons', index=5,
       number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='meshes', full_name='xbuf.Data.meshes', index=6,
+      number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -253,7 +253,7 @@ _DATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=27,
-  serialized_end=264,
+  serialized_end=256,
 )
 
 
@@ -296,52 +296,8 @@ _RELATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=266,
-  serialized_end=319,
-)
-
-
-_GEOMETRY = _descriptor.Descriptor(
-  name='Geometry',
-  full_name='xbuf.Geometry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='xbuf.Geometry.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='meshes', full_name='xbuf.Geometry.meshes', index=1,
-      number=2, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='name', full_name='xbuf.Geometry.name', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=321,
-  serialized_end=385,
+  serialized_start=258,
+  serialized_end=311,
 )
 
 
@@ -413,8 +369,8 @@ _MESH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=388,
-  serialized_end=670,
+  serialized_start=314,
+  serialized_end=596,
 )
 
 
@@ -461,8 +417,8 @@ _VERTEXARRAY = _descriptor.Descriptor(
       name='buffer', full_name='xbuf.VertexArray.buffer',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=673,
-  serialized_end=1003,
+  serialized_start=599,
+  serialized_end=929,
 )
 
 
@@ -494,8 +450,8 @@ _INDEXARRAY = _descriptor.Descriptor(
       name='buffer', full_name='xbuf.IndexArray.buffer',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1005,
-  serialized_end=1061,
+  serialized_start=931,
+  serialized_end=987,
 )
 
 
@@ -531,8 +487,8 @@ _FLOATBUFFER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1063,
-  serialized_end=1113,
+  serialized_start=989,
+  serialized_end=1039,
 )
 
 
@@ -568,8 +524,8 @@ _UINTBUFFER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1115,
-  serialized_end=1164,
+  serialized_start=1041,
+  serialized_end=1090,
 )
 
 
@@ -612,8 +568,8 @@ _SKIN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1166,
-  serialized_end=1242,
+  serialized_start=1092,
+  serialized_end=1168,
 )
 
 
@@ -775,8 +731,8 @@ _MATERIAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1245,
-  serialized_end=1817,
+  serialized_start=1171,
+  serialized_end=1743,
 )
 
 
@@ -855,8 +811,8 @@ _LIGHT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1820,
-  serialized_end=2118,
+  serialized_start=1746,
+  serialized_end=2044,
 )
 
 
@@ -916,8 +872,8 @@ _ATTENUATION = _descriptor.Descriptor(
       name='curve', full_name='xbuf.Attenuation.curve',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2121,
-  serialized_end=2345,
+  serialized_start=2047,
+  serialized_end=2271,
 )
 
 
@@ -953,8 +909,8 @@ _ATTENUATIONLINEAR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2347,
-  serialized_end=2400,
+  serialized_start=2273,
+  serialized_end=2326,
 )
 
 
@@ -990,8 +946,8 @@ _ATTENUATIONSMOOTH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2402,
-  serialized_end=2455,
+  serialized_start=2328,
+  serialized_end=2381,
 )
 
 
@@ -1041,8 +997,8 @@ _ATTENUATIONINVERSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2457,
-  serialized_end=2554,
+  serialized_start=2383,
+  serialized_end=2480,
 )
 
 
@@ -1099,8 +1055,8 @@ _ATTENUATIONINVERSESQUARE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2556,
-  serialized_end=2681,
+  serialized_start=2482,
+  serialized_end=2607,
 )
 
 
@@ -1150,8 +1106,8 @@ _SKELETON = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2683,
-  serialized_end=2783,
+  serialized_start=2609,
+  serialized_end=2709,
 )
 
 
@@ -1194,8 +1150,8 @@ _BONE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2785,
-  serialized_end=2853,
+  serialized_start=2711,
+  serialized_end=2779,
 )
 
 
@@ -1238,8 +1194,8 @@ _TOBJECT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2855,
-  serialized_end=2926,
+  serialized_start=2781,
+  serialized_end=2852,
 )
 
 
@@ -1282,8 +1238,8 @@ _TRANSFORM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2928,
-  serialized_end=3035,
+  serialized_start=2854,
+  serialized_end=2961,
 )
 
 
@@ -1319,8 +1275,8 @@ _VEC2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3037,
-  serialized_end=3065,
+  serialized_start=2963,
+  serialized_end=2991,
 )
 
 
@@ -1363,8 +1319,8 @@ _VEC3 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3067,
-  serialized_end=3106,
+  serialized_start=2993,
+  serialized_end=3032,
 )
 
 
@@ -1414,8 +1370,8 @@ _VEC4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3108,
-  serialized_end=3158,
+  serialized_start=3034,
+  serialized_end=3084,
 )
 
 
@@ -1465,8 +1421,8 @@ _COLOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3160,
-  serialized_end=3211,
+  serialized_start=3086,
+  serialized_end=3137,
 )
 
 
@@ -1519,8 +1475,8 @@ _TEXTURE = _descriptor.Descriptor(
       name='data', full_name='xbuf.Texture.data',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3213,
-  serialized_end=3313,
+  serialized_start=3139,
+  serialized_end=3239,
 )
 
 
@@ -1571,8 +1527,8 @@ _TEXTURE2DINLINE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3316,
-  serialized_end=3466,
+  serialized_start=3242,
+  serialized_end=3392,
 )
 
 
@@ -1622,8 +1578,8 @@ _QUATERNION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3468,
-  serialized_end=3524,
+  serialized_start=3394,
+  serialized_end=3450,
 )
 
 
@@ -1757,17 +1713,16 @@ _MAT4 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3527,
-  serialized_end=3741,
+  serialized_start=3453,
+  serialized_end=3667,
 )
 
 _DATA.fields_by_name['relations'].message_type = _RELATION
 _DATA.fields_by_name['tobjects'].message_type = _TOBJECT
-_DATA.fields_by_name['geometries'].message_type = _GEOMETRY
 _DATA.fields_by_name['materials'].message_type = _MATERIAL
 _DATA.fields_by_name['lights'].message_type = _LIGHT
 _DATA.fields_by_name['skeletons'].message_type = _SKELETON
-_GEOMETRY.fields_by_name['meshes'].message_type = _MESH
+_DATA.fields_by_name['meshes'].message_type = _MESH
 _MESH.fields_by_name['primitive'].enum_type = _MESH_PRIMITIVE
 _MESH.fields_by_name['vertexArrays'].message_type = _VERTEXARRAY
 _MESH.fields_by_name['indexArrays'].message_type = _INDEXARRAY
@@ -1834,7 +1789,6 @@ _TEXTURE2DINLINE.fields_by_name['format'].enum_type = _TEXTURE2DINLINE_FORMAT
 _TEXTURE2DINLINE_FORMAT.containing_type = _TEXTURE2DINLINE
 DESCRIPTOR.message_types_by_name['Data'] = _DATA
 DESCRIPTOR.message_types_by_name['Relation'] = _RELATION
-DESCRIPTOR.message_types_by_name['Geometry'] = _GEOMETRY
 DESCRIPTOR.message_types_by_name['Mesh'] = _MESH
 DESCRIPTOR.message_types_by_name['VertexArray'] = _VERTEXARRAY
 DESCRIPTOR.message_types_by_name['IndexArray'] = _INDEXARRAY
@@ -1874,13 +1828,6 @@ Relation = _reflection.GeneratedProtocolMessageType('Relation', (_message.Messag
   # @@protoc_insertion_point(class_scope:xbuf.Relation)
   ))
 _sym_db.RegisterMessage(Relation)
-
-Geometry = _reflection.GeneratedProtocolMessageType('Geometry', (_message.Message,), dict(
-  DESCRIPTOR = _GEOMETRY,
-  __module__ = 'xbuf.datas_pb2'
-  # @@protoc_insertion_point(class_scope:xbuf.Geometry)
-  ))
-_sym_db.RegisterMessage(Geometry)
 
 Mesh = _reflection.GeneratedProtocolMessageType('Mesh', (_message.Message,), dict(
   DESCRIPTOR = _MESH,
@@ -2058,8 +2005,6 @@ Mat4 = _reflection.GeneratedProtocolMessageType('Mat4', (_message.Message,), dic
 _sym_db.RegisterMessage(Mat4)
 
 
-DESCRIPTOR.has_options = True
-DESCRIPTOR._options = _descriptor._ParseOptions(descriptor_pb2.FileOptions(), _b('H\003'))
 _FLOATBUFFER.fields_by_name['values'].has_options = True
 _FLOATBUFFER.fields_by_name['values']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
 _UINTBUFFER.fields_by_name['values'].has_options = True

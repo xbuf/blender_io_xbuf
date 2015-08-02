@@ -223,15 +223,15 @@ def export_all_geometries(scene, data, cfg):
             continue
         if obj.type == 'MESH':
             if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
-                geometry = data.geometries.add()
-                export_geometry(obj, geometry, scene, cfg)
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Geometry.__name__, cfg.id_of(obj.data))
+                mesh = data.meshes.add()
+                export_mesh(obj, mesh, scene, cfg)
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Mesh.__name__, mesh.id)
         elif obj.type == 'LAMP':
             src_light = obj.data
             if cfg.need_update(src_light):
                 dst_light = data.lights.add()
                 export_light(src_light, dst_light, cfg)
-            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light))
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, dst_light.id)
 
 
 def export_all_materials(scene, data, cfg):
@@ -244,8 +244,7 @@ def export_all_materials(scene, data, cfg):
                 if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
-                print("add %r (%r) to %r (%r)" % (xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj)))
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
+                    add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, dst_mat.id)
 
 
 def export_all_lights(scene, data, cfg):
@@ -269,16 +268,16 @@ def add_relation_raw(relations, t1, ref1, t2, ref2):
     if t1 <= t2:
         rel.ref1 = ref1
         rel.ref2 = ref2
+        print("add relation: '%s'(%s) to '%s'(%s)" % (t1, ref1, t2, ref2))
     else:
         rel.ref1 = ref2
         rel.ref2 = ref1
+        print("add relation: '%s'(%s) to '%s'(%s)" % (t2, ref2, t1, ref1))
 
 
-def export_geometry(src_geometry, dst, scene, cfg):
-    dst.id = cfg.id_of(src_geometry.data)
-    dst.name = src_geometry.name
-    mesh = dst.meshes.add()
-    mesh.primitive = xbuf.datas_pb2.Mesh.triangles
+
+def export_mesh(src_geometry, dst, scene, cfg):
+    dst.primitive = xbuf.datas_pb2.Mesh.triangles
     mode = 'PREVIEW' if cfg.is_preview else 'RENDER'
     # Set up modifiers whether to apply deformation or not
     # tips from https://code.google.com/p/blender-cod/source/browse/blender_26/export_xmodel.py#185
@@ -296,14 +295,16 @@ def export_geometry(src_geometry, dst, scene, cfg):
     for mod in mod_armature:
         setattr(mod[0], mod_state_attr, mod[1])
 
-    mesh.id = cfg.id_of(src_mesh)
-    mesh.name = src_mesh.name
+    # dst.id = cfg.id_of(src_geometry.data)
+    # dst.name = src_geometry.name
+    dst.id = cfg.id_of(src_mesh)
+    dst.name = src_mesh.name
     # unified_vertex_array = unify_vertices(vertex_array, index_table)
-    export_positions(src_mesh, mesh)
-    export_normals(src_mesh, mesh)
-    export_index(src_mesh, mesh)
-    export_colors(src_mesh, mesh)
-    export_texcoords(src_mesh, mesh)
+    export_positions(src_mesh, dst)
+    export_normals(src_mesh, dst)
+    export_index(src_mesh, dst)
+    export_colors(src_mesh, dst)
+    export_texcoords(src_mesh, dst)
 
     # # -- with armature applied
     # for mod in mod_armature:
@@ -312,7 +313,7 @@ def export_geometry(src_geometry, dst, scene, cfg):
     # # Restore modifier settings
     # for mod in mod_armature:
     #     setattr(mod[0], mod_state_attr, mod[1])
-    export_skin(src_mesh, src_geometry, mesh, cfg)
+    export_skin(src_mesh, src_geometry, dst, cfg)
 
 
 def export_positions(src_mesh, dst_mesh):
@@ -1127,7 +1128,7 @@ def export_obj_customproperties(src, dst_node, dst_data, cfg):
                 param.vstring = value
             elif isinstance(value, float):
                 param.vfloat = value
-            elif isinstance(value) == int:
+            elif isinstance(value, int):
                 param.vint = value
             elif isinstance(value, mathutils.Vector):
                 cnv_vec3(value, param.vvec3)
