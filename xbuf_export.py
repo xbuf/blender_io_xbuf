@@ -239,12 +239,14 @@ def export_all_materials(scene, data, cfg):
         if obj.hide_render:
             continue
         if obj.type == 'MESH':
-            for i in range(len(obj.material_slots)):
-                src_mat = obj.material_slots[i].material
+            # for i in range(len(obj.material_slots)):
+            #    src_mat = obj.material_slots[i].material
+            src_mat = obj.active_material
+            if src_mat :
                 if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
-                    add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, dst_mat.id)
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
 
 
 def export_all_lights(scene, data, cfg):
@@ -273,7 +275,6 @@ def add_relation_raw(relations, t1, ref1, t2, ref2):
         rel.ref1 = ref2
         rel.ref2 = ref1
         print("add relation: '%s'(%s) to '%s'(%s)" % (t2, ref2, t1, ref1))
-
 
 
 def export_mesh(src_geometry, dst, scene, cfg):
@@ -440,8 +441,9 @@ def export_material(src_mat, dst_mat, cfg):
     if (emission > 0.0):
         cnv_color([emission, emission, emission], dst_mat.emission)
 
+    # texture = src_mat.active_texture
     for textureSlot in src_mat.texture_slots:
-        if ((textureSlot) and (textureSlot.use) and (textureSlot.texture.type == "IMAGE")):
+        if ((textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE")):
             if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
                 export_tex(textureSlot, dst_mat.color_map, cfg)
                 print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
@@ -460,7 +462,6 @@ def export_tex(src, dst, cfg):
     # ispacked = src.texture.image.filepath.startswith('//')
     ispacked = not (not src.texture.image.packed_file)
     dst.id = cfg.id_of(src.texture)
-
 
     rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
     if cfg.need_update(src.texture):
