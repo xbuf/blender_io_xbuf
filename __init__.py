@@ -37,10 +37,10 @@ if _modules_path not in sys.path:
 del _modules_path
 
 # Use F8 to reload (see http://wiki.blender.org/index.php/Dev:2.5/Py/Scripts/Cookbook/Code_snippets/Multi-File_packages)
-from blender_io_xbuf import renderengine
-from blender_io_xbuf import protocol
-from blender_io_xbuf import xbuf_export
-from blender_io_xbuf import helpers
+from . import renderengine
+from . import protocol
+from . import xbuf_export
+from . import helpers
 
 """If the module is reloaded, reload all submodules as well
    This will reload all modules at the initial import as well but
@@ -51,7 +51,7 @@ import types
 locals_copy = dict(locals())
 for var in locals_copy:
     tmp = locals_copy[var]
-    if isinstance(tmp, types.ModuleType) and tmp.__package__ == "blender_io_xbuf":
+    if isinstance(tmp, types.ModuleType) and tmp.__package__ == __name__:
         # print("Reloading: %s" % (var))
         imp.reload(tmp)
 
