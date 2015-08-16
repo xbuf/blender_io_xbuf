@@ -448,7 +448,7 @@ def export_material(src_mat, dst_mat, cfg):
                 export_tex(textureSlot, dst_mat.color_map, cfg)
                 print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
             elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
-                export_tex(textureSlot, dst_mat.speculat_map, cfg)
+                export_tex(textureSlot, dst_mat.specular_map, cfg)
             elif ((textureSlot.use_map_emit)):
                 export_tex(textureSlot, dst_mat.emission_map, cfg)
             elif ((textureSlot.use_map_translucency)):
@@ -476,7 +476,11 @@ def export_tex(src, dst, cfg):
             print("no packed texture %r // %r" % (src.texture, src.texture.image.filepath_from_user()))
             # TODO check if file exists,...
             import shutil
-            shutil.copyfile(str(src.texture.image.filepath_from_user()), str(abspath))
+            srcpath = str(src.texture.image.filepath_from_user())
+            if Path(srcpath).exists():
+                shutil.copyfile(srcpath, str(abspath))
+            else:
+                cfg.warning("source file not found : %s" % (srcpath))
     else:
         print("no update of %r .. %r" % (dst.id, rpath))
     dst.rpath = str.join('/', rpath.parts)
