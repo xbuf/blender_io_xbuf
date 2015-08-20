@@ -135,7 +135,7 @@ def cnv_color(src, dst):
 class ExportCfg:
     def __init__(self, is_preview=False, assets_path="/tmp"):
         self.is_preview = is_preview
-        self.assets_path = assets_path
+        self.assets_path = helpers.blender_path_abs(assets_path)
         self._modified = {}
         self._ids = {}
 
