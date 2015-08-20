@@ -223,9 +223,12 @@ def export_all_geometries(scene, data, cfg):
             continue
         if obj.type == 'MESH':
             if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
-                mesh = data.meshes.add()
-                export_mesh(obj, mesh, scene, cfg)
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Mesh.__name__, mesh.id)
+                meshes = export_meshes(obj, data.meshes, scene, cfg)
+                for material_index, mesh in meshes.items():
+                    add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj))
+                    if material_index > -1 and material_index < len(obj.material_slots):
+                        src_mat = obj.material_slots[material_index].material
+                        add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
         elif obj.type == 'LAMP':
             src_light = obj.data
             if cfg.need_update(src_light):
@@ -239,14 +242,11 @@ def export_all_materials(scene, data, cfg):
         if obj.hide_render:
             continue
         if obj.type == 'MESH':
-            # for i in range(len(obj.material_slots)):
-            #    src_mat = obj.material_slots[i].material
-            src_mat = obj.active_material
-            if src_mat :
+            for i in range(len(obj.material_slots)):
+                src_mat = obj.material_slots[i].material
                 if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
 
 
 def export_all_lights(scene, data, cfg):
@@ -277,8 +277,7 @@ def add_relation_raw(relations, t1, ref1, t2, ref2):
         print("add relation: '%s'(%s) to '%s'(%s)" % (t2, ref2, t1, ref1))
 
 
-def export_mesh(src_geometry, dst, scene, cfg):
-    dst.primitive = xbuf.datas_pb2.Mesh.triangles
+def export_meshes(src_geometry, meshes, scene, cfg):
     mode = 'PREVIEW' if cfg.is_preview else 'RENDER'
     # Set up modifiers whether to apply deformation or not
     # tips from https://code.google.com/p/blender-cod/source/browse/blender_26/export_xmodel.py#185
@@ -298,26 +297,35 @@ def export_mesh(src_geometry, dst, scene, cfg):
 
     # dst.id = cfg.id_of(src_geometry.data)
     # dst.name = src_geometry.name
-    dst.id = cfg.id_of(src_mesh)
-    dst.name = src_mesh.name
-    # unified_vertex_array = unify_vertices(vertex_array, index_table)
-    export_positions(src_mesh, dst)
-    export_normals(src_mesh, dst)
-    export_index(src_mesh, dst)
-    export_colors(src_mesh, dst)
-    export_texcoords(src_mesh, dst)
+    faces = src_mesh.tessfaces
+    dstMap = {}
+    for face in faces:
+        material_index = face.material_index
+        if material_index not in dstMap:
+            dstMap[material_index] = meshes.add()
 
-    # # -- with armature applied
-    # for mod in mod_armature:
-    #     setattr(mod[0], mod_state_attr, True)
-    # src_mesh = src_geometry.to_mesh(scene, True, mode, True, False)
-    # # Restore modifier settings
-    # for mod in mod_armature:
-    #     setattr(mod[0], mod_state_attr, mod[1])
-    export_skin(src_mesh, src_geometry, dst, cfg)
+    for material_index, dst in dstMap.items():
+        dst.primitive = xbuf.datas_pb2.Mesh.triangles
+        dst.id = cfg.id_of(src_mesh) + "_" + str(material_index)
+        dst.name = src_mesh.name + "_" + str(material_index)
+        # unified_vertex_array = unify_vertices(vertex_array, index_table)
+        export_positions(src_mesh, dst, material_index)
+        export_normals(src_mesh, dst, material_index)
+        export_index(src_mesh, dst, material_index)
+        export_colors(src_mesh, dst, material_index)
+        export_texcoords(src_mesh, dst, material_index)
 
+        # # -- with armature applied
+        # for mod in mod_armature:
+        #     setattr(mod[0], mod_state_attr, True)
+        # src_mesh = src_geometry.to_mesh(scene, True, mode, True, False)
+        # # Restore modifier settings
+        # for mod in mod_armature:
+        #     setattr(mod[0], mod_state_attr, mod[1])
+        export_skin(src_mesh, src_geometry, dst, cfg, material_index)
+    return dstMap
 
-def export_positions(src_mesh, dst_mesh):
+def export_positions(src_mesh, dst_mesh, material_index):
     vertices = src_mesh.vertices
     dst = dst_mesh.vertexArrays.add()
     dst.attrib = xbuf.datas_pb2.VertexArray.position
@@ -325,6 +333,8 @@ def export_positions(src_mesh, dst_mesh):
     floats = []
     faces = src_mesh.tessfaces
     for face in faces:
+        if material_index != face.material_index:
+            continue
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[0]].co))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[1]].co))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[2]].co))
@@ -336,7 +346,7 @@ def export_positions(src_mesh, dst_mesh):
     dst.floats.values.extend(floats)
 
 
-def export_normals(src_mesh, dst_mesh):
+def export_normals(src_mesh, dst_mesh, material_index):
     vertices = src_mesh.vertices
     dst = dst_mesh.vertexArrays.add()
     dst.attrib = xbuf.datas_pb2.VertexArray.normal
@@ -344,6 +354,8 @@ def export_normals(src_mesh, dst_mesh):
     floats = []
     faces = src_mesh.tessfaces
     for face in faces:
+        if material_index != face.material_index:
+            continue
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[0]].normal))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[1]].normal))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[2]].normal))
@@ -354,13 +366,15 @@ def export_normals(src_mesh, dst_mesh):
     dst.floats.values.extend(floats)
 
 
-def export_index(src_mesh, dst_mesh):
+def export_index(src_mesh, dst_mesh, material_index):
     faces = src_mesh.tessfaces
     dst = dst_mesh.indexArrays.add()
     dst.ints.step = 3
     ints = []
     idx = 0
     for face in faces:
+        if material_index != face.material_index:
+            continue
         ints.append(idx)
         idx += 1
         ints.append(idx)
@@ -375,7 +389,7 @@ def export_index(src_mesh, dst_mesh):
     dst.ints.values.extend(ints)
 
 
-def export_colors(src_mesh, dst_mesh):
+def export_colors(src_mesh, dst_mesh, material_index):
     colorCount = len(src_mesh.tessface_vertex_colors)
     if (colorCount < 1):
         return
@@ -386,6 +400,8 @@ def export_colors(src_mesh, dst_mesh):
     dst.floats.step = 4
     floats = []
     for face in faces:
+        if material_index != face.material_index:
+            continue
         fc = face_colors[face.index]
         floats.extend(fc.color1)
         floats.append(1.0)
@@ -399,7 +415,7 @@ def export_colors(src_mesh, dst_mesh):
     dst.floats.values.extend(floats)
 
 
-def export_texcoords(src_mesh, dst_mesh):
+def export_texcoords(src_mesh, dst_mesh, material_index):
     texcoordCount = len(src_mesh.tessface_uv_textures)
     if (texcoordCount < 1):
         return
@@ -411,6 +427,8 @@ def export_texcoords(src_mesh, dst_mesh):
         dst.floats.step = 2
         floats = []
         for face in faces:
+            if material_index != face.material_index:
+                continue
             ftc = texcoordFace[face.index]
             floats.extend(ftc.uv1)
             floats.extend(ftc.uv2)
@@ -576,7 +594,7 @@ def export_skeleton(src, dst, cfg):
             rel.ref2 = dst_bone.id
 
 
-def export_skin(src_mesh, src_geometry, dst_mesh, cfg):
+def export_skin(src_mesh, src_geometry, dst_mesh, cfg, material_index):
     armature = src_geometry.find_armature()
     if not(armature):
         return
@@ -589,6 +607,8 @@ def export_skin(src_mesh, src_geometry, dst_mesh, cfg):
     faces = src_mesh.tessfaces
 
     for face in faces:
+        if material_index != face.material_index:
+            continue
         find_influence(vertices, face.vertices[0], groupToBoneIndex, boneCount, boneIndex, boneWeight)
         find_influence(vertices, face.vertices[1], groupToBoneIndex, boneCount, boneIndex, boneWeight)
         find_influence(vertices, face.vertices[2], groupToBoneIndex, boneCount, boneIndex, boneWeight)
