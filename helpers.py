@@ -223,4 +223,6 @@ def projection_matrix(camd):
 
 def blender_path_abs(path):
     from pathlib import Path
-    return str(Path(bpy.path.abspath(str(path).replace("//../", "//../../"))).resolve())
+    # return str(Path(bpy.path.abspath(str(path).replace("//../", "//../../"))).resolve())
+    return bpy.path.abspath(str(path).replace("//../", "//../../"))
+    # return path
