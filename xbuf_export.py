@@ -157,7 +157,6 @@ class ExportCfg:
         k = self._k_of(v)
         old = (k not in self._modified) or self._modified[k]
         self._modified[k] = modified
-        # print("modified : %r (%r)/ %r / %r /%r / %r" % (v, k, self._modified[k], old, modified, hash(self)))
         return old
 
     def info(self, txt):
@@ -204,20 +203,20 @@ def export_all_tobjects(scene, data, cfg):
             # else:
             if obj.type == 'MESH':
                 # cnv_scale(helpers.rot_quat(obj), transform.rotation)
-                #cnv_rotation(helpers.rot_quat(obj), transform.rotation)
+                # cnv_rotation(helpers.rot_quat(obj), transform.rotation)
                 cnv_rotation(quat, transform.rotation)
             elif obj.type == 'Armature':
-                #cnv_rotation(helpers.rot_quat(obj), transform.rotation)
+                # cnv_rotation(helpers.rot_quat(obj), transform.rotation)
                 cnv_rotation(quat, transform.rotation)
             elif obj.type == 'LAMP':
-                #rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
+                # rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
                 rot = helpers.z_backward_to_forward(quat)
                 cnv_quatZupToYup(rot, transform.rotation)
             else:
                 cnv_rotation(helpers.rot_quat(obj), transform.rotation)
             if obj.parent is not None:
                 #    tobject.parentId = cfg.id_of(obj.parent)
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj))
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), cfg)
             export_obj_customproperties(obj, tobject, data, cfg)
 
 
@@ -229,16 +228,16 @@ def export_all_geometries(scene, data, cfg):
             if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
                 meshes = export_meshes(obj, data.meshes, scene, cfg)
                 for material_index, mesh in meshes.items():
-                    add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj))
+                    add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), cfg)
                     if material_index > -1 and material_index < len(obj.material_slots):
                         src_mat = obj.material_slots[material_index].material
-                        add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat))
+                        add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat), cfg)
         elif obj.type == 'LAMP':
             src_light = obj.data
             if cfg.need_update(src_light):
                 dst_light = data.lights.add()
                 export_light(src_light, dst_light, cfg)
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, dst_light.id)
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, dst_light.id, cfg)
 
 
 def export_all_materials(scene, data, cfg):
@@ -262,23 +261,23 @@ def export_all_lights(scene, data, cfg):
             if cfg.need_update(src_light):
                 dst_light = data.lights.add()
                 export_light(src_light, dst_light, cfg)
-            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light))
+            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light), cfg)
 
 
-def add_relation(relations, e1, e2):
-    add_relation_raw(relations, type(e1).__name__, e1.id, type(e2).__name__, e2.id)
+def add_relation(relations, e1, e2, cfg):
+    add_relation_raw(relations, type(e1).__name__, e1.id, type(e2).__name__, e2.id, cfg)
 
 
-def add_relation_raw(relations, t1, ref1, t2, ref2):
+def add_relation_raw(relations, t1, ref1, t2, ref2, cfg):
     rel = relations.add()
     if t1 <= t2:
         rel.ref1 = ref1
         rel.ref2 = ref2
-        print("add relation: '%s'(%s) to '%s'(%s)" % (t1, ref1, t2, ref2))
+        cfg.info("add relation: '%s'(%s) to '%s'(%s)" % (t1, ref1, t2, ref2))
     else:
         rel.ref1 = ref2
         rel.ref2 = ref1
-        print("add relation: '%s'(%s) to '%s'(%s)" % (t2, ref2, t1, ref1))
+        cfg.info("add relation: '%s'(%s) to '%s'(%s)" % (t2, ref2, t1, ref1))
 
 
 def export_meshes(src_geometry, meshes, scene, cfg):
@@ -294,7 +293,7 @@ def export_meshes(src_geometry, meshes, scene, cfg):
     # -- without armature applied
     for mod in mod_armature:
         setattr(mod[0], mod_state_attr, False)
-    #FIXME apply transform for mesh under armature modify the blender data !!
+    # FIXME apply transform for mesh under armature modify the blender data !!
     # if src_geometry.find_armature():
     #     apply_transform(src_geometry)
     src_mesh = src_geometry.to_mesh(scene, True, mode, True, False)
@@ -333,14 +332,14 @@ def export_meshes(src_geometry, meshes, scene, cfg):
     return dstMap
 
 
-#FIXME side effect on the original scene (selection, and transform of the src_geometry)
+# FIXME side effect on the original scene (selection, and transform of the src_geometry)
 def apply_transform(src_geometry):
     # bpy.ops.object.select_all(action='DESELECT') # deselect everything to avoid a mess
     override = {'selected_editable_objects': src_geometry}
-    #src_geometry.select = True # lets select every mesh as we go
+    # src_geometry.select = True # lets select every mesh as we go
     bpy.ops.object.visual_transform_apply(override)
     # bpy.ops.object.transform_apply(override, location=True, rotation=True, scale=True)
-    #src_geometry.select = False # we're done working on this object
+    # src_geometry.select = False # we're done working on this object
 
 
 def export_positions(src_mesh, dst_mesh, material_index):
@@ -577,7 +576,7 @@ def export_all_skeletons(scene, data, cfg):
             if cfg.need_update(src_skeleton):
                 dst_skeleton = data.skeletons.add()
                 export_skeleton(src_skeleton, dst_skeleton, cfg)
-            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton))
+            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton), cfg)
 
 
 def export_skeleton(src, dst, cfg):
@@ -703,7 +702,8 @@ def export_all_actions(scene, dst_data, cfg):
                     add_relation_raw(
                         dst_data.relations,
                         xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj),
-                        xbuf_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(action))
+                        xbuf_ext.animations_kf_pb2.AnimationKF.__name__, cfg.id_of(action),
+                        cfg)
             obj.animation_data.action = action_current
     scene.frame_set(frame_current, frame_subframe)
 
@@ -1181,7 +1181,7 @@ def export_obj_customproperties(src, dst_node, dst_data, cfg):
                 cnv_vec3(value, param.vvec3)
             elif isinstance(value, mathutils.Quaternion):
                 cnv_quat(value, param.vquat)
-        add_relation(dst_data.relations, dst_node, custom_params)
+        add_relation(dst_data.relations, dst_node, custom_params, cfg)
 
 
 import bpy
