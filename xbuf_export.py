@@ -16,6 +16,8 @@
 # <pep8 compliant>
 
 import mathutils
+import bpy_extras
+
 import xbuf
 import xbuf.datas_pb2
 import xbuf.cmds_pb2
@@ -755,6 +757,7 @@ class Sampler:
             self.clip.sampled_transform.bone_name = self.obj.pose.bones[self.pose_bone_idx].name
         self.previous_mat4 = None
         self.last_equals = None
+        self.cnv_mat = bpy_extras.io_utils.axis_conversion(from_forward='-Y', from_up='Z', to_forward='Z', to_up='Y').to_4x4()
 
     def capture(self, t):
         if self.pose_bone_idx is not None:
@@ -764,8 +767,11 @@ class Sampler:
             # mat4 = pbone.matrix
             # if pbone.parent:
             #    mat4 = pbone.parent.matrix.inverted() * mat4
+            # mat4 = mathutils.Matrix.Identity(4)
         else:
             mat4 = self.obj.matrix_local
+        # mat4 = self.cnv_mat * mat4
+        # mat4 = self.obj.matrix_local.inverted() * mat4
         if self.previous_mat4 is None or not equals_mat4(mat4, self.previous_mat4, 0.000001):
             if self.last_equals is not None:
                 self._store(self.last_equals, self.previous_mat4)
@@ -790,6 +796,16 @@ class Sampler:
         dst_clip.sampled_transform.rotation_x.append(quat.x)
         dst_clip.sampled_transform.rotation_y.append(quat.z)
         dst_clip.sampled_transform.rotation_z.append(-quat.y)
+        # dst_clip.sampled_transform.translation_x.append(loc.x)
+        # dst_clip.sampled_transform.translation_y.append(loc.y)
+        # dst_clip.sampled_transform.translation_z.append(loc.z)
+        # dst_clip.sampled_transform.scale_x.append(sca.x)
+        # dst_clip.sampled_transform.scale_y.append(sca.y)
+        # dst_clip.sampled_transform.scale_z.append(sca.z)
+        # dst_clip.sampled_transform.rotation_w.append(quat.w)
+        # dst_clip.sampled_transform.rotation_x.append(quat.x)
+        # dst_clip.sampled_transform.rotation_y.append(quat.y)
+        # dst_clip.sampled_transform.rotation_z.append(quat.z)
 
 
 def equals_mat4(m0, m1, max_cell_delta):

@@ -19,6 +19,7 @@ import math
 import mathutils
 import bpy  # TODO to remove
 
+# bpy_extras.io_utils.axis_conversion(from_forward='Y', from_up='Z', to_forward='Y', to_up='Z')
 
 def rot_quat(obj):
     """ return the rotation of the object as quaternion"""
@@ -219,7 +220,7 @@ def projection_matrix(camd):
 
     # return sum([c for c in mat], [])
     return mat
-    
+
 
 def blender_path_abs(path):
     from pathlib import Path
