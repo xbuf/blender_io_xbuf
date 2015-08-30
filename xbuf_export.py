@@ -190,9 +190,10 @@ def export_all_tobjects(scene, data, cfg):
             tobject.id = cfg.id_of(obj)
             tobject.name = obj.name
             transform = tobject.transform
-            cnv_scale(obj.scale, transform.scale)
+            loc, quat, scale = obj.matrix_local.decompose()
+            cnv_scale(scale, transform.scale)
             # convert zup only for direct child of root (no parent)
-            cnv_translation(obj.location, transform.translation)
+            cnv_translation(loc, transform.translation)
             # cnv_scale(helpers.rot_quat(obj), transform.rotation)
             # if obj.type == 'MESH':
             #    cnv_translation(obj.location, transform.translation)
@@ -203,11 +204,14 @@ def export_all_tobjects(scene, data, cfg):
             # else:
             if obj.type == 'MESH':
                 # cnv_scale(helpers.rot_quat(obj), transform.rotation)
-                cnv_rotation(helpers.rot_quat(obj), transform.rotation)
+                #cnv_rotation(helpers.rot_quat(obj), transform.rotation)
+                cnv_rotation(quat, transform.rotation)
             elif obj.type == 'Armature':
-                cnv_rotation(helpers.rot_quat(obj), transform.rotation)
+                #cnv_rotation(helpers.rot_quat(obj), transform.rotation)
+                cnv_rotation(quat, transform.rotation)
             elif obj.type == 'LAMP':
-                rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
+                #rot = helpers.z_backward_to_forward(helpers.rot_quat(obj))
+                rot = helpers.z_backward_to_forward(quat)
                 cnv_quatZupToYup(rot, transform.rotation)
             else:
                 cnv_rotation(helpers.rot_quat(obj), transform.rotation)
@@ -290,6 +294,9 @@ def export_meshes(src_geometry, meshes, scene, cfg):
     # -- without armature applied
     for mod in mod_armature:
         setattr(mod[0], mod_state_attr, False)
+    #FIXME apply transform for mesh under armature modify the blender data !!
+    # if src_geometry.find_armature():
+    #     apply_transform(src_geometry)
     src_mesh = src_geometry.to_mesh(scene, True, mode, True, False)
     # Restore modifier settings
     for mod in mod_armature:
@@ -324,6 +331,17 @@ def export_meshes(src_geometry, meshes, scene, cfg):
         #     setattr(mod[0], mod_state_attr, mod[1])
         export_skin(src_mesh, src_geometry, dst, cfg, material_index)
     return dstMap
+
+
+#FIXME side effect on the original scene (selection, and transform of the src_geometry)
+def apply_transform(src_geometry):
+    # bpy.ops.object.select_all(action='DESELECT') # deselect everything to avoid a mess
+    override = {'selected_editable_objects': src_geometry}
+    #src_geometry.select = True # lets select every mesh as we go
+    bpy.ops.object.visual_transform_apply(override)
+    # bpy.ops.object.transform_apply(override, location=True, rotation=True, scale=True)
+    #src_geometry.select = False # we're done working on this object
+
 
 def export_positions(src_mesh, dst_mesh, material_index):
     vertices = src_mesh.vertices
@@ -742,6 +760,10 @@ class Sampler:
         if self.pose_bone_idx is not None:
             pbone = self.obj.pose.bones[self.pose_bone_idx]
             mat4 = self.obj.convert_space(pbone, pbone.matrix, from_space='POSE', to_space='LOCAL')
+            # -- Failed
+            # mat4 = pbone.matrix
+            # if pbone.parent:
+            #    mat4 = pbone.parent.matrix.inverted() * mat4
         else:
             mat4 = self.obj.matrix_local
         if self.previous_mat4 is None or not equals_mat4(mat4, self.previous_mat4, 0.000001):
