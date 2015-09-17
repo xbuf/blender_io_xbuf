@@ -321,12 +321,12 @@ _CMD.fields_by_name['changeAssetFolders'].containing_oneof = _CMD.oneofs_by_name
 _CMD.oneofs_by_name['cmd'].fields.append(
   _CMD.fields_by_name['playAnimation'])
 _CMD.fields_by_name['playAnimation'].containing_oneof = _CMD.oneofs_by_name['cmd']
-_SETEYE.fields_by_name['location'].message_type = xbuf.datas_pb2._VEC3
-_SETEYE.fields_by_name['rotation'].message_type = xbuf.datas_pb2._QUATERNION
-_SETEYE.fields_by_name['projection'].message_type = xbuf.datas_pb2._MAT4
+_SETEYE.fields_by_name['location'].message_type = xbuf.primitives_pb2._VEC3
+_SETEYE.fields_by_name['rotation'].message_type = xbuf.primitives_pb2._QUATERNION
+_SETEYE.fields_by_name['projection'].message_type = xbuf.primitives_pb2._MAT4
 _SETEYE.fields_by_name['projMode'].enum_type = _SETEYE_PROJMODE
 _SETEYE_PROJMODE.containing_type = _SETEYE
-_DELETEDATA.fields_by_name['relations'].message_type = xbuf.datas_pb2._RELATION
+_DELETEDATA.fields_by_name['relations'].message_type = xbuf.relations_pb2._RELATION
 DESCRIPTOR.message_types_by_name['Cmd'] = _CMD
 DESCRIPTOR.message_types_by_name['SetEye'] = _SETEYE
 DESCRIPTOR.message_types_by_name['ChangeAssetFolders'] = _CHANGEASSETFOLDERS

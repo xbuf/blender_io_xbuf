@@ -13,27 +13,16 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import xbuf.datas_pb2
 
-from xbuf.datas_pb2 import *
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf_ext/animations_kf.proto',
   package='xbuf_ext',
-  serialized_pb=_b('\n\x1cxbuf_ext/animations_kf.proto\x12\x08xbuf_ext\x1a\x10xbuf/datas.proto\"\xc1\x01\n\x0b\x41nimationKF\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\x05\x12\x1d\n\x05\x63lips\x18\x04 \x03(\x0b\x32\x0e.xbuf_ext.Clip\x12>\n\x0btarget_kind\x18\x05 \x01(\x0e\x32 .xbuf_ext.AnimationKF.TargetKind:\x07tobject\"\'\n\nTargetKind\x12\x0b\n\x07tobject\x10\x00\x12\x0c\n\x08skeleton\x10\x01\"L\n\x04\x43lip\x12\x37\n\x11sampled_transform\x18\x01 \x01(\x0b\x32\x1a.xbuf_ext.SampledTransformH\x00\x42\x0b\n\tkeyframes\"\xa5\x02\n\x10SampledTransform\x12\x0e\n\x02\x61t\x18\x01 \x03(\x05\x42\x02\x10\x01\x12\x19\n\rtranslation_x\x18\x02 \x03(\x02\x42\x02\x10\x01\x12\x19\n\rtranslation_y\x18\x03 \x03(\x02\x42\x02\x10\x01\x12\x19\n\rtranslation_z\x18\x04 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_x\x18\x05 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_y\x18\x06 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_z\x18\x07 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_w\x18\x08 \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_x\x18\t \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_y\x18\n \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_z\x18\x0b \x03(\x02\x42\x02\x10\x01\x12\x11\n\tbone_name\x18\x14 \x01(\t:9\n\ranimations_kf\x12\n.xbuf.Data\x18\xf5\x03 \x03(\x0b\x32\x15.xbuf_ext.AnimationKFP\x00')
-  ,
-  dependencies=[xbuf.datas_pb2.DESCRIPTOR,])
+  serialized_pb=_b('\n\x1cxbuf_ext/animations_kf.proto\x12\x08xbuf_ext\"\xc1\x01\n\x0b\x41nimationKF\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\x05\x12\x1d\n\x05\x63lips\x18\x04 \x03(\x0b\x32\x0e.xbuf_ext.Clip\x12>\n\x0btarget_kind\x18\x05 \x01(\x0e\x32 .xbuf_ext.AnimationKF.TargetKind:\x07tobject\"\'\n\nTargetKind\x12\x0b\n\x07tobject\x10\x00\x12\x0c\n\x08skeleton\x10\x01\"L\n\x04\x43lip\x12\x37\n\x11sampled_transform\x18\x01 \x01(\x0b\x32\x1a.xbuf_ext.SampledTransformH\x00\x42\x0b\n\tkeyframes\"\xa5\x02\n\x10SampledTransform\x12\x0e\n\x02\x61t\x18\x01 \x03(\x05\x42\x02\x10\x01\x12\x19\n\rtranslation_x\x18\x02 \x03(\x02\x42\x02\x10\x01\x12\x19\n\rtranslation_y\x18\x03 \x03(\x02\x42\x02\x10\x01\x12\x19\n\rtranslation_z\x18\x04 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_x\x18\x05 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_y\x18\x06 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_z\x18\x07 \x03(\x02\x42\x02\x10\x01\x12\x16\n\nrotation_w\x18\x08 \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_x\x18\t \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_y\x18\n \x03(\x02\x42\x02\x10\x01\x12\x13\n\x07scale_z\x18\x0b \x03(\x02\x42\x02\x10\x01\x12\x11\n\tbone_name\x18\x14 \x01(\t')
+)
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
-ANIMATIONS_KF_FIELD_NUMBER = 501
-animations_kf = _descriptor.FieldDescriptor(
-  name='animations_kf', full_name='xbuf_ext.animations_kf', index=0,
-  number=501, type=11, cpp_type=10, label=3,
-  has_default_value=False, default_value=[],
-  message_type=None, enum_type=None, containing_type=None,
-  is_extension=True, extension_scope=None,
-  options=None)
 
 _ANIMATIONKF_TARGETKIND = _descriptor.EnumDescriptor(
   name='TargetKind',
@@ -52,8 +41,8 @@ _ANIMATIONKF_TARGETKIND = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=215,
-  serialized_end=254,
+  serialized_start=197,
+  serialized_end=236,
 )
 _sym_db.RegisterEnumDescriptor(_ANIMATIONKF_TARGETKIND)
 
@@ -112,8 +101,8 @@ _ANIMATIONKF = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=61,
-  serialized_end=254,
+  serialized_start=43,
+  serialized_end=236,
 )
 
 
@@ -145,8 +134,8 @@ _CLIP = _descriptor.Descriptor(
       name='keyframes', full_name='xbuf_ext.Clip.keyframes',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=256,
-  serialized_end=332,
+  serialized_start=238,
+  serialized_end=314,
 )
 
 
@@ -252,8 +241,8 @@ _SAMPLEDTRANSFORM = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=335,
-  serialized_end=628,
+  serialized_start=317,
+  serialized_end=610,
 )
 
 _ANIMATIONKF.fields_by_name['clips'].message_type = _CLIP
@@ -266,7 +255,6 @@ _CLIP.fields_by_name['sampled_transform'].containing_oneof = _CLIP.oneofs_by_nam
 DESCRIPTOR.message_types_by_name['AnimationKF'] = _ANIMATIONKF
 DESCRIPTOR.message_types_by_name['Clip'] = _CLIP
 DESCRIPTOR.message_types_by_name['SampledTransform'] = _SAMPLEDTRANSFORM
-DESCRIPTOR.extensions_by_name['animations_kf'] = animations_kf
 
 AnimationKF = _reflection.GeneratedProtocolMessageType('AnimationKF', (_message.Message,), dict(
   DESCRIPTOR = _ANIMATIONKF,
@@ -289,8 +277,6 @@ SampledTransform = _reflection.GeneratedProtocolMessageType('SampledTransform', 
   ))
 _sym_db.RegisterMessage(SampledTransform)
 
-animations_kf.message_type = _ANIMATIONKF
-xbuf.datas_pb2.Data.RegisterExtension(animations_kf)
 
 _SAMPLEDTRANSFORM.fields_by_name['at'].has_options = True
 _SAMPLEDTRANSFORM.fields_by_name['at']._options = _descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))
