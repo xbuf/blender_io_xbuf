@@ -230,7 +230,10 @@ def export_all_geometries(scene, data, cfg):
             if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
                 meshes = export_meshes(obj, data.meshes, scene, cfg)
                 for material_index, mesh in meshes.items():
-                    add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), cfg)
+                    # several object can share the same mesh
+                    for obj2 in scene.objects:
+                        if obj2.data == obj.data:
+                            add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj2), cfg)
                     if material_index > -1 and material_index < len(obj.material_slots):
                         src_mat = obj.material_slots[material_index].material
                         add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat), cfg)
@@ -315,7 +318,7 @@ def export_meshes(src_geometry, meshes, scene, cfg):
     for material_index, dst in dstMap.items():
         dst.primitive = xbuf.datas_pb2.Mesh.triangles
         dst.id = cfg.id_of(src_mesh) + "_" + str(material_index)
-        dst.name = src_mesh.name + "_" + str(material_index)
+        dst.name = src_geometry.data.name + "_" + str(material_index)
         # unified_vertex_array = unify_vertices(vertex_array, index_table)
         export_positions(src_mesh, dst, material_index)
         export_normals(src_mesh, dst, material_index)
@@ -697,7 +700,8 @@ def export_all_actions(scene, dst_data, cfg):
                 for strip in tracks.strips:
                     action = strip.action
                     if cfg.need_update(action):
-                        dst = dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf].add()
+                        #dst = dst_data.Extensions[xbuf_ext.animations_kf_pb2.animations_kf].add()
+                        dst = dst_data.animations_kf.add()
                         # export_action(action, dst, fps, cfg)
                         export_obj_action(scene, obj, action, dst, fps, cfg)
                         # relativize_bones(dst, obj)
@@ -755,6 +759,8 @@ class Sampler:
         self.clip = dst.clips.add()
         if pose_bone_idx is not None:
             self.clip.sampled_transform.bone_name = self.obj.pose.bones[self.pose_bone_idx].name
+            self.rest_bone = obj.data.bones[self.pose_bone_idx]
+            self.rest_matrix_inverted = self.rest_bone.matrix_local.copy().inverted()
         self.previous_mat4 = None
         self.last_equals = None
         self.cnv_mat = bpy_extras.io_utils.axis_conversion(from_forward='-Y', from_up='Z', to_forward='Z', to_up='Y').to_4x4()
@@ -762,12 +768,10 @@ class Sampler:
     def capture(self, t):
         if self.pose_bone_idx is not None:
             pbone = self.obj.pose.bones[self.pose_bone_idx]
-            mat4 = self.obj.convert_space(pbone, pbone.matrix, from_space='POSE', to_space='LOCAL')
-            # -- Failed
-            # mat4 = pbone.matrix
-            # if pbone.parent:
-            #    mat4 = pbone.parent.matrix.inverted() * mat4
-            # mat4 = mathutils.Matrix.Identity(4)
+            # mat4 = self.obj.convert_space(pbone, pbone.matrix, from_space='POSE', to_space='LOCAL')
+            mat4 = pbone.matrix
+            if pbone.parent:
+                mat4 = pbone.parent.matrix.inverted() * mat4
         else:
             mat4 = self.obj.matrix_local
         # mat4 = self.cnv_mat * mat4
@@ -1179,7 +1183,8 @@ def equals_mat4(m0, m1, max_cell_delta):
 def export_obj_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
-        custom_params = dst_data.Extensions[xbuf_ext.custom_params_pb2.custom_params].add()
+        # custom_params = dst_data.Extensions[xbuf_ext.custom_params_pb2.custom_params].add()
+        custom_params = dst_data.custom_params.add()
         custom_params.id = "params_" + cfg.id_of(src)
         for key in keys:
             param = custom_params.params.add()
