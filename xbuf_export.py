@@ -483,7 +483,7 @@ def export_material(src_mat, dst_mat, cfg):
 
     # texture = src_mat.active_texture
     for textureSlot in src_mat.texture_slots:
-        if ((textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE")):
+        if ((textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE") and textureSlot.texture.image and textureSlot.texture.image.source == 'FILE'):
             if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
                 export_tex(textureSlot, dst_mat.color_map, cfg)
                 print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
@@ -495,7 +495,8 @@ def export_material(src_mat, dst_mat, cfg):
                 export_tex(textureSlot, dst_mat.opacity_map, cfg)
             elif ((textureSlot.use_map_normal)):
                 export_tex(textureSlot, dst_mat.normal_map, cfg)
-
+        else:
+            print("WARNING: unsupported texture %r" % (textureSlot))
 
 def export_tex(src, dst, cfg):
     from pathlib import PurePath, Path
@@ -517,7 +518,8 @@ def export_tex(src, dst, cfg):
             # TODO check if file exists,...
             import shutil
             srcpath = str(src.texture.image.filepath_from_user())
-            if Path(srcpath).exists():
+            print("srcpath %r // %r" % (srcpath, len(srcpath)))
+            if len(srcpath) > 0 and Path(srcpath).exists():
                 shutil.copyfile(srcpath, str(abspath))
             else:
                 cfg.warning("source file not found : %s" % (srcpath))
