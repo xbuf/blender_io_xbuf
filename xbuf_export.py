@@ -24,7 +24,7 @@ import xbuf.cmds_pb2
 import xbuf_ext
 import xbuf_ext.custom_params_pb2
 import xbuf_ext.animations_kf_pb2
-import xbuf_ext.bullet_pb2
+import xbuf_ext.physics_pb2
 from . import helpers  # pylint: disable=W0406
 
 
