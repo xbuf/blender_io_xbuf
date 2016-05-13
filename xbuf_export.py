@@ -24,6 +24,7 @@ import xbuf.cmds_pb2
 import xbuf_ext
 import xbuf_ext.custom_params_pb2
 import xbuf_ext.animations_kf_pb2
+import xbuf_ext.bullet_pb2
 from . import helpers  # pylint: disable=W0406
 
 
@@ -180,7 +181,7 @@ def export(scene, data, cfg):
     export_all_lights(scene, data, cfg)
     export_all_skeletons(scene, data, cfg)
     export_all_actions(scene, data, cfg)
-
+    export_all_physics(scene,data,cfg)
 
 def export_all_tobjects(scene, data, cfg):
     for obj in scene.objects:
@@ -221,6 +222,71 @@ def export_all_tobjects(scene, data, cfg):
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), cfg)
             export_obj_customproperties(obj, tobject, data, cfg)
 
+def export_all_physics(scene,data,cfg):
+    for obj in scene.objects:
+        phy_data=None
+        phy_data=export_rb(obj,phy_data,data,cfg)
+
+def export_rb(ob,phy_data,data,cfg):
+    if not cfg.need_update(ob.rigid_body) or not ob.rigid_body:
+        return
+
+    if phy_data==None: phy_data=data.physics.add()
+           
+    rigidbody=phy_data.rigidbody
+    rigidbody.id=cfg.id_of(ob.rigid_body)
+    
+    rbtype=ob.rigid_body.type
+    dynamic=ob.rigid_body.enabled
+    if rbtype=="PASSIVE" or not dynamic:
+        rigidbody.type=xbuf.datas_pb2.RigidBody.tstatic
+    else:
+        rigidbody.type=xbuf.datas_pb2.RigidBody.tdynamic
+    # Ghost?
+  
+    rigidbody.mass=ob.rigid_body.mass;
+    rigidbody.isKinematic=ob.rigid_body.kinematic
+    rigidbody.friction=ob.rigid_body.friction
+    rigidbody.restitution=ob.rigid_body.restitution
+    if not ob.rigid_body.use_margin:
+        rigidbody.margin=0
+    else:
+        rigidbody.margin=ob.rigid_body.collision_margin
+        
+ 
+    rigidbody.linearDamping=ob.rigid_body.linear_damping
+    rigidbody.angularDamping=ob.rigid_body.angular_damping
+    cnv_vec3((1,1,1),rigidbody.angularFactor) #Not used
+    cnv_vec3((1,1,1),rigidbody.linearFactor) #Not used
+        
+    shape=ob.rigid_body.collision_shape
+    if shape == "MESH" : shape=xbuf.datas_pb2.PhysicsData.smesh
+    elif shape == "SPHERE" : shape=xbuf.datas_pb2.PhysicsData.ssphere
+    elif shape == "CONVEX_HULL" : shape=xbuf.datas_pb2.PhysicsData.shull
+    elif shape == "BOX" : shape=xbuf.datas_pb2.PhysicsData.sbox
+    elif shape == "CAPSULE" : shape=xbuf.datas_pb2.PhysicsData.scapsule
+    elif shape == "CYLINDER" : shape=xbuf.datas_pb2.PhysicsData.scylinder
+    elif shape == "CONE" : shape=xbuf.datas_pb2.PhysicsData.scone
+
+
+    rigidbody.shape=shape;
+
+    collisionGroups=ob.rigid_body.collision_groups
+    collisionGroup=0
+    i=1
+    for g in collisionGroups:
+        if g:
+            collisionGroup|=(g<<i)
+        i+=1
+        
+    rigidbody.collisionGroup=collisionGroup
+    rigidbody.collisionMask=collisionGroup
+
+
+
+    add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__,  cfg.id_of(ob), xbuf.datas_pb2.RigidBody.__name__, rigidbody.id, cfg)
+    return phy_data
+        
 
 def export_all_geometries(scene, data, cfg):
     for obj in scene.objects:
@@ -244,7 +310,7 @@ def export_all_geometries(scene, data, cfg):
                 export_light(src_light, dst_light, cfg)
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, dst_light.id, cfg)
 
-
+                
 def export_all_materials(scene, data, cfg):
     for obj in scene.objects:
         if obj.hide_render:
