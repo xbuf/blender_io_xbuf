@@ -22,6 +22,7 @@ import xbuf.skeletons_pb2
 import xbuf.tobjects_pb2
 import xbuf_ext.animations_kf_pb2
 import xbuf_ext.custom_params_pb2
+import xbuf_ext.physics_pb2
 
 from xbuf.lights_pb2 import *
 from xbuf.materials_pb2 import *
@@ -32,13 +33,14 @@ from xbuf.skeletons_pb2 import *
 from xbuf.tobjects_pb2 import *
 from xbuf_ext.animations_kf_pb2 import *
 from xbuf_ext.custom_params_pb2 import *
+from xbuf_ext.physics_pb2 import *
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/datas.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x10xbuf/datas.proto\x12\x04xbuf\x1a\x11xbuf/lights.proto\x1a\x14xbuf/materials.proto\x1a\x11xbuf/meshes.proto\x1a\x15xbuf/primitives.proto\x1a\x14xbuf/relations.proto\x1a\x14xbuf/skeletons.proto\x1a\x13xbuf/tobjects.proto\x1a\x1cxbuf_ext/animations_kf.proto\x1a\x1cxbuf_ext/custom_params.proto\"\xce\x02\n\x04\x44\x61ta\x12\x19\n\x07version\x18\x01 \x01(\r:\x08\x32\x30\x31\x35\x30\x39\x31\x34\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.xbuf.Relation\x12\x1f\n\x08tobjects\x18\x03 \x03(\x0b\x32\r.xbuf.TObject\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.xbuf.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.xbuf.Light\x12!\n\tskeletons\x18\x07 \x03(\x0b\x32\x0e.xbuf.Skeleton\x12\x1a\n\x06meshes\x18\x08 \x03(\x0b\x32\n.xbuf.Mesh\x12\x31\n\rcustom_params\x18\xf4\x03 \x03(\x0b\x32\x19.xbuf_ext.CustomParamList\x12-\n\ranimations_kf\x18\xf5\x03 \x03(\x0b\x32\x15.xbuf_ext.AnimationKF*\x06\x08\xa6\x04\x10\xd1\x0fP\x00P\x01P\x02P\x03P\x04P\x05P\x06P\x07P\x08')
+  serialized_pb=_b('\n\x10xbuf/datas.proto\x12\x04xbuf\x1a\x11xbuf/lights.proto\x1a\x14xbuf/materials.proto\x1a\x11xbuf/meshes.proto\x1a\x15xbuf/primitives.proto\x1a\x14xbuf/relations.proto\x1a\x14xbuf/skeletons.proto\x1a\x13xbuf/tobjects.proto\x1a\x1cxbuf_ext/animations_kf.proto\x1a\x1cxbuf_ext/custom_params.proto\x1a\x16xbuf_ext/physics.proto\"\xf7\x02\n\x04\x44\x61ta\x12\x19\n\x07version\x18\x01 \x01(\r:\x08\x32\x30\x31\x35\x30\x39\x31\x34\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.xbuf.Relation\x12\x1f\n\x08tobjects\x18\x03 \x03(\x0b\x32\r.xbuf.TObject\x12!\n\tmaterials\x18\x05 \x03(\x0b\x32\x0e.xbuf.Material\x12\x1b\n\x06lights\x18\x06 \x03(\x0b\x32\x0b.xbuf.Light\x12!\n\tskeletons\x18\x07 \x03(\x0b\x32\x0e.xbuf.Skeleton\x12\x1a\n\x06meshes\x18\x08 \x03(\x0b\x32\n.xbuf.Mesh\x12\x31\n\rcustom_params\x18\xf4\x03 \x03(\x0b\x32\x19.xbuf_ext.CustomParamList\x12-\n\ranimations_kf\x18\xf5\x03 \x03(\x0b\x32\x15.xbuf_ext.AnimationKF\x12\'\n\x07physics\x18\xf6\x03 \x03(\x0b\x32\x15.xbuf_ext.PhysicsData*\x06\x08\xa6\x04\x10\xd1\x0fP\x00P\x01P\x02P\x03P\x04P\x05P\x06P\x07P\x08P\t')
   ,
-  dependencies=[xbuf.lights_pb2.DESCRIPTOR,xbuf.materials_pb2.DESCRIPTOR,xbuf.meshes_pb2.DESCRIPTOR,xbuf.primitives_pb2.DESCRIPTOR,xbuf.relations_pb2.DESCRIPTOR,xbuf.skeletons_pb2.DESCRIPTOR,xbuf.tobjects_pb2.DESCRIPTOR,xbuf_ext.animations_kf_pb2.DESCRIPTOR,xbuf_ext.custom_params_pb2.DESCRIPTOR,])
+  dependencies=[xbuf.lights_pb2.DESCRIPTOR,xbuf.materials_pb2.DESCRIPTOR,xbuf.meshes_pb2.DESCRIPTOR,xbuf.primitives_pb2.DESCRIPTOR,xbuf.relations_pb2.DESCRIPTOR,xbuf.skeletons_pb2.DESCRIPTOR,xbuf.tobjects_pb2.DESCRIPTOR,xbuf_ext.animations_kf_pb2.DESCRIPTOR,xbuf_ext.custom_params_pb2.DESCRIPTOR,xbuf_ext.physics_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -114,6 +116,13 @@ _DATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='physics', full_name='xbuf.Data.physics', index=9,
+      number=502, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -125,8 +134,8 @@ _DATA = _descriptor.Descriptor(
   extension_ranges=[(550, 2001), ],
   oneofs=[
   ],
-  serialized_start=235,
-  serialized_end=569,
+  serialized_start=259,
+  serialized_end=634,
 )
 
 _DATA.fields_by_name['relations'].message_type = xbuf.relations_pb2._RELATION
@@ -137,6 +146,7 @@ _DATA.fields_by_name['skeletons'].message_type = xbuf.skeletons_pb2._SKELETON
 _DATA.fields_by_name['meshes'].message_type = xbuf.meshes_pb2._MESH
 _DATA.fields_by_name['custom_params'].message_type = xbuf_ext.custom_params_pb2._CUSTOMPARAMLIST
 _DATA.fields_by_name['animations_kf'].message_type = xbuf_ext.animations_kf_pb2._ANIMATIONKF
+_DATA.fields_by_name['physics'].message_type = xbuf_ext.physics_pb2._PHYSICSDATA
 DESCRIPTOR.message_types_by_name['Data'] = _DATA
 
 Data = _reflection.GeneratedProtocolMessageType('Data', (_message.Message,), dict(
