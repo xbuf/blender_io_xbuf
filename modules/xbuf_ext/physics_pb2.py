@@ -20,7 +20,7 @@ from xbuf.primitives_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf_ext/physics.proto',
   package='xbuf_ext',
-  serialized_pb=_b('\n\x16xbuf_ext/physics.proto\x12\x08xbuf_ext\x1a\x15xbuf/primitives.proto\"\x9a\x01\n\x0bPhysicsData\x12&\n\trigidbody\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.RigidBody\"c\n\x0cPhysicsShape\x12\t\n\x05smesh\x10\x01\x12\x0b\n\x07ssphere\x10\x02\x12\t\n\x05shull\x10\x03\x12\x08\n\x04sbox\x10\x04\x12\x0c\n\x08scapsule\x10\x05\x12\r\n\tscylinder\x10\x06\x12\t\n\x05scone\x10\x07\"\xe8\x03\n\tRigidBody\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x01(\x0e\x32!.xbuf_ext.RigidBody.RigidBodyType:\x05tnone\x12\x38\n\x05shape\x18\x03 \x01(\x0e\x32\".xbuf_ext.PhysicsData.PhysicsShape:\x05smesh\x12\x0f\n\x04mass\x18\x04 \x01(\x02:\x01\x31\x12\x13\n\x08\x66riction\x18\x05 \x01(\x02:\x01\x31\x12\x19\n\x0e\x61ngularDamping\x18\x06 \x01(\x02:\x01\x30\x12\x18\n\rlinearDamping\x18\x07 \x01(\x02:\x01\x30\x12\x11\n\x06margin\x18\x08 \x01(\x02:\x01\x30\x12\x16\n\x0brestitution\x18\t \x01(\x02:\x01\x30\x12!\n\rangularFactor\x18\n \x01(\x0b\x32\n.xbuf.Vec3\x12 \n\x0clinearFactor\x18\x0b \x01(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x0bisKinematic\x18\x0c \x01(\x08:\x05\x66\x61lse\x12\x19\n\x0e\x63ollisionGroup\x18\r \x01(\x05:\x01\x31\x12\x18\n\rcollisionMask\x18\x0e \x01(\x05:\x01\x31\"A\n\rRigidBodyType\x12\t\n\x05tnone\x10\x01\x12\x0b\n\x07tstatic\x10\x02\x12\x0c\n\x08tdynamic\x10\x03\x12\n\n\x06tghost\x10\x04P\x00')
+  serialized_pb=_b('\n\x16xbuf_ext/physics.proto\x12\x08xbuf_ext\x1a\x15xbuf/primitives.proto\"\xc4\x01\n\x0bPhysicsData\x12&\n\trigidbody\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.RigidBody\x12(\n\nconstraint\x18\x02 \x01(\x0b\x32\x14.xbuf_ext.Constraint\"c\n\x0cPhysicsShape\x12\t\n\x05smesh\x10\x01\x12\x0b\n\x07ssphere\x10\x02\x12\t\n\x05shull\x10\x03\x12\x08\n\x04sbox\x10\x04\x12\x0c\n\x08scapsule\x10\x05\x12\r\n\tscylinder\x10\x06\x12\t\n\x05scone\x10\x07\"F\n\nConstraint\x12\n\n\x02id\x18\x01 \x02(\t\x12,\n\x07generic\x18\x02 \x01(\x0b\x32\x1b.xbuf_ext.ConstraintGeneric\"\xe5\x01\n\x11\x43onstraintGeneric\x12\x1a\n\x06pivotA\x18\x01 \x02(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x06pivotB\x18\x02 \x02(\x0b\x32\n.xbuf.Vec3\x12$\n\x10upperLinearLimit\x18\x03 \x02(\x0b\x32\n.xbuf.Vec3\x12$\n\x10lowerLinearLimit\x18\x04 \x02(\x0b\x32\n.xbuf.Vec3\x12%\n\x11upperAngularLimit\x18\x05 \x02(\x0b\x32\n.xbuf.Vec3\x12%\n\x11lowerAngularLimit\x18\x06 \x02(\x0b\x32\n.xbuf.Vec3\"\xe8\x03\n\tRigidBody\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x01(\x0e\x32!.xbuf_ext.RigidBody.RigidBodyType:\x05tnone\x12\x38\n\x05shape\x18\x03 \x01(\x0e\x32\".xbuf_ext.PhysicsData.PhysicsShape:\x05smesh\x12\x0f\n\x04mass\x18\x04 \x01(\x02:\x01\x31\x12\x13\n\x08\x66riction\x18\x05 \x01(\x02:\x01\x31\x12\x19\n\x0e\x61ngularDamping\x18\x06 \x01(\x02:\x01\x30\x12\x18\n\rlinearDamping\x18\x07 \x01(\x02:\x01\x30\x12\x11\n\x06margin\x18\x08 \x01(\x02:\x01\x30\x12\x16\n\x0brestitution\x18\t \x01(\x02:\x01\x30\x12!\n\rangularFactor\x18\n \x01(\x0b\x32\n.xbuf.Vec3\x12 \n\x0clinearFactor\x18\x0b \x01(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x0bisKinematic\x18\x0c \x01(\x08:\x05\x66\x61lse\x12\x19\n\x0e\x63ollisionGroup\x18\r \x01(\x05:\x01\x31\x12\x18\n\rcollisionMask\x18\x0e \x01(\x05:\x01\x31\"A\n\rRigidBodyType\x12\t\n\x05tnone\x10\x01\x12\x0b\n\x07tstatic\x10\x02\x12\x0c\n\x08tdynamic\x10\x03\x12\n\n\x06tghost\x10\x04P\x00')
   ,
   dependencies=[xbuf.primitives_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -64,8 +64,8 @@ _PHYSICSDATA_PHYSICSSHAPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=115,
-  serialized_end=214,
+  serialized_start=157,
+  serialized_end=256,
 )
 _sym_db.RegisterEnumDescriptor(_PHYSICSDATA_PHYSICSSHAPE)
 
@@ -94,8 +94,8 @@ _RIGIDBODY_RIGIDBODYTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=640,
-  serialized_end=705,
+  serialized_start=986,
+  serialized_end=1051,
 )
 _sym_db.RegisterEnumDescriptor(_RIGIDBODY_RIGIDBODYTYPE)
 
@@ -114,6 +114,13 @@ _PHYSICSDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='constraint', full_name='xbuf_ext.PhysicsData.constraint', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -127,7 +134,109 @@ _PHYSICSDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=60,
-  serialized_end=214,
+  serialized_end=256,
+)
+
+
+_CONSTRAINT = _descriptor.Descriptor(
+  name='Constraint',
+  full_name='xbuf_ext.Constraint',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='xbuf_ext.Constraint.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='generic', full_name='xbuf_ext.Constraint.generic', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=258,
+  serialized_end=328,
+)
+
+
+_CONSTRAINTGENERIC = _descriptor.Descriptor(
+  name='ConstraintGeneric',
+  full_name='xbuf_ext.ConstraintGeneric',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='pivotA', full_name='xbuf_ext.ConstraintGeneric.pivotA', index=0,
+      number=1, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='pivotB', full_name='xbuf_ext.ConstraintGeneric.pivotB', index=1,
+      number=2, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='upperLinearLimit', full_name='xbuf_ext.ConstraintGeneric.upperLinearLimit', index=2,
+      number=3, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='lowerLinearLimit', full_name='xbuf_ext.ConstraintGeneric.lowerLinearLimit', index=3,
+      number=4, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='upperAngularLimit', full_name='xbuf_ext.ConstraintGeneric.upperAngularLimit', index=4,
+      number=5, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='lowerAngularLimit', full_name='xbuf_ext.ConstraintGeneric.lowerAngularLimit', index=5,
+      number=6, type=11, cpp_type=10, label=2,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=331,
+  serialized_end=560,
 )
 
 
@@ -248,18 +357,28 @@ _RIGIDBODY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=217,
-  serialized_end=705,
+  serialized_start=563,
+  serialized_end=1051,
 )
 
 _PHYSICSDATA.fields_by_name['rigidbody'].message_type = _RIGIDBODY
+_PHYSICSDATA.fields_by_name['constraint'].message_type = _CONSTRAINT
 _PHYSICSDATA_PHYSICSSHAPE.containing_type = _PHYSICSDATA
+_CONSTRAINT.fields_by_name['generic'].message_type = _CONSTRAINTGENERIC
+_CONSTRAINTGENERIC.fields_by_name['pivotA'].message_type = xbuf.primitives_pb2._VEC3
+_CONSTRAINTGENERIC.fields_by_name['pivotB'].message_type = xbuf.primitives_pb2._VEC3
+_CONSTRAINTGENERIC.fields_by_name['upperLinearLimit'].message_type = xbuf.primitives_pb2._VEC3
+_CONSTRAINTGENERIC.fields_by_name['lowerLinearLimit'].message_type = xbuf.primitives_pb2._VEC3
+_CONSTRAINTGENERIC.fields_by_name['upperAngularLimit'].message_type = xbuf.primitives_pb2._VEC3
+_CONSTRAINTGENERIC.fields_by_name['lowerAngularLimit'].message_type = xbuf.primitives_pb2._VEC3
 _RIGIDBODY.fields_by_name['type'].enum_type = _RIGIDBODY_RIGIDBODYTYPE
 _RIGIDBODY.fields_by_name['shape'].enum_type = _PHYSICSDATA_PHYSICSSHAPE
 _RIGIDBODY.fields_by_name['angularFactor'].message_type = xbuf.primitives_pb2._VEC3
 _RIGIDBODY.fields_by_name['linearFactor'].message_type = xbuf.primitives_pb2._VEC3
 _RIGIDBODY_RIGIDBODYTYPE.containing_type = _RIGIDBODY
 DESCRIPTOR.message_types_by_name['PhysicsData'] = _PHYSICSDATA
+DESCRIPTOR.message_types_by_name['Constraint'] = _CONSTRAINT
+DESCRIPTOR.message_types_by_name['ConstraintGeneric'] = _CONSTRAINTGENERIC
 DESCRIPTOR.message_types_by_name['RigidBody'] = _RIGIDBODY
 
 PhysicsData = _reflection.GeneratedProtocolMessageType('PhysicsData', (_message.Message,), dict(
@@ -268,6 +387,20 @@ PhysicsData = _reflection.GeneratedProtocolMessageType('PhysicsData', (_message.
   # @@protoc_insertion_point(class_scope:xbuf_ext.PhysicsData)
   ))
 _sym_db.RegisterMessage(PhysicsData)
+
+Constraint = _reflection.GeneratedProtocolMessageType('Constraint', (_message.Message,), dict(
+  DESCRIPTOR = _CONSTRAINT,
+  __module__ = 'xbuf_ext.physics_pb2'
+  # @@protoc_insertion_point(class_scope:xbuf_ext.Constraint)
+  ))
+_sym_db.RegisterMessage(Constraint)
+
+ConstraintGeneric = _reflection.GeneratedProtocolMessageType('ConstraintGeneric', (_message.Message,), dict(
+  DESCRIPTOR = _CONSTRAINTGENERIC,
+  __module__ = 'xbuf_ext.physics_pb2'
+  # @@protoc_insertion_point(class_scope:xbuf_ext.ConstraintGeneric)
+  ))
+_sym_db.RegisterMessage(ConstraintGeneric)
 
 RigidBody = _reflection.GeneratedProtocolMessageType('RigidBody', (_message.Message,), dict(
   DESCRIPTOR = _RIGIDBODY,

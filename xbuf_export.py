@@ -11,7 +11,7 @@
 # this program; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
-# Copyright David Bernard
+# Copyright David Bernard, Riccardo Balbo
 
 # <pep8 compliant>
 
@@ -226,9 +226,37 @@ def export_all_physics(scene,data,cfg):
     for obj in scene.objects:
         phy_data=None
         phy_data=export_rb(obj,phy_data,data,cfg)
+        phy_data=export_rbct(obj,phy_data,data,cfg)
+        
+def export_rbct(ob,phy_data,data,cfg):
+    btct=ob.rigid_body_constraint
+
+    if not btct or not cfg.need_update(btct):
+        return
+     
+
+
+    if phy_data==None: phy_data=data.physics.add()    
+    ct_type=btct.type
+    constraint=phy_data.constraint
+    constraint.id=cfg.id_of(btct)
+
+    if ct_type=="GENERIC":
+        generic=constraint.generic
+        cnv_vec3((0,0,0),generic.pivotA)
+        cnv_vec3((0,0,0),generic.pivotB)
+        cnv_vec3((btct.limit_lin_x_upper,btct.limit_lin_y_upper,btct.limit_lin_z_upper),generic.upperLinearLimit)
+        cnv_vec3((btct.limit_lin_x_lower,btct.limit_lin_y_lower,btct.limit_lin_z_lower),generic.lowerLinearLimit)
+        cnv_vec3((btct.limit_ang_x_upper,btct.limit_ang_y_upper,btct.limit_ang_z_upper),generic.upperAngularLimit)
+        cnv_vec3((btct.limit_ang_x_lower,btct.limit_ang_y_lower,btct.limit_ang_z_lower),generic.lowerAngularLimit)
+        o1=btct.object1
+        o2=btct.object2
+    add_relation_raw(data.relations, xbuf.datas_pb2.Constraint.__name__,  constraint.id, xbuf.datas_pb2.RigidBody.__name__, cfg.id_of(o1.rigid_body), cfg)
+    add_relation_raw(data.relations, xbuf.datas_pb2.Constraint.__name__,  constraint.id, xbuf.datas_pb2.RigidBody.__name__, cfg.id_of(o2.rigid_body), cfg)
+
 
 def export_rb(ob,phy_data,data,cfg):
-    if not cfg.need_update(ob.rigid_body) or not ob.rigid_body:
+    if not  ob.rigid_body or not cfg.need_update(ob.rigid_body):
         return
 
     if phy_data==None: phy_data=data.physics.add()
