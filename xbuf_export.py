@@ -181,7 +181,7 @@ def export(scene, data, cfg):
     export_all_lights(scene, data, cfg)
     export_all_skeletons(scene, data, cfg)
     export_all_actions(scene, data, cfg)
-    export_all_physics(scene,data,cfg)
+    export_all_physics(scene, data, cfg)
 
 def export_all_tobjects(scene, data, cfg):
     for obj in scene.objects:
@@ -222,146 +222,150 @@ def export_all_tobjects(scene, data, cfg):
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), cfg)
             export_obj_customproperties(obj, tobject, data, cfg)
 
-def export_all_physics(scene,data,cfg):
+def export_all_physics(scene, data, cfg):
     for obj in scene.objects:
-        phy_data=None
-        phy_data=export_rb(obj,phy_data,data,cfg)
-        phy_data=export_rbct(obj,phy_data,data,cfg)
+        phy_data = None
+        phy_data = export_rb(obj, phy_data, data, cfg)
+        export_rbct(obj, phy_data, data, cfg)
 
-def export_rbct(ob,phy_data,data,cfg):
-    btct=ob.rigid_body_constraint
+def export_rbct(ob, phy_data, data, cfg):
+    btct = ob.rigid_body_constraint
 
     if not btct or not cfg.need_update(btct):
         return
 
-
-
-    if phy_data==None: phy_data=data.physics.add()
-    ct_type=btct.type
-    constraint=phy_data.constraint
-    constraint.id=cfg.id_of(btct)
+    if phy_data == None:
+        phy_data = data.physics.add()
+    ct_type = btct.type
+    constraint = phy_data.constraint
+    constraint.id = cfg.id_of(btct)
   
-    o1=btct.object1
-    o2=btct.object2 
+    o1 = btct.object1
+    o2 = btct.object2 
   
-    o1_wp=o1.matrix_world.to_translation()
-    o2_wp=o2.matrix_world.to_translation() 
+    o1_wp = o1.matrix_world.to_translation()
+    o2_wp = o2.matrix_world.to_translation() 
     
-    constraint.a_ref=cfg.id_of(o1.rigid_body)
-    constraint.b_ref=cfg.id_of(o2.rigid_body)
-    
-    if ct_type=="GENERIC":
-        generic=constraint.generic
-        cnv_vec3((0,0,0),generic.pivotA)
-        cnv_vec3(cnv_toVec3ZupToYup(o1_wp-o2_wp),generic.pivotB)
-        generic.disable_collisions=btct.disable_collisions    
+    constraint.a_ref = cfg.id_of(o1.rigid_body)
+    constraint.b_ref = cfg.id_of(o2.rigid_body)
+
+    if ct_type == "GENERIC":
+        generic = constraint.generic
+        cnv_vec3((0, 0, 0), generic.pivotA)
+        cnv_vec3(cnv_toVec3ZupToYup(o1_wp-o2_wp), generic.pivotB)
+        generic.disable_collisions = btct.disable_collisions    
 
         if btct.use_limit_lin_x:
-            limit_lin_x_upper=btct.limit_lin_x_upper
-            limit_lin_x_lower=btct.limit_lin_x_lower
+            limit_lin_x_upper = btct.limit_lin_x_upper
+            limit_lin_x_lower = btct.limit_lin_x_lower
         else:
-            limit_lin_x_upper=float('inf') 
-            limit_lin_x_lower=float('-inf') 
+            limit_lin_x_upper = float('inf') 
+            limit_lin_x_lower = float('-inf') 
 
         if btct.use_limit_lin_y:
-            limit_lin_y_upper=btct.limit_lin_y_upper
-            limit_lin_y_lower=btct.limit_lin_y_lower
+            limit_lin_y_upper = btct.limit_lin_y_upper
+            limit_lin_y_lower = btct.limit_lin_y_lower
         else:
-            limit_lin_y_upper=float('inf') 
-            limit_lin_y_lower=float('-inf') 
+            limit_lin_y_upper = float('inf') 
+            limit_lin_y_lower = float('-inf') 
             
         if btct.use_limit_lin_z:
-            limit_lin_z_upper=btct.limit_lin_z_upper
-            limit_lin_z_lower=btct.limit_lin_z_lower
+            limit_lin_z_upper = btct.limit_lin_z_upper
+            limit_lin_z_lower = btct.limit_lin_z_lower
         else:
-            limit_lin_z_upper=float('inf') 
-            limit_lin_z_lower=float('-inf') 
+            limit_lin_z_upper = float('inf') 
+            limit_lin_z_lower = float('-inf') 
             
         if btct.use_limit_ang_x:
-            limit_ang_x_upper=btct.limit_ang_x_upper
-            limit_ang_x_lower=btct.limit_ang_x_lower
+            limit_ang_x_upper = btct.limit_ang_x_upper
+            limit_ang_x_lower = btct.limit_ang_x_lower
         else:
-            limit_ang_x_upper=float('inf') 
-            limit_ang_x_lower=float('-inf') 
+            limit_ang_x_upper = float('inf') 
+            limit_ang_x_lower = float('-inf') 
 
         if btct.use_limit_ang_y:
-            limit_ang_y_upper=btct.limit_ang_y_upper
-            limit_ang_y_lower=btct.limit_ang_y_lower
+            limit_ang_y_upper = btct.limit_ang_y_upper
+            limit_ang_y_lower = btct.limit_ang_y_lower
         else:
-            limit_ang_y_upper=float('inf') 
-            limit_ang_y_lower=float('-inf') 
+            limit_ang_y_upper = float('inf') 
+            limit_ang_y_lower = float('-inf') 
             
         if btct.use_limit_ang_z:
-            limit_ang_z_upper=btct.limit_ang_z_upper
-            limit_ang_z_lower=btct.limit_ang_z_lower
+            limit_ang_z_upper = btct.limit_ang_z_upper
+            limit_ang_z_lower = btct.limit_ang_z_lower
         else:
-            limit_ang_z_upper=float('inf') 
-            limit_ang_z_lower=float('-inf')             
+            limit_ang_z_upper = float('inf') 
+            limit_ang_z_lower = float('-inf')             
             
-        cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_upper,limit_lin_y_upper,limit_lin_z_upper)),generic.upperLinearLimit)
-        cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_lower,limit_lin_y_lower,limit_lin_z_lower)),generic.lowerLinearLimit)
-        cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_upper,limit_ang_y_upper,limit_ang_z_upper)),generic.upperAngularLimit)
-        cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_lower,limit_ang_y_lower,limit_ang_z_lower)),generic.lowerAngularLimit)
-        
+        cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_upper, limit_lin_y_upper, limit_lin_z_upper)), generic.upperLinearLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_lower, limit_lin_y_lower, limit_lin_z_lower)), generic.lowerLinearLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_upper, limit_ang_y_upper, limit_ang_z_upper)), generic.upperAngularLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_lower, limit_ang_y_lower, limit_ang_z_lower)), generic.lowerAngularLimit)
 
-def export_rb(ob,phy_data,data,cfg):
+
+def export_rb(ob, phy_data, data, cfg):
     if not  ob.rigid_body or not cfg.need_update(ob.rigid_body):
         return
 
-    if phy_data==None: phy_data=data.physics.add()
+    if phy_data is None:
+        phy_data = data.physics.add()
 
-    rigidbody=phy_data.rigidbody
-    rigidbody.id=cfg.id_of(ob.rigid_body)
+    rigidbody = phy_data.rigidbody
+    rigidbody.id = cfg.id_of(ob.rigid_body)
 
-    rbtype=ob.rigid_body.type
-    dynamic=ob.rigid_body.enabled
-    if rbtype=="PASSIVE" or not dynamic:
-        rigidbody.type=xbuf.datas_pb2.RigidBody.tstatic
+    rbtype = ob.rigid_body.type
+    dynamic = ob.rigid_body.enabled
+    if rbtype == "PASSIVE" or not dynamic:
+        rigidbody.type = xbuf.datas_pb2.RigidBody.tstatic
     else:
-        rigidbody.type=xbuf.datas_pb2.RigidBody.tdynamic
+        rigidbody.type = xbuf.datas_pb2.RigidBody.tdynamic
     # Ghost?
 
-    rigidbody.mass=ob.rigid_body.mass;
-    rigidbody.isKinematic=ob.rigid_body.kinematic
-    rigidbody.friction=ob.rigid_body.friction
-    rigidbody.restitution=ob.rigid_body.restitution
+    rigidbody.mass = ob.rigid_body.mass
+    rigidbody.isKinematic = ob.rigid_body.kinematic
+    rigidbody.friction = ob.rigid_body.friction
+    rigidbody.restitution = ob.rigid_body.restitution
     if not ob.rigid_body.use_margin:
-        rigidbody.margin=0
+        rigidbody.margin = 0
     else:
-        rigidbody.margin=ob.rigid_body.collision_margin
+        rigidbody.margin = ob.rigid_body.collision_margin
+
+    rigidbody.linearDamping = ob.rigid_body.linear_damping
+    rigidbody.angularDamping = ob.rigid_body.angular_damping
+    cnv_vec3((1, 1, 1), rigidbody.angularFactor) #Not used
+    cnv_vec3((1, 1, 1), rigidbody.linearFactor) #Not used
+
+    shape = ob.rigid_body.collision_shape
+    if shape == "MESH":
+        shape = xbuf.datas_pb2.PhysicsData.smesh
+    elif shape == "SPHERE":
+        shape = xbuf.datas_pb2.PhysicsData.ssphere
+    elif shape == "CONVEX_HULL":
+        shape = xbuf.datas_pb2.PhysicsData.shull
+    elif shape == "BOX":
+        shape = xbuf.datas_pb2.PhysicsData.sbox
+    elif shape == "CAPSULE":
+        shape = xbuf.datas_pb2.PhysicsData.scapsule
+    elif shape == "CYLINDER":
+        shape = xbuf.datas_pb2.PhysicsData.scylinder
+    elif shape == "CONE":
+        shape = xbuf.datas_pb2.PhysicsData.scone
 
 
-    rigidbody.linearDamping=ob.rigid_body.linear_damping
-    rigidbody.angularDamping=ob.rigid_body.angular_damping
-    cnv_vec3((1,1,1),rigidbody.angularFactor) #Not used
-    cnv_vec3((1,1,1),rigidbody.linearFactor) #Not used
+    rigidbody.shape = shape
 
-    shape=ob.rigid_body.collision_shape
-    if shape == "MESH" : shape=xbuf.datas_pb2.PhysicsData.smesh
-    elif shape == "SPHERE" : shape=xbuf.datas_pb2.PhysicsData.ssphere
-    elif shape == "CONVEX_HULL" : shape=xbuf.datas_pb2.PhysicsData.shull
-    elif shape == "BOX" : shape=xbuf.datas_pb2.PhysicsData.sbox
-    elif shape == "CAPSULE" : shape=xbuf.datas_pb2.PhysicsData.scapsule
-    elif shape == "CYLINDER" : shape=xbuf.datas_pb2.PhysicsData.scylinder
-    elif shape == "CONE" : shape=xbuf.datas_pb2.PhysicsData.scone
-
-
-    rigidbody.shape=shape;
-
-    collisionGroups=ob.rigid_body.collision_groups
-    collisionGroup=0
-    i=1
-    for g in collisionGroups:
+    collision_groups = ob.rigid_body.collision_groups
+    collision_group = 0
+    i = 1
+    for g in collision_groups:
         if g:
-            collisionGroup|=(g<<i)
-        i+=1
+            collision_group |= (g<<i)
+        i += 1
 
-    rigidbody.collisionGroup=collisionGroup
-    rigidbody.collisionMask=collisionGroup
+    rigidbody.collisionGroup = collision_group
+    rigidbody.collisionMask = collision_group
 
-
-
-    add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__,  cfg.id_of(ob), xbuf.datas_pb2.RigidBody.__name__, rigidbody.id, cfg)
+    add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(ob), xbuf.datas_pb2.RigidBody.__name__, rigidbody.id, cfg)
     return phy_data
 
 
@@ -503,7 +507,7 @@ def export_positions(src_mesh, dst_mesh, material_index):
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[0]].co))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[1]].co))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[2]].co))
-        if (len(face.vertices) == 4):
+        if len(face.vertices) == 4:
             floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[3]].co))
 
     # for v in vertices:
@@ -524,7 +528,7 @@ def export_normals(src_mesh, dst_mesh, material_index):
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[0]].normal))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[1]].normal))
         floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[2]].normal))
-        if (len(face.vertices) == 4):
+        if len(face.vertices) == 4:
             floats.extend(cnv_toVec3ZupToYup(vertices[face.vertices[3]].normal))
     # for v in vertices:
     #     floats.extend(v.normal)
@@ -546,7 +550,7 @@ def export_index(src_mesh, dst_mesh, material_index):
         idx += 1
         ints.append(idx)
         idx += 1
-        if (len(face.vertices) == 4):
+        if len(face.vertices) == 4:
             ints.append(idx - 3)
             ints.append(idx - 1)
             ints.append(idx)
@@ -556,7 +560,7 @@ def export_index(src_mesh, dst_mesh, material_index):
 
 def export_colors(src_mesh, dst_mesh, material_index):
     colorCount = len(src_mesh.tessface_vertex_colors)
-    if (colorCount < 1):
+    if colorCount < 1:
         return
     faces = src_mesh.tessfaces
     face_colors = src_mesh.tessface_vertex_colors.active.data
@@ -574,7 +578,7 @@ def export_colors(src_mesh, dst_mesh, material_index):
         floats.append(1.0)
         floats.extend(fc.color3)
         floats.append(1.0)
-        if (len(face.vertices) == 4):
+        if len(face.vertices == 4):
             floats.extend(fc.color4)
             floats.append(1.0)
     dst.floats.values.extend(floats)
@@ -582,7 +586,7 @@ def export_colors(src_mesh, dst_mesh, material_index):
 
 def export_texcoords(src_mesh, dst_mesh, material_index):
     texcoordCount = len(src_mesh.tessface_uv_textures)
-    if (texcoordCount < 1):
+    if texcoordCount < 1:
         return
     faces = src_mesh.tessfaces
     for uvI in range(min(9, len(src_mesh.tessface_uv_textures))):
@@ -598,7 +602,7 @@ def export_texcoords(src_mesh, dst_mesh, material_index):
             floats.extend(ftc.uv1)
             floats.extend(ftc.uv2)
             floats.extend(ftc.uv3)
-            if (len(face.vertices) == 4):
+            if len(face.vertices) == 4:
                 floats.extend(ftc.uv4)
         dst.floats.values.extend(floats)
 
@@ -616,27 +620,27 @@ def export_material(src_mat, dst_mat, cfg):
     intensity = src_mat.specular_intensity
     specular = [src_mat.specular_color[0] * intensity, src_mat.specular_color[1] * intensity, src_mat.specular_color[2] * intensity]
 
-    if ((specular[0] > 0.0) or (specular[1] > 0.0) or (specular[2] > 0.0)):
+    if (specular[0] > 0.0) or (specular[1] > 0.0) or (specular[2] > 0.0):
         cnv_color(specular, dst_mat.specular)
         dst_mat.specular_power = src_mat.specular_hardness
 
     emission = src_mat.emit
-    if (emission > 0.0):
+    if emission > 0.0:
         cnv_color([emission, emission, emission], dst_mat.emission)
 
     # texture = src_mat.active_texture
     for textureSlot in src_mat.texture_slots:
-        if ((textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE") and textureSlot.texture.image and textureSlot.texture.image.source == 'FILE'):
-            if (((textureSlot.use_map_color_diffuse) or (textureSlot.use_map_diffuse))):
+        if (textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE") and textureSlot.texture.image and textureSlot.texture.image.source == 'FILE':
+            if textureSlot.use_map_color_diffuse or textureSlot.use_map_diffuse:
                 export_tex(textureSlot, dst_mat.color_map, cfg)
                 print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
-            elif (((textureSlot.use_map_color_spec) or (textureSlot.use_map_specular))):
+            elif textureSlot.use_map_color_spec or textureSlot.use_map_specular:
                 export_tex(textureSlot, dst_mat.specular_map, cfg)
-            elif ((textureSlot.use_map_emit)):
+            elif textureSlot.use_map_emit:
                 export_tex(textureSlot, dst_mat.emission_map, cfg)
-            elif ((textureSlot.use_map_translucency)):
+            elif textureSlot.use_map_translucency:
                 export_tex(textureSlot, dst_mat.opacity_map, cfg)
-            elif ((textureSlot.use_map_normal)):
+            elif textureSlot.use_map_normal:
                 export_tex(textureSlot, dst_mat.normal_map, cfg)
         else:
             print("WARNING: unsupported texture %r" % (textureSlot))
@@ -644,7 +648,7 @@ def export_material(src_mat, dst_mat, cfg):
 def export_tex(src, dst, cfg):
     from pathlib import PurePath, Path
     # ispacked = src.texture.image.filepath.startswith('//')
-    ispacked = not (not src.texture.image.packed_file)
+    ispacked = not not src.texture.image.packed_file
     dst.id = cfg.id_of(src.texture)
 
     assets_abspath = Path(cfg.assets_path).resolve()
@@ -668,7 +672,7 @@ def export_tex(src, dst, cfg):
             print("no packed texture %r // %r" % (src.texture, img_abspath))
             import shutil
             if img_abspath.exists():
-                if img_abspath != d_abspath :
+                if img_abspath != d_abspath:
                     shutil.copyfile(str(img_abspath), str(d_abspath))
             else:
                 cfg.warning("source file not found : %s" % (img_abspath))
@@ -769,7 +773,7 @@ def export_skeleton(src, dst, cfg):
 
 def export_skin(src_mesh, src_geometry, dst_mesh, cfg, material_index):
     armature = src_geometry.find_armature()
-    if not(armature):
+    if not armature:
         return
 
     vertices = src_mesh.vertices
@@ -785,7 +789,7 @@ def export_skin(src_mesh, src_geometry, dst_mesh, cfg, material_index):
         find_influence(vertices, face.vertices[0], groupToBoneIndex, boneCount, boneIndex, boneWeight)
         find_influence(vertices, face.vertices[1], groupToBoneIndex, boneCount, boneIndex, boneWeight)
         find_influence(vertices, face.vertices[2], groupToBoneIndex, boneCount, boneIndex, boneWeight)
-        if (len(face.vertices) == 4):
+        if len(face.vertices) == 4:
             find_influence(vertices, face.vertices[3], groupToBoneIndex, boneCount, boneIndex, boneWeight)
 
     dst_skin = dst_mesh.skin
@@ -804,7 +808,7 @@ def make_group_to_bone_index(armature, src_geometry, cfg):
         groupName = group.name
         try:
             index = bones_table.index(group.name)
-        except (ValueError):
+        except ValueError:
             index = -1  # bind to nothing if not found
         # for i in range(len(boneArray)):
         #     if (boneArray[i].name == groupName):
@@ -824,11 +828,11 @@ def find_influence(vertices, index, groupToBoneIndex, boneCount, boneIndex, bone
     for el in groups:
         index = groupToBoneIndex[el.group]
         weight = el.weight
-        if ((index >= 0) and (weight > 0)):
+        if (index >= 0) and (weight > 0):
             totalWeight += weight
             indexArray.append(index)
             weightArray.append(weight)
-    if (totalWeight > 0):
+    if totalWeight > 0:
         normalizer = 1.0 / totalWeight
         boneCount.append(len(weightArray))
         for i in range(0, len(weightArray)):
@@ -1400,4 +1404,4 @@ class xbufExporter(bpy.types.Operator, ExportHelper):
 
     @classmethod
     def poll(cls, context):
-        return (context.active_object is not None)
+        return context.active_object is not None
