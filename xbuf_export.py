@@ -138,7 +138,7 @@ def cnv_color(src, dst):
 class ExportCfg:
     def __init__(self, is_preview=False, assets_path="/tmp"):
         self.is_preview = is_preview
-        self.assets_path = helpers.blender_path_abs(assets_path)
+        self.assets_path = bpy.path.abspath(assets_path)
         self._modified = {}
         self._ids = {}
 
@@ -227,16 +227,16 @@ def export_all_physics(scene,data,cfg):
         phy_data=None
         phy_data=export_rb(obj,phy_data,data,cfg)
         phy_data=export_rbct(obj,phy_data,data,cfg)
-        
+
 def export_rbct(ob,phy_data,data,cfg):
     btct=ob.rigid_body_constraint
 
     if not btct or not cfg.need_update(btct):
         return
-     
 
 
-    if phy_data==None: phy_data=data.physics.add()    
+
+    if phy_data==None: phy_data=data.physics.add()
     ct_type=btct.type
     constraint=phy_data.constraint
     constraint.id=cfg.id_of(btct)
@@ -260,10 +260,10 @@ def export_rb(ob,phy_data,data,cfg):
         return
 
     if phy_data==None: phy_data=data.physics.add()
-           
+
     rigidbody=phy_data.rigidbody
     rigidbody.id=cfg.id_of(ob.rigid_body)
-    
+
     rbtype=ob.rigid_body.type
     dynamic=ob.rigid_body.enabled
     if rbtype=="PASSIVE" or not dynamic:
@@ -271,7 +271,7 @@ def export_rb(ob,phy_data,data,cfg):
     else:
         rigidbody.type=xbuf.datas_pb2.RigidBody.tdynamic
     # Ghost?
-  
+
     rigidbody.mass=ob.rigid_body.mass;
     rigidbody.isKinematic=ob.rigid_body.kinematic
     rigidbody.friction=ob.rigid_body.friction
@@ -280,13 +280,13 @@ def export_rb(ob,phy_data,data,cfg):
         rigidbody.margin=0
     else:
         rigidbody.margin=ob.rigid_body.collision_margin
-        
- 
+
+
     rigidbody.linearDamping=ob.rigid_body.linear_damping
     rigidbody.angularDamping=ob.rigid_body.angular_damping
     cnv_vec3((1,1,1),rigidbody.angularFactor) #Not used
     cnv_vec3((1,1,1),rigidbody.linearFactor) #Not used
-        
+
     shape=ob.rigid_body.collision_shape
     if shape == "MESH" : shape=xbuf.datas_pb2.PhysicsData.smesh
     elif shape == "SPHERE" : shape=xbuf.datas_pb2.PhysicsData.ssphere
@@ -306,7 +306,7 @@ def export_rb(ob,phy_data,data,cfg):
         if g:
             collisionGroup|=(g<<i)
         i+=1
-        
+
     rigidbody.collisionGroup=collisionGroup
     rigidbody.collisionMask=collisionGroup
 
@@ -314,7 +314,7 @@ def export_rb(ob,phy_data,data,cfg):
 
     add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__,  cfg.id_of(ob), xbuf.datas_pb2.RigidBody.__name__, rigidbody.id, cfg)
     return phy_data
-        
+
 
 def export_all_geometries(scene, data, cfg):
     for obj in scene.objects:
@@ -338,7 +338,7 @@ def export_all_geometries(scene, data, cfg):
                 export_light(src_light, dst_light, cfg)
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, dst_light.id, cfg)
 
-                
+
 def export_all_materials(scene, data, cfg):
     for obj in scene.objects:
         if obj.hide_render:
@@ -598,28 +598,33 @@ def export_tex(src, dst, cfg):
     ispacked = not (not src.texture.image.packed_file)
     dst.id = cfg.id_of(src.texture)
 
-    rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
+    assets_abspath = Path(cfg.assets_path).resolve()
+    img_abspath = Path(src.texture.image.filepath_from_user()).resolve()
+    try:
+        d_rpath = img_abspath.relative_to(assets_abspath)
+    except ValueError:
+        d_rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
+    d_abspath = (assets_abspath / d_rpath).resolve()
+    print("assets_abspath %r <= %r" % (assets_abspath, cfg.assets_path))
+    print("img_abspath %r" % (img_abspath))
+    print("d_rpath %r => d_abspath %r " % (d_rpath, d_abspath))
     if cfg.need_update(src.texture):
-        abspath = Path(cfg.assets_path) / rpath
-        if not abspath.parent.exists():
-            abspath.parent.mkdir(parents=True)
-        print("path %r => %r " % (rpath, abspath))
+        if not d_abspath.parent.exists():
+            d_abspath.parent.mkdir(parents=True)
         if ispacked:
-            with abspath.open('wb') as f:
+            with d_abspath.open('wb') as f:
                 f.write(src.texture.image.packed_file.data)
         else:
-            print("no packed texture %r // %r" % (src.texture, src.texture.image.filepath_from_user()))
-            # TODO check if file exists,...
+            print("no packed texture %r // %r" % (src.texture, img_abspath))
             import shutil
-            srcpath = str(src.texture.image.filepath_from_user())
-            print("srcpath %r // %r" % (srcpath, len(srcpath)))
-            if len(srcpath) > 0 and Path(srcpath).exists():
-                shutil.copyfile(srcpath, str(abspath))
+            if img_abspath.exists():
+                if img_abspath != d_abspath :
+                    shutil.copyfile(str(img_abspath), str(d_abspath))
             else:
-                cfg.warning("source file not found : %s" % (srcpath))
+                cfg.warning("source file not found : %s" % (img_abspath))
     else:
-        print("no update of %r .. %r" % (dst.id, rpath))
-    dst.rpath = str.join('/', rpath.parts)
+        print("no update of %r .. %r" % (dst.id, d_rpath))
+    dst.rpath = str.join('/', d_rpath.parts)
     # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.
     # uscale = textureSlot.scale[0]

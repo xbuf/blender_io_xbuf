@@ -220,10 +220,3 @@ def projection_matrix(camd):
 
     # return sum([c for c in mat], [])
     return mat
-
-
-def blender_path_abs(path):
-    from pathlib import Path
-    # return str(Path(bpy.path.abspath(str(path).replace("//../", "//../../"))).resolve())
-    return bpy.path.abspath(str(path).replace("//../", "//../../"))
-    # return path
