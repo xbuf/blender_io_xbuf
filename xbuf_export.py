@@ -604,13 +604,14 @@ def export_tex(src, dst, cfg):
         d_rpath = img_abspath.relative_to(assets_abspath)
     except ValueError:
         d_rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
-    d_abspath = (assets_abspath / d_rpath).resolve()
+    d_abspath = (assets_abspath / d_rpath)
     print("assets_abspath %r <= %r" % (assets_abspath, cfg.assets_path))
     print("img_abspath %r" % (img_abspath))
     print("d_rpath %r => d_abspath %r " % (d_rpath, d_abspath))
     if cfg.need_update(src.texture):
         if not d_abspath.parent.exists():
             d_abspath.parent.mkdir(parents=True)
+        #d_abspath = d_abspath.resolve() # resolve failed if file/dir doesn't exists
         if ispacked:
             with d_abspath.open('wb') as f:
                 f.write(src.texture.image.packed_file.data)
@@ -1309,6 +1310,9 @@ def export_obj_customproperties(src, dst_node, dst_data, cfg):
 import bpy
 from bpy_extras.io_utils import ExportHelper
 
+def update_path(self, context):
+    context.scene.xbuf.assets_path = self.assets_path
+
 
 class xbufExporter(bpy.types.Operator, ExportHelper):
     """Export to xbuf format"""
@@ -1316,6 +1320,7 @@ class xbufExporter(bpy.types.Operator, ExportHelper):
     bl_label = "Export xbuf"
     filename_ext = ".xbuf"
 
+    # settings = bpy.props.PointerProperty(type=xbufSettingsScene)
     # option_export_selection = bpy.props.BoolProperty(name = "Export Selection", description = "Export only selected objects", default = False)
 
     def __init__(self):
@@ -1323,7 +1328,7 @@ class xbufExporter(bpy.types.Operator, ExportHelper):
 
     def execute(self, context):
         scene = context.scene
-
+        assets_path = scene.xbuf.assets_path
         # originalFrame = scene.frame_current
         # originalSubframe = scene.frame_subframe
         # self.restoreFrame = False
@@ -1332,7 +1337,7 @@ class xbufExporter(bpy.types.Operator, ExportHelper):
         # self.frameTime = 1.0 / (scene.render.fps_base * scene.render.fps)
 
         data = xbuf.datas_pb2.Data()
-        cfg = ExportCfg(is_preview=False, assets_path=scene.xbuf.assets_path)
+        cfg = ExportCfg(is_preview=False, assets_path=assets_path)
         export(scene, data, cfg)
 
         file = open(self.filepath, "wb")
