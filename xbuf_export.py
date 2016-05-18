@@ -245,8 +245,11 @@ def export_rbct(ob,phy_data,data,cfg):
     o2=btct.object2 
   
     o1_wp=o1.matrix_world.to_translation()
-    o2_wp=o2.matrix_world.to_translation()
-
+    o2_wp=o2.matrix_world.to_translation() 
+    
+    constraint.a_ref=cfg.id_of(o1.rigid_body)
+    constraint.b_ref=cfg.id_of(o2.rigid_body)
+        
     if ct_type=="GENERIC":
         generic=constraint.generic
         cnv_vec3((0,0,0),generic.pivotA)
@@ -298,8 +301,7 @@ def export_rbct(ob,phy_data,data,cfg):
         cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_lower,limit_lin_y_lower,limit_lin_z_lower)),generic.lowerLinearLimit)
         cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_upper,limit_ang_y_upper,limit_ang_z_upper)),generic.upperAngularLimit)
         cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_lower,limit_ang_y_lower,limit_ang_z_lower)),generic.lowerAngularLimit)
-        constraint.a_ref=cfg.id_of(o1.rigid_body)
-        constraint.b_ref=cfg.id_of(o2.rigid_body)
+        
 
 def export_rb(ob,phy_data,data,cfg):
     if not  ob.rigid_body or not cfg.need_update(ob.rigid_body):
