@@ -251,10 +251,53 @@ def export_rbct(ob,phy_data,data,cfg):
         generic=constraint.generic
         cnv_vec3((0,0,0),generic.pivotA)
         cnv_vec3(cnv_toVec3ZupToYup(o1_wp-o2_wp),generic.pivotB)
-        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_lin_x_upper,btct.limit_lin_y_upper,btct.limit_lin_z_upper)),generic.upperLinearLimit)
-        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_lin_x_lower,btct.limit_lin_y_lower,btct.limit_lin_z_lower)),generic.lowerLinearLimit)
-        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_ang_x_upper,btct.limit_ang_y_upper,btct.limit_ang_z_upper)),generic.upperAngularLimit)
-        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_ang_x_lower,btct.limit_ang_y_lower,btct.limit_ang_z_lower)),generic.lowerAngularLimit)
+
+        if btct.use_limit_lin_x:
+            limit_lin_x_upper=btct.limit_lin_x_upper
+            limit_lin_x_lower=btct.limit_lin_x_lower
+        else:
+            limit_lin_x_upper=float('inf') 
+            limit_lin_x_lower=float('-inf') 
+
+        if btct.use_limit_lin_y:
+            limit_lin_y_upper=btct.limit_lin_y_upper
+            limit_lin_y_lower=btct.limit_lin_y_lower
+        else:
+            limit_lin_y_upper=float('inf') 
+            limit_lin_y_lower=float('-inf') 
+            
+        if btct.use_limit_lin_z:
+            limit_lin_z_upper=btct.limit_lin_z_upper
+            limit_lin_z_lower=btct.limit_lin_z_lower
+        else:
+            limit_lin_z_upper=float('inf') 
+            limit_lin_z_lower=float('-inf') 
+            
+        if btct.use_limit_ang_x:
+            limit_ang_x_upper=btct.limit_ang_x_upper
+            limit_ang_x_lower=btct.limit_ang_x_lower
+        else:
+            limit_ang_x_upper=float('inf') 
+            limit_ang_x_lower=float('-inf') 
+
+        if btct.use_limit_ang_y:
+            limit_ang_y_upper=btct.limit_ang_y_upper
+            limit_ang_y_lower=btct.limit_ang_y_lower
+        else:
+            limit_ang_y_upper=float('inf') 
+            limit_ang_y_lower=float('-inf') 
+            
+        if btct.use_limit_ang_z:
+            limit_ang_z_upper=btct.limit_ang_z_upper
+            limit_ang_z_lower=btct.limit_ang_z_lower
+        else:
+            limit_ang_z_upper=float('inf') 
+            limit_ang_z_lower=float('-inf')             
+            
+        cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_upper,limit_lin_y_upper,limit_lin_z_upper)),generic.upperLinearLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_lower,limit_lin_y_lower,limit_lin_z_lower)),generic.lowerLinearLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_upper,limit_ang_y_upper,limit_ang_z_upper)),generic.upperAngularLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_lower,limit_ang_y_lower,limit_ang_z_lower)),generic.lowerAngularLimit)
         constraint.a_ref=cfg.id_of(o1.rigid_body)
         constraint.b_ref=cfg.id_of(o2.rigid_body)
 
