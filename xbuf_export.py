@@ -240,20 +240,23 @@ def export_rbct(ob,phy_data,data,cfg):
     ct_type=btct.type
     constraint=phy_data.constraint
     constraint.id=cfg.id_of(btct)
+  
+    o1=btct.object1
+    o2=btct.object2 
+  
+    o1_wp=o1.matrix_world.to_translation()
+    o2_wp=o2.matrix_world.to_translation()
 
     if ct_type=="GENERIC":
         generic=constraint.generic
         cnv_vec3((0,0,0),generic.pivotA)
-        cnv_vec3((0,0,0),generic.pivotB)
-        cnv_vec3((btct.limit_lin_x_upper,btct.limit_lin_y_upper,btct.limit_lin_z_upper),generic.upperLinearLimit)
-        cnv_vec3((btct.limit_lin_x_lower,btct.limit_lin_y_lower,btct.limit_lin_z_lower),generic.lowerLinearLimit)
-        cnv_vec3((btct.limit_ang_x_upper,btct.limit_ang_y_upper,btct.limit_ang_z_upper),generic.upperAngularLimit)
-        cnv_vec3((btct.limit_ang_x_lower,btct.limit_ang_y_lower,btct.limit_ang_z_lower),generic.lowerAngularLimit)
-        o1=btct.object1
-        o2=btct.object2
-    add_relation_raw(data.relations, xbuf.datas_pb2.Constraint.__name__,  constraint.id, xbuf.datas_pb2.RigidBody.__name__, cfg.id_of(o1.rigid_body), cfg)
-    add_relation_raw(data.relations, xbuf.datas_pb2.Constraint.__name__,  constraint.id, xbuf.datas_pb2.RigidBody.__name__, cfg.id_of(o2.rigid_body), cfg)
-
+        cnv_vec3(cnv_toVec3ZupToYup(o1_wp-o2_wp),generic.pivotB)
+        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_lin_x_upper,btct.limit_lin_y_upper,btct.limit_lin_z_upper)),generic.upperLinearLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_lin_x_lower,btct.limit_lin_y_lower,btct.limit_lin_z_lower)),generic.lowerLinearLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_ang_x_upper,btct.limit_ang_y_upper,btct.limit_ang_z_upper)),generic.upperAngularLimit)
+        cnv_vec3(cnv_toVec3ZupToYup((btct.limit_ang_x_lower,btct.limit_ang_y_lower,btct.limit_ang_z_lower)),generic.lowerAngularLimit)
+        constraint.a_ref=cfg.id_of(o1.rigid_body)
+        constraint.b_ref=cfg.id_of(o2.rigid_body)
 
 def export_rb(ob,phy_data,data,cfg):
     if not  ob.rigid_body or not cfg.need_update(ob.rigid_body):
