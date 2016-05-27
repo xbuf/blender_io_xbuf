@@ -249,11 +249,12 @@ def export_rbct(ob,phy_data,data,cfg):
     
     constraint.a_ref=cfg.id_of(o1.rigid_body)
     constraint.b_ref=cfg.id_of(o2.rigid_body)
-        
+    
     if ct_type=="GENERIC":
         generic=constraint.generic
         cnv_vec3((0,0,0),generic.pivotA)
         cnv_vec3(cnv_toVec3ZupToYup(o1_wp-o2_wp),generic.pivotB)
+        generic.disable_collisions=btct.disable_collisions    
 
         if btct.use_limit_lin_x:
             limit_lin_x_upper=btct.limit_lin_x_upper

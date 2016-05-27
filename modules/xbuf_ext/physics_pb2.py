@@ -20,7 +20,7 @@ from xbuf.primitives_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf_ext/physics.proto',
   package='xbuf_ext',
-  serialized_pb=_b('\n\x16xbuf_ext/physics.proto\x12\x08xbuf_ext\x1a\x15xbuf/primitives.proto\"\xc4\x01\n\x0bPhysicsData\x12&\n\trigidbody\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.RigidBody\x12(\n\nconstraint\x18\x02 \x01(\x0b\x32\x14.xbuf_ext.Constraint\"c\n\x0cPhysicsShape\x12\t\n\x05smesh\x10\x01\x12\x0b\n\x07ssphere\x10\x02\x12\t\n\x05shull\x10\x03\x12\x08\n\x04sbox\x10\x04\x12\x0c\n\x08scapsule\x10\x05\x12\r\n\tscylinder\x10\x06\x12\t\n\x05scone\x10\x07\"d\n\nConstraint\x12\n\n\x02id\x18\x01 \x02(\t\x12\r\n\x05\x61_ref\x18\x02 \x02(\t\x12\r\n\x05\x62_ref\x18\x03 \x02(\t\x12,\n\x07generic\x18\x04 \x01(\x0b\x32\x1b.xbuf_ext.ConstraintGeneric\"\xe5\x01\n\x11\x43onstraintGeneric\x12\x1a\n\x06pivotA\x18\x01 \x02(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x06pivotB\x18\x02 \x02(\x0b\x32\n.xbuf.Vec3\x12$\n\x10upperLinearLimit\x18\x03 \x02(\x0b\x32\n.xbuf.Vec3\x12$\n\x10lowerLinearLimit\x18\x04 \x02(\x0b\x32\n.xbuf.Vec3\x12%\n\x11upperAngularLimit\x18\x05 \x02(\x0b\x32\n.xbuf.Vec3\x12%\n\x11lowerAngularLimit\x18\x06 \x02(\x0b\x32\n.xbuf.Vec3\"\xe8\x03\n\tRigidBody\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x01(\x0e\x32!.xbuf_ext.RigidBody.RigidBodyType:\x05tnone\x12\x38\n\x05shape\x18\x03 \x01(\x0e\x32\".xbuf_ext.PhysicsData.PhysicsShape:\x05smesh\x12\x0f\n\x04mass\x18\x04 \x01(\x02:\x01\x31\x12\x13\n\x08\x66riction\x18\x05 \x01(\x02:\x01\x31\x12\x19\n\x0e\x61ngularDamping\x18\x06 \x01(\x02:\x01\x30\x12\x18\n\rlinearDamping\x18\x07 \x01(\x02:\x01\x30\x12\x11\n\x06margin\x18\x08 \x01(\x02:\x01\x30\x12\x16\n\x0brestitution\x18\t \x01(\x02:\x01\x30\x12!\n\rangularFactor\x18\n \x01(\x0b\x32\n.xbuf.Vec3\x12 \n\x0clinearFactor\x18\x0b \x01(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x0bisKinematic\x18\x0c \x01(\x08:\x05\x66\x61lse\x12\x19\n\x0e\x63ollisionGroup\x18\r \x01(\x05:\x01\x31\x12\x18\n\rcollisionMask\x18\x0e \x01(\x05:\x01\x31\"A\n\rRigidBodyType\x12\t\n\x05tnone\x10\x01\x12\x0b\n\x07tstatic\x10\x02\x12\x0c\n\x08tdynamic\x10\x03\x12\n\n\x06tghost\x10\x04P\x00')
+  serialized_pb=_b('\n\x16xbuf_ext/physics.proto\x12\x08xbuf_ext\x1a\x15xbuf/primitives.proto\"\xc4\x01\n\x0bPhysicsData\x12&\n\trigidbody\x18\x01 \x01(\x0b\x32\x13.xbuf_ext.RigidBody\x12(\n\nconstraint\x18\x02 \x01(\x0b\x32\x14.xbuf_ext.Constraint\"c\n\x0cPhysicsShape\x12\t\n\x05smesh\x10\x01\x12\x0b\n\x07ssphere\x10\x02\x12\t\n\x05shull\x10\x03\x12\x08\n\x04sbox\x10\x04\x12\x0c\n\x08scapsule\x10\x05\x12\r\n\tscylinder\x10\x06\x12\t\n\x05scone\x10\x07\"d\n\nConstraint\x12\n\n\x02id\x18\x01 \x02(\t\x12\r\n\x05\x61_ref\x18\x02 \x02(\t\x12\r\n\x05\x62_ref\x18\x03 \x02(\t\x12,\n\x07generic\x18\x04 \x01(\x0b\x32\x1b.xbuf_ext.ConstraintGeneric\"\x81\x02\n\x11\x43onstraintGeneric\x12\x1a\n\x06pivotA\x18\x01 \x02(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x06pivotB\x18\x02 \x02(\x0b\x32\n.xbuf.Vec3\x12$\n\x10upperLinearLimit\x18\x03 \x02(\x0b\x32\n.xbuf.Vec3\x12$\n\x10lowerLinearLimit\x18\x04 \x02(\x0b\x32\n.xbuf.Vec3\x12%\n\x11upperAngularLimit\x18\x05 \x02(\x0b\x32\n.xbuf.Vec3\x12%\n\x11lowerAngularLimit\x18\x06 \x02(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x12\x64isable_collisions\x18\x07 \x02(\x08\"\xe8\x03\n\tRigidBody\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x01(\x0e\x32!.xbuf_ext.RigidBody.RigidBodyType:\x05tnone\x12\x38\n\x05shape\x18\x03 \x01(\x0e\x32\".xbuf_ext.PhysicsData.PhysicsShape:\x05smesh\x12\x0f\n\x04mass\x18\x04 \x01(\x02:\x01\x31\x12\x13\n\x08\x66riction\x18\x05 \x01(\x02:\x01\x31\x12\x19\n\x0e\x61ngularDamping\x18\x06 \x01(\x02:\x01\x30\x12\x18\n\rlinearDamping\x18\x07 \x01(\x02:\x01\x30\x12\x11\n\x06margin\x18\x08 \x01(\x02:\x01\x30\x12\x16\n\x0brestitution\x18\t \x01(\x02:\x01\x30\x12!\n\rangularFactor\x18\n \x01(\x0b\x32\n.xbuf.Vec3\x12 \n\x0clinearFactor\x18\x0b \x01(\x0b\x32\n.xbuf.Vec3\x12\x1a\n\x0bisKinematic\x18\x0c \x01(\x08:\x05\x66\x61lse\x12\x19\n\x0e\x63ollisionGroup\x18\r \x01(\x05:\x01\x31\x12\x18\n\rcollisionMask\x18\x0e \x01(\x05:\x01\x31\"A\n\rRigidBodyType\x12\t\n\x05tnone\x10\x01\x12\x0b\n\x07tstatic\x10\x02\x12\x0c\n\x08tdynamic\x10\x03\x12\n\n\x06tghost\x10\x04P\x00')
   ,
   dependencies=[xbuf.primitives_pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -94,8 +94,8 @@ _RIGIDBODY_RIGIDBODYTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1016,
-  serialized_end=1081,
+  serialized_start=1044,
+  serialized_end=1109,
 )
 _sym_db.RegisterEnumDescriptor(_RIGIDBODY_RIGIDBODYTYPE)
 
@@ -238,6 +238,13 @@ _CONSTRAINTGENERIC = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='disable_collisions', full_name='xbuf_ext.ConstraintGeneric.disable_collisions', index=6,
+      number=7, type=8, cpp_type=7, label=2,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -250,7 +257,7 @@ _CONSTRAINTGENERIC = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=361,
-  serialized_end=590,
+  serialized_end=618,
 )
 
 
@@ -371,8 +378,8 @@ _RIGIDBODY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=593,
-  serialized_end=1081,
+  serialized_start=621,
+  serialized_end=1109,
 )
 
 _PHYSICSDATA.fields_by_name['rigidbody'].message_type = _RIGIDBODY
