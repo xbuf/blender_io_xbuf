@@ -239,13 +239,13 @@ def export_rbct(ob, phy_data, data, cfg):
     ct_type = btct.type
     constraint = phy_data.constraint
     constraint.id = cfg.id_of(btct)
-  
+
     o1 = btct.object1
-    o2 = btct.object2 
-  
+    o2 = btct.object2
+
     o1_wp = o1.matrix_world.to_translation()
-    o2_wp = o2.matrix_world.to_translation() 
-    
+    o2_wp = o2.matrix_world.to_translation()
+
     constraint.a_ref = cfg.id_of(o1.rigid_body)
     constraint.b_ref = cfg.id_of(o2.rigid_body)
 
@@ -253,50 +253,50 @@ def export_rbct(ob, phy_data, data, cfg):
         generic = constraint.generic
         cnv_vec3((0, 0, 0), generic.pivotA)
         cnv_vec3(cnv_toVec3ZupToYup(o1_wp-o2_wp), generic.pivotB)
-        generic.disable_collisions = btct.disable_collisions    
+        generic.disable_collisions = btct.disable_collisions
 
         if btct.use_limit_lin_x:
             limit_lin_x_upper = btct.limit_lin_x_upper
             limit_lin_x_lower = btct.limit_lin_x_lower
         else:
-            limit_lin_x_upper = float('inf') 
-            limit_lin_x_lower = float('-inf') 
+            limit_lin_x_upper = float('inf')
+            limit_lin_x_lower = float('-inf')
 
         if btct.use_limit_lin_y:
             limit_lin_y_upper = btct.limit_lin_y_upper
             limit_lin_y_lower = btct.limit_lin_y_lower
         else:
-            limit_lin_y_upper = float('inf') 
-            limit_lin_y_lower = float('-inf') 
-            
+            limit_lin_y_upper = float('inf')
+            limit_lin_y_lower = float('-inf')
+
         if btct.use_limit_lin_z:
             limit_lin_z_upper = btct.limit_lin_z_upper
             limit_lin_z_lower = btct.limit_lin_z_lower
         else:
-            limit_lin_z_upper = float('inf') 
-            limit_lin_z_lower = float('-inf') 
-            
+            limit_lin_z_upper = float('inf')
+            limit_lin_z_lower = float('-inf')
+
         if btct.use_limit_ang_x:
             limit_ang_x_upper = btct.limit_ang_x_upper
             limit_ang_x_lower = btct.limit_ang_x_lower
         else:
-            limit_ang_x_upper = float('inf') 
-            limit_ang_x_lower = float('-inf') 
+            limit_ang_x_upper = float('inf')
+            limit_ang_x_lower = float('-inf')
 
         if btct.use_limit_ang_y:
             limit_ang_y_upper = btct.limit_ang_y_upper
             limit_ang_y_lower = btct.limit_ang_y_lower
         else:
-            limit_ang_y_upper = float('inf') 
-            limit_ang_y_lower = float('-inf') 
-            
+            limit_ang_y_upper = float('inf')
+            limit_ang_y_lower = float('-inf')
+
         if btct.use_limit_ang_z:
             limit_ang_z_upper = btct.limit_ang_z_upper
             limit_ang_z_lower = btct.limit_ang_z_lower
         else:
-            limit_ang_z_upper = float('inf') 
-            limit_ang_z_lower = float('-inf')             
-            
+            limit_ang_z_upper = float('inf')
+            limit_ang_z_lower = float('-inf')
+
         cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_upper, limit_lin_y_upper, limit_lin_z_upper)), generic.upperLinearLimit)
         cnv_vec3(cnv_toVec3ZupToYup((limit_lin_x_lower, limit_lin_y_lower, limit_lin_z_lower)), generic.lowerLinearLimit)
         cnv_vec3(cnv_toVec3ZupToYup((limit_ang_x_upper, limit_ang_y_upper, limit_ang_z_upper)), generic.upperAngularLimit)
@@ -578,7 +578,7 @@ def export_colors(src_mesh, dst_mesh, material_index):
         floats.append(1.0)
         floats.extend(fc.color3)
         floats.append(1.0)
-        if len(face.vertices == 4):
+        if len(face.vertices) == 4:
             floats.extend(fc.color4)
             floats.append(1.0)
     dst.floats.values.extend(floats)
@@ -1296,7 +1296,7 @@ def equals_mat4(m0, m1, max_cell_delta):
 #                         seg_duration = p1.co[0] - p0.co[0]
 #                         # print("kf co(%s) , left (%s), right(%s) : (%s, %s)" % ())
 #                         bp.h0_x = (p0.handle_right[0] - p0.co[0]) / seg_duration
-#                         bp.h0_y = p0.handle_right[1] * dst_kfs_coef
+#                         bp.h0_y = p0.	handle_right[1] * dst_kfs_coef
 #                         bp.h1_x = (p1.handle_left[0] - p0.co[0]) / seg_duration
 #                         bp.h1_y = p1.handle_left[1] * dst_kfs_coef
 #             # print("res dst_kf %r" % (dst_kf))
