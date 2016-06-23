@@ -356,7 +356,7 @@ def export_rb(ob, phy_data, data, cfg):
 
     collision_groups = ob.rigid_body.collision_groups
     collision_group = 0
-    i = 1
+    i = 0
     for g in collision_groups:
         if g:
             collision_group |= (g<<i)
