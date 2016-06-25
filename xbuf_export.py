@@ -752,7 +752,7 @@ def export_skeleton(src, dst, cfg):
         # retreive transform local to parent
         boneMat = src_bone.matrix_local
         if src_bone.parent:
-            boneMat = src_bone.parent.matrix_local.inverted() * src_bone.matrix_local
+            boneMat = src_bone.parent.matrix_local.inverted_safe() * src_bone.matrix_local
         loc, quat, sca = boneMat.decompose()
 
         # Can't use armature.convert_space
@@ -915,7 +915,7 @@ class Sampler:
         if pose_bone_idx is not None:
             self.clip.sampled_transform.bone_name = self.obj.pose.bones[self.pose_bone_idx].name
             self.rest_bone = obj.data.bones[self.pose_bone_idx]
-            self.rest_matrix_inverted = self.rest_bone.matrix_local.copy().inverted()
+            self.rest_matrix_inverted = self.rest_bone.matrix_local.copy().inverted_safe()
         self.previous_mat4 = None
         self.last_equals = None
         self.cnv_mat = bpy_extras.io_utils.axis_conversion(from_forward='-Y', from_up='Z', to_forward='Z', to_up='Y').to_4x4()
@@ -926,11 +926,11 @@ class Sampler:
             # mat4 = self.obj.convert_space(pbone, pbone.matrix, from_space='POSE', to_space='LOCAL')
             mat4 = pbone.matrix
             if pbone.parent:
-                mat4 = pbone.parent.matrix.inverted() * mat4
+                mat4 = pbone.parent.matrix.inverted_safe() * mat4
         else:
             mat4 = self.obj.matrix_local
         # mat4 = self.cnv_mat * mat4
-        # mat4 = self.obj.matrix_local.inverted() * mat4
+        # mat4 = self.obj.matrix_local.inverted_safe() * mat4
         if self.previous_mat4 is None or not equals_mat4(mat4, self.previous_mat4, 0.000001):
             if self.last_equals is not None:
                 self._store(self.last_equals, self.previous_mat4)
@@ -1160,7 +1160,7 @@ def equals_mat4(m0, m1, max_cell_delta):
 #     pq.z = -pq.y
 #     pq.y = t
 #     #        if src_bone.parent:
-#     #            boneMat = src_bone.parent.matrix_local.inverted() * src_bone.matrix_local
+#     #            boneMat = src_bone.parent.matrix_local.inverted_safe() * src_bone.matrix_local
 #     #        loc, quat, sca = boneMat.decompose()
 #     for i in range(0, lg):
 #         p = pq
