@@ -648,39 +648,38 @@ def export_material(src_mat, dst_mat, cfg):
             print("WARNING: unsupported texture %r" % (textureSlot))
 
 def export_tex(src, dst, cfg):
-    from pathlib import PurePath, Path
+    import os
     # ispacked = src.texture.image.filepath.startswith('//')
     ispacked = not not src.texture.image.packed_file
     dst.id = cfg.id_of(src.texture)
 
-    assets_abspath = Path(cfg.assets_path).resolve()
-    img_abspath = Path(src.texture.image.filepath_from_user()).resolve()
-    try:
-        d_rpath = img_abspath.relative_to(assets_abspath)
-    except ValueError:
-        d_rpath = PurePath("Textures") / PurePath(src.texture.image.filepath[2:]).name
-    d_abspath = (assets_abspath / d_rpath)
+    assets_abspath = os.path.normpath(os.path.expanduser(cfg.assets_path))
+    img_abspath = os.path.normpath(os.path.expanduser(src.texture.image.filepath_from_user()))
+    if img_abspath.startswith(assets_abspath) :
+        d_rpath = os.path.relpath(img_abspath, assets_abspath)
+    else:
+        d_rpath = os.path.join("Textures",  os.path.basename(src.texture.image.filepath[2:]))
+    d_abspath = os.path.normpath(os.path.join(assets_abspath, d_rpath))
     print("assets_abspath %r <= %r" % (assets_abspath, cfg.assets_path))
     print("img_abspath %r" % (img_abspath))
     print("d_rpath %r => d_abspath %r " % (d_rpath, d_abspath))
     if cfg.need_update(src.texture):
-        if not d_abspath.parent.exists():
-            d_abspath.parent.mkdir(parents=True)
-        #d_abspath = d_abspath.resolve() # resolve failed if file/dir doesn't exists
+        os.makedirs(os.path.dirname(d_abspath), exist_ok=True)
         if ispacked:
-            with d_abspath.open('wb') as f:
+            with open(d_abspath, 'wb') as f:
                 f.write(src.texture.image.packed_file.data)
         else:
             print("no packed texture %r // %r" % (src.texture, img_abspath))
             import shutil
-            if img_abspath.exists():
+            if os.path.isfile(img_abspath):
+                # no resolution of symlink, could cause issue ?
                 if img_abspath != d_abspath:
-                    shutil.copyfile(str(img_abspath), str(d_abspath))
+                    shutil.copyfile(img_abspath, d_abspath)
             else:
                 cfg.warning("source file not found : %s" % (img_abspath))
     else:
         print("no update of %r .. %r" % (dst.id, d_rpath))
-    dst.rpath = str.join('/', d_rpath.parts)
+    dst.rpath = d_rpath.replace('\\', '/')
     # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.
     # uscale = textureSlot.scale[0]
