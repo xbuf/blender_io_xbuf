@@ -642,6 +642,8 @@ def export_material(src_mat, dst_mat, cfg):
                 export_tex(textureSlot, dst_mat.opacity_map, cfg)
             elif textureSlot.use_map_normal:
                 export_tex(textureSlot, dst_mat.normal_map, cfg)
+        elif textureSlot is None:
+            continue  # Empty Texture Slot
         else:
             print("WARNING: unsupported texture %r" % (textureSlot))
 
