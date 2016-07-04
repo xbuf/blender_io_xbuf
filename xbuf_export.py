@@ -629,6 +629,9 @@ def export_material(src_mat, dst_mat, cfg):
     if emission > 0.0:
         cnv_color([emission, emission, emission], dst_mat.emission)
 
+    if src_mat.use_transparency:
+        dst_mat.opacity = src_mat.alpha
+
     # texture = src_mat.active_texture
     for textureSlot in src_mat.texture_slots:
         if (textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE") and textureSlot.texture.image and textureSlot.texture.image.source == 'FILE':
@@ -639,7 +642,7 @@ def export_material(src_mat, dst_mat, cfg):
                 export_tex(textureSlot, dst_mat.specular_map, cfg)
             elif textureSlot.use_map_emit:
                 export_tex(textureSlot, dst_mat.emission_map, cfg)
-            elif textureSlot.use_map_translucency:
+            elif textureSlot.use_map_translucency or textureSlot.use_map_alpha:
                 export_tex(textureSlot, dst_mat.opacity_map, cfg)
             elif textureSlot.use_map_normal:
                 export_tex(textureSlot, dst_mat.normal_map, cfg)
