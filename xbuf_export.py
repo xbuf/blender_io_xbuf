@@ -612,10 +612,11 @@ def export_material(src_mat, dst_mat, cfg):
     dst_mat.name = src_mat.name
 
     dst_mat.shadeless = src_mat.use_shadeless
-    intensity = src_mat.diffuse_intensity
-    diffuse = [src_mat.diffuse_color[0] * intensity, src_mat.diffuse_color[1] * intensity, src_mat.diffuse_color[2] * intensity]
 
-    cnv_color(diffuse, dst_mat.color)
+    if not src_mat.use_vertex_color_paint:
+        intensity = src_mat.diffuse_intensity
+        diffuse = [src_mat.diffuse_color[0] * intensity, src_mat.diffuse_color[1] * intensity, src_mat.diffuse_color[2] * intensity]
+        cnv_color(diffuse, dst_mat.color)
 
     intensity = src_mat.specular_intensity
     specular = [src_mat.specular_color[0] * intensity, src_mat.specular_color[1] * intensity, src_mat.specular_color[2] * intensity]
