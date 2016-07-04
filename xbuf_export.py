@@ -638,13 +638,13 @@ def export_material(src_mat, dst_mat, cfg):
             if textureSlot.use_map_color_diffuse or textureSlot.use_map_diffuse:
                 export_tex(textureSlot, dst_mat.color_map, cfg)
                 print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
-            elif textureSlot.use_map_color_spec or textureSlot.use_map_specular:
+            if textureSlot.use_map_color_spec or textureSlot.use_map_specular:
                 export_tex(textureSlot, dst_mat.specular_map, cfg)
-            elif textureSlot.use_map_emit:
+            if textureSlot.use_map_emit:
                 export_tex(textureSlot, dst_mat.emission_map, cfg)
-            elif textureSlot.use_map_translucency or textureSlot.use_map_alpha:
+            if textureSlot.use_map_translucency or textureSlot.use_map_alpha:
                 export_tex(textureSlot, dst_mat.opacity_map, cfg)
-            elif textureSlot.use_map_normal:
+            if textureSlot.use_map_normal:
                 export_tex(textureSlot, dst_mat.normal_map, cfg)
         elif textureSlot is None:
             continue  # Empty Texture Slot
