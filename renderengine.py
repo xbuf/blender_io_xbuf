@@ -1,3 +1,4 @@
+# pylint: disable=E501
 # This file is part of blender_io_xbuf.  blender_io_xbuf is free software: you can
 # redistribute it and/or modify it under the terms of the GNU General Public
 # License as published by the Free Software Foundation, version 2.
@@ -16,6 +17,7 @@
 import bpy
 import bgl
 import asyncio
+import time
 from . import protocol     # pylint: disable=W0406
 from . import helpers      # pylint: disable=W0406
 from . import xbuf_export  # pylint: disable=W0406
@@ -200,6 +202,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
 
     def view_draw(self, context):
         self.report({'DEBUG'}, "view_draw")
+        start = time.process_time()
         # self.view_update(context)
         # from http://blender.stackexchange.com/questions/5035/moving-user-perspective-in-blender-with-python
         # area = context.area
@@ -218,9 +221,10 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         height = int(region.height)
         self.external_render(context, width, height, self.view_draw_image)
         self.check_strip_selection(context.scene)
+        print("time view_draw %r" % (time.process_time() - start))
 
     def render_image(self, width, height, raw):
-        # TODO optimize the loading/convertion of raw (other renderegine use load_from_file instead of rect)
+        # TODO optimize the loading/convertion of raw (other renderengine use load_from_file instead of rect)
         # do benchmark array vs list
         # convert raw (1D,brga, byte) into rect (2D, rgba, float [0,1])
 
@@ -232,6 +236,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         #
         # # data = [[float(raw[i + 2])/255.0, float(raw[i + 1])/255.0, float(raw[i + 0])/255.0, float(raw[i + 3])/255.0] for p in range(width * height) i = p * 4]
         # pylint: disable=E1103
+        start = time.process_time()
         import numpy
         # print("w * h : %r   len/4 : %s" % (width*height, len(raw)/4))
         data = numpy.fromstring(raw, dtype=numpy.byte).astype(numpy.float)
@@ -246,8 +251,10 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         layer = result.layers[0]
         layer.rect = data
         self.end_result(result)
+        print("time render_image %r" % (time.process_time() - start))
 
     def view_draw_image(self, width, height, raw):
+        start = time.process_time()
         # raw = [[0, 255, 0, 255]] * (width * height)
         pixel_count = width * height
         bitmap = bgl.Buffer(bgl.GL_BYTE, [pixel_count * 4], raw)
@@ -259,3 +266,4 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                          # bgl.GL_BGRA, bgl.GL_UNSIGNED_BYTE,
                          bitmap
                          )
+        print("time view_draw_image %r" % (time.process_time() - start))
