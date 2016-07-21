@@ -220,13 +220,14 @@ def export_all_tobjects(scene, data, cfg):
             if obj.parent is not None:
                 #    tobject.parentId = cfg.id_of(obj.parent)
                 add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj.parent), xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), cfg)
-            export_obj_customproperties(obj, tobject, data, cfg)
+            export_customproperties(obj, tobject, data, cfg)
 
 def export_all_physics(scene, data, cfg):
     for obj in scene.objects:
         phy_data = None
         phy_data = export_rb(obj, phy_data, data, cfg)
         export_rbct(obj, phy_data, data, cfg)
+        export_customproperties(obj, phy_data, data, cfg)
 
 def export_rbct(ob, phy_data, data, cfg):
     btct = ob.rigid_body_constraint
@@ -384,13 +385,6 @@ def export_all_geometries(scene, data, cfg):
                     if material_index > -1 and material_index < len(obj.material_slots):
                         src_mat = obj.material_slots[material_index].material
                         add_relation_raw(data.relations, xbuf.datas_pb2.Mesh.__name__, mesh.id, xbuf.datas_pb2.Material.__name__, cfg.id_of(src_mat), cfg)
-        elif obj.type == 'LAMP':
-            src_light = obj.data
-            if cfg.need_update(src_light):
-                dst_light = data.lights.add()
-                export_light(src_light, dst_light, cfg)
-                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, dst_light.id, cfg)
-
 
 def export_all_materials(scene, data, cfg):
     for obj in scene.objects:
@@ -402,6 +396,7 @@ def export_all_materials(scene, data, cfg):
                 if cfg.need_update(src_mat):
                     dst_mat = data.materials.add()
                     export_material(src_mat, dst_mat, cfg)
+                    export_customproperties(src_mat, dst_mat, data, cfg)
 
 
 def export_all_lights(scene, data, cfg):
@@ -413,7 +408,8 @@ def export_all_lights(scene, data, cfg):
             if cfg.need_update(src_light):
                 dst_light = data.lights.add()
                 export_light(src_light, dst_light, cfg)
-            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light), cfg)
+                export_customproperties(src_light, dst_light, data, cfg)
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Light.__name__, cfg.id_of(src_light), cfg)
 
 
 def add_relation(relations, e1, e2, cfg):
@@ -630,7 +626,9 @@ def export_material(src_mat, dst_mat, cfg):
         cnv_color([emission, emission, emission], dst_mat.emission)
 
     if src_mat.use_transparency:
-        dst_mat.opacity = src_mat.alpha
+        if src_mat.transparency_method == 'Z_TRANSPARENCY':
+            #dst_mat.opacity = src_mat.alpha
+            dst_mat.color.a = src_mat.alpha
 
     # texture = src_mat.active_texture
     for textureSlot in src_mat.texture_slots:
@@ -741,7 +739,8 @@ def export_all_skeletons(scene, data, cfg):
             if cfg.need_update(src_skeleton):
                 dst_skeleton = data.skeletons.add()
                 export_skeleton(src_skeleton, dst_skeleton, cfg)
-            add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton), cfg)
+                export_customproperties(src_skeleton, dst_skeleton, data, cfg)
+                add_relation_raw(data.relations, xbuf.datas_pb2.TObject.__name__, cfg.id_of(obj), xbuf.datas_pb2.Skeleton.__name__, cfg.id_of(src_skeleton), cfg)
 
 
 def export_skeleton(src, dst, cfg):
@@ -1340,7 +1339,7 @@ def equals_mat4(m0, m1, max_cell_delta):
 # ------------------------------------------------------------------------------
 
 
-def export_obj_customproperties(src, dst_node, dst_data, cfg):
+def export_customproperties(src, dst_node, dst_data, cfg):
     keys = [k for k in src.keys() if not (k.startswith('_') or k.startswith('cycles'))]
     if len(keys) > 0:
         # custom_params = dst_data.Extensions[xbuf_ext.custom_params_pb2.custom_params].add()
