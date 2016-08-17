@@ -227,7 +227,7 @@ def export_all_physics(scene, data, cfg):
         phy_data = None
         phy_data = export_rb(obj, phy_data, data, cfg)
         export_rbct(obj, phy_data, data, cfg)
-        export_customproperties(obj, phy_data, data, cfg)
+        # export_customproperties(obj, phy_data, data, cfg)
 
 def export_rbct(ob, phy_data, data, cfg):
     btct = ob.rigid_body_constraint
