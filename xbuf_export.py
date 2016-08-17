@@ -699,14 +699,14 @@ def export_light(src, dst, cfg):
     dst.id = cfg.id_of(src)
     dst.name = src.name
     kind = src.type
-    if kind == 'SUN' or kind == 'AREA':
-        dst.kind = xbuf.datas_pb2.Light.directional
-    elif kind == 'POINT':
+    if kind == 'POINT':
         dst.kind = xbuf.datas_pb2.Light.point
     elif kind == 'SPOT':
         dst.kind = xbuf.datas_pb2.Light.spot
         dst.spot_angle.max = src.spot_size * 0.5
         dst.spot_angle.linear.begin = (1.0 - src.spot_blend)
+    else:
+        dst.kind = xbuf.datas_pb2.Light.directional
     dst.cast_shadow = getattr(src, 'use_shadow', False)
     cnv_color(src.color, dst.color)
     dst.intensity = src.energy
