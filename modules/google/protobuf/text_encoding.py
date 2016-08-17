@@ -28,12 +28,10 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#PY25 compatible for GAE.
-#
 """Encoding related utilities."""
-
 import re
-import sys  ##PY25
+
+import six
 
 # Lookup table for utf8
 _cescape_utf8_to_str = [chr(i) for i in range(0, 256)]
@@ -75,7 +73,7 @@ def CEscape(text, as_utf8):
   """
   # PY3 hack: make Ord work for str and bytes:
   # //platforms/networking/data uses unicode here, hence basestring.
-  Ord = ord if isinstance(text, str) else lambda x: x
+  Ord = ord if isinstance(text, six.string_types) else lambda x: x
   if as_utf8:
     return ''.join(_cescape_utf8_to_str[Ord(c)] for c in text)
   return ''.join(_cescape_byte_to_str[Ord(c)] for c in text)
@@ -100,8 +98,7 @@ def CUnescape(text):
   # allow single-digit hex escapes (like '\xf').
   result = _CUNESCAPE_HEX.sub(ReplaceHex, text)
 
-  if sys.version_info[0] < 3:  ##PY25
-##!PY25  if str is bytes:  # PY2
+  if str is bytes:  # PY2
     return result.decode('string_escape')
   result = ''.join(_cescape_highbit_to_str[ord(c)] for c in result)
   return (result.encode('ascii')  # Make it bytes to allow decode.

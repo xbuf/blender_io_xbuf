@@ -18,7 +18,8 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/meshes.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x11xbuf/meshes.proto\x12\x04xbuf\"\x9a\x02\n\x04Mesh\x12\n\n\x02id\x18\x01 \x02(\t\x12\'\n\tprimitive\x18\x02 \x02(\x0e\x32\x14.xbuf.Mesh.Primitive\x12\x0e\n\x03lod\x18\x03 \x01(\r:\x01\x30\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.xbuf.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.xbuf.IndexArray\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x18\n\x04skin\x18\x07 \x01(\x0b\x32\n.xbuf.Skin\"U\n\tPrimitive\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xca\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x02(\x0e\x32\x18.xbuf.VertexArray.Attrib\x12\x10\n\x05morph\x18\x02 \x01(\r:\x01\x30\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.xbuf.FloatBufferH\x00\"\xcf\x01\n\x06\x41ttrib\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.xbuf.UintBufferH\x00\x42\x08\n\x06\x62uffer\"2\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"1\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0f\n\x04step\x18\x02 \x02(\r:\x01\x31\"_\n\x04Skin\x12\x15\n\tboneCount\x18\x02 \x03(\x05\x42\x02\x10\x01\x12\x15\n\tboneIndex\x18\x03 \x03(\x05\x42\x02\x10\x01\x12\x16\n\nboneWeight\x18\x04 \x03(\x02\x42\x02\x10\x01\x12\x11\n\tboneNames\x18\x05 \x03(\t')
+  syntax='proto3',
+  serialized_pb=_b('\n\x11xbuf/meshes.proto\x12\x04xbuf\"\xa2\x02\n\x04Mesh\x12\n\n\x02id\x18\x01 \x01(\t\x12\'\n\tprimitive\x18\x02 \x01(\x0e\x32\x14.xbuf.Mesh.Primitive\x12\x0b\n\x03lod\x18\x03 \x01(\r\x12\'\n\x0cvertexArrays\x18\x04 \x03(\x0b\x32\x11.xbuf.VertexArray\x12%\n\x0bindexArrays\x18\x05 \x03(\x0b\x32\x10.xbuf.IndexArray\x12\x0c\n\x04name\x18\x06 \x01(\t\x12\x18\n\x04skin\x18\x07 \x01(\x0b\x32\n.xbuf.Skin\"`\n\tPrimitive\x12\t\n\x05undef\x10\x00\x12\n\n\x06points\x10\x01\x12\t\n\x05lines\x10\x02\x12\x0e\n\nline_strip\x10\x03\x12\r\n\ttriangles\x10\x04\x12\x12\n\x0etriangle_strip\x10\x05\"\xd2\x02\n\x0bVertexArray\x12(\n\x06\x61ttrib\x18\x01 \x01(\x0e\x32\x18.xbuf.VertexArray.Attrib\x12\r\n\x05morph\x18\x02 \x01(\r\x12#\n\x06\x66loats\x18\x03 \x01(\x0b\x32\x11.xbuf.FloatBufferH\x00\"\xda\x01\n\x06\x41ttrib\x12\t\n\x05undef\x10\x00\x12\x0c\n\x08position\x10\x01\x12\n\n\x06normal\x10\x02\x12\x0b\n\x07tangent\x10\x03\x12\r\n\tbitangent\x10\x04\x12\t\n\x05\x63olor\x10\x05\x12\x0c\n\x08texcoord\x10\x06\x12\r\n\ttexcoord2\x10\x07\x12\r\n\ttexcoord3\x10\x08\x12\r\n\ttexcoord4\x10\t\x12\r\n\ttexcoord5\x10\n\x12\r\n\ttexcoord6\x10\x0b\x12\r\n\ttexcoord7\x10\x0c\x12\r\n\ttexcoord8\x10\r\x12\r\n\ttexcoord9\x10\x0e\x42\x08\n\x06\x62uffer\"8\n\nIndexArray\x12 \n\x04ints\x18\x01 \x01(\x0b\x32\x10.xbuf.UintBufferH\x00\x42\x08\n\x06\x62uffer\"/\n\x0b\x46loatBuffer\x12\x12\n\x06values\x18\x01 \x03(\x02\x42\x02\x10\x01\x12\x0c\n\x04step\x18\x02 \x01(\r\".\n\nUintBuffer\x12\x12\n\x06values\x18\x01 \x03(\rB\x02\x10\x01\x12\x0c\n\x04step\x18\x02 \x01(\r\"_\n\x04Skin\x12\x15\n\tboneCount\x18\x02 \x03(\x05\x42\x02\x10\x01\x12\x15\n\tboneIndex\x18\x03 \x03(\x05\x42\x02\x10\x01\x12\x16\n\nboneWeight\x18\x04 \x03(\x02\x42\x02\x10\x01\x12\x11\n\tboneNames\x18\x05 \x03(\tb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -31,30 +32,34 @@ _MESH_PRIMITIVE = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='points', index=0, number=1,
+      name='undef', index=0, number=0,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='lines', index=1, number=2,
+      name='points', index=1, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='line_strip', index=2, number=3,
+      name='lines', index=2, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='triangles', index=3, number=4,
+      name='line_strip', index=3, number=3,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='triangle_strip', index=4, number=5,
+      name='triangles', index=4, number=4,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='triangle_strip', index=5, number=5,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=225,
-  serialized_end=310,
+  serialized_start=222,
+  serialized_end=318,
 )
 _sym_db.RegisterEnumDescriptor(_MESH_PRIMITIVE)
 
@@ -65,66 +70,70 @@ _VERTEXARRAY_ATTRIB = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='position', index=0, number=1,
+      name='undef', index=0, number=0,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='normal', index=1, number=2,
+      name='position', index=1, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='tangent', index=2, number=3,
+      name='normal', index=2, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='bitangent', index=3, number=4,
+      name='tangent', index=3, number=3,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='color', index=4, number=5,
+      name='bitangent', index=4, number=4,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord', index=5, number=6,
+      name='color', index=5, number=5,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord2', index=6, number=7,
+      name='texcoord', index=6, number=6,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord3', index=7, number=8,
+      name='texcoord2', index=7, number=7,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord4', index=8, number=9,
+      name='texcoord3', index=8, number=8,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord5', index=9, number=10,
+      name='texcoord4', index=9, number=9,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord6', index=10, number=11,
+      name='texcoord5', index=10, number=10,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord7', index=11, number=12,
+      name='texcoord6', index=11, number=11,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord8', index=12, number=13,
+      name='texcoord7', index=12, number=12,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='texcoord9', index=13, number=14,
+      name='texcoord8', index=13, number=13,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='texcoord9', index=14, number=14,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=426,
-  serialized_end=633,
+  serialized_start=431,
+  serialized_end=649,
 )
 _sym_db.RegisterEnumDescriptor(_VERTEXARRAY_ATTRIB)
 
@@ -138,22 +147,22 @@ _MESH = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='id', full_name='xbuf.Mesh.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='primitive', full_name='xbuf.Mesh.primitive', index=1,
-      number=2, type=14, cpp_type=8, label=2,
-      has_default_value=False, default_value=1,
+      number=2, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='lod', full_name='xbuf.Mesh.lod', index=2,
       number=3, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -194,11 +203,12 @@ _MESH = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=28,
-  serialized_end=310,
+  serialized_end=318,
 )
 
 
@@ -211,15 +221,15 @@ _VERTEXARRAY = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='attrib', full_name='xbuf.VertexArray.attrib', index=0,
-      number=1, type=14, cpp_type=8, label=2,
-      has_default_value=False, default_value=1,
+      number=1, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='morph', full_name='xbuf.VertexArray.morph', index=1,
       number=2, type=13, cpp_type=3, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -239,14 +249,15 @@ _VERTEXARRAY = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
       name='buffer', full_name='xbuf.VertexArray.buffer',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=313,
-  serialized_end=643,
+  serialized_start=321,
+  serialized_end=659,
 )
 
 
@@ -272,14 +283,15 @@ _INDEXARRAY = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
       name='buffer', full_name='xbuf.IndexArray.buffer',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=645,
-  serialized_end=701,
+  serialized_start=661,
+  serialized_end=717,
 )
 
 
@@ -299,8 +311,8 @@ _FLOATBUFFER = _descriptor.Descriptor(
       options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
     _descriptor.FieldDescriptor(
       name='step', full_name='xbuf.FloatBuffer.step', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=True, default_value=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -312,11 +324,12 @@ _FLOATBUFFER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=703,
-  serialized_end=753,
+  serialized_start=719,
+  serialized_end=766,
 )
 
 
@@ -336,8 +349,8 @@ _UINTBUFFER = _descriptor.Descriptor(
       options=_descriptor._ParseOptions(descriptor_pb2.FieldOptions(), _b('\020\001'))),
     _descriptor.FieldDescriptor(
       name='step', full_name='xbuf.UintBuffer.step', index=1,
-      number=2, type=13, cpp_type=3, label=2,
-      has_default_value=True, default_value=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -349,11 +362,12 @@ _UINTBUFFER = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=755,
-  serialized_end=804,
+  serialized_start=768,
+  serialized_end=814,
 )
 
 
@@ -400,11 +414,12 @@ _SKIN = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=806,
-  serialized_end=901,
+  serialized_start=816,
+  serialized_end=911,
 )
 
 _MESH.fields_by_name['primitive'].enum_type = _MESH_PRIMITIVE

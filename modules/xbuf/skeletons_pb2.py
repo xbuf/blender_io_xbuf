@@ -13,8 +13,8 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import xbuf.primitives_pb2
-import xbuf.relations_pb2
+from xbuf import primitives_pb2 as xbuf_dot_primitives__pb2
+from xbuf import relations_pb2 as xbuf_dot_relations__pb2
 
 from xbuf.primitives_pb2 import *
 from xbuf.relations_pb2 import *
@@ -22,9 +22,10 @@ from xbuf.relations_pb2 import *
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/skeletons.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x14xbuf/skeletons.proto\x12\x04xbuf\x1a\x15xbuf/primitives.proto\x1a\x14xbuf/relations.proto\"d\n\x08Skeleton\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x19\n\x05\x62ones\x18\x03 \x03(\x0b\x32\n.xbuf.Bone\x12#\n\x0b\x62ones_graph\x18\x04 \x03(\x0b\x32\x0e.xbuf.Relation\"D\n\x04\x42one\x12\n\n\x02id\x18\x01 \x02(\t\x12\"\n\ttransform\x18\x02 \x02(\x0b\x32\x0f.xbuf.Transform\x12\x0c\n\x04name\x18\x04 \x01(\tP\x00P\x01')
+  syntax='proto3',
+  serialized_pb=_b('\n\x14xbuf/skeletons.proto\x12\x04xbuf\x1a\x15xbuf/primitives.proto\x1a\x14xbuf/relations.proto\"d\n\x08Skeleton\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x19\n\x05\x62ones\x18\x03 \x03(\x0b\x32\n.xbuf.Bone\x12#\n\x0b\x62ones_graph\x18\x04 \x03(\x0b\x32\x0e.xbuf.Relation\"D\n\x04\x42one\x12\n\n\x02id\x18\x01 \x01(\t\x12\"\n\ttransform\x18\x02 \x01(\x0b\x32\x0f.xbuf.Transform\x12\x0c\n\x04name\x18\x04 \x01(\tP\x00P\x01\x62\x06proto3')
   ,
-  dependencies=[xbuf.primitives_pb2.DESCRIPTOR,xbuf.relations_pb2.DESCRIPTOR,])
+  dependencies=[xbuf_dot_primitives__pb2.DESCRIPTOR,xbuf_dot_relations__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -39,7 +40,7 @@ _SKELETON = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='id', full_name='xbuf.Skeleton.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -73,6 +74,7 @@ _SKELETON = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -90,14 +92,14 @@ _BONE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='id', full_name='xbuf.Bone.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='transform', full_name='xbuf.Bone.transform', index=1,
-      number=2, type=11, cpp_type=10, label=2,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -117,6 +119,7 @@ _BONE = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -125,8 +128,8 @@ _BONE = _descriptor.Descriptor(
 )
 
 _SKELETON.fields_by_name['bones'].message_type = _BONE
-_SKELETON.fields_by_name['bones_graph'].message_type = xbuf.relations_pb2._RELATION
-_BONE.fields_by_name['transform'].message_type = xbuf.primitives_pb2._TRANSFORM
+_SKELETON.fields_by_name['bones_graph'].message_type = xbuf_dot_relations__pb2._RELATION
+_BONE.fields_by_name['transform'].message_type = xbuf_dot_primitives__pb2._TRANSFORM
 DESCRIPTOR.message_types_by_name['Skeleton'] = _SKELETON
 DESCRIPTOR.message_types_by_name['Bone'] = _BONE
 

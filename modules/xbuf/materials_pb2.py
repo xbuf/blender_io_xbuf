@@ -13,16 +13,17 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import xbuf.primitives_pb2
+from xbuf import primitives_pb2 as xbuf_dot_primitives__pb2
 
 from xbuf.primitives_pb2 import *
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/materials.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x14xbuf/materials.proto\x12\x04xbuf\x1a\x15xbuf/primitives.proto\"\xbc\x04\n\x08Material\x12\n\n\x02id\x18\x01 \x02(\t\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x17\n\tshadeless\x18\x05 \x01(\x08:\x04true\x12\x1a\n\x05\x63olor\x18\n \x01(\x0b\x32\x0b.xbuf.Color\x12 \n\tcolor_map\x18\x0b \x01(\x0b\x32\r.xbuf.Texture\x12\x0f\n\x07opacity\x18\x0c \x01(\x02\x12\"\n\x0bopacity_map\x18\r \x01(\x0b\x32\r.xbuf.Texture\x12\x1a\n\x06normal\x18\x0e \x01(\x0b\x32\n.xbuf.Vec3\x12!\n\nnormal_map\x18\x0f \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\troughness\x18\x10 \x01(\x02\x12$\n\rroughness_map\x18\x11 \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\tmetalness\x18\x12 \x01(\x02\x12$\n\rmetalness_map\x18\x13 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08specular\x18\x14 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0cspecular_map\x18\x15 \x01(\x0b\x32\r.xbuf.Texture\x12\x16\n\x0especular_power\x18\x16 \x01(\x02\x12)\n\x12specular_power_map\x18\x17 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08\x65mission\x18\x18 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0c\x65mission_map\x18\x19 \x01(\x0b\x32\r.xbuf.TextureP\x00')
+  syntax='proto3',
+  serialized_pb=_b('\n\x14xbuf/materials.proto\x12\x04xbuf\x1a\x15xbuf/primitives.proto\"\xb6\x04\n\x08Material\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0e\n\x06\x66\x61mily\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x11\n\tshadeless\x18\x05 \x01(\x08\x12\x1a\n\x05\x63olor\x18\n \x01(\x0b\x32\x0b.xbuf.Color\x12 \n\tcolor_map\x18\x0b \x01(\x0b\x32\r.xbuf.Texture\x12\x0f\n\x07opacity\x18\x0c \x01(\x02\x12\"\n\x0bopacity_map\x18\r \x01(\x0b\x32\r.xbuf.Texture\x12\x1a\n\x06normal\x18\x0e \x01(\x0b\x32\n.xbuf.Vec3\x12!\n\nnormal_map\x18\x0f \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\troughness\x18\x10 \x01(\x02\x12$\n\rroughness_map\x18\x11 \x01(\x0b\x32\r.xbuf.Texture\x12\x11\n\tmetalness\x18\x12 \x01(\x02\x12$\n\rmetalness_map\x18\x13 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08specular\x18\x14 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0cspecular_map\x18\x15 \x01(\x0b\x32\r.xbuf.Texture\x12\x16\n\x0especular_power\x18\x16 \x01(\x02\x12)\n\x12specular_power_map\x18\x17 \x01(\x0b\x32\r.xbuf.Texture\x12\x1d\n\x08\x65mission\x18\x18 \x01(\x0b\x32\x0b.xbuf.Color\x12#\n\x0c\x65mission_map\x18\x19 \x01(\x0b\x32\r.xbuf.TextureP\x00\x62\x06proto3')
   ,
-  dependencies=[xbuf.primitives_pb2.DESCRIPTOR,])
+  dependencies=[xbuf_dot_primitives__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -37,7 +38,7 @@ _MATERIAL = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='id', full_name='xbuf.Material.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -59,7 +60,7 @@ _MATERIAL = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='shadeless', full_name='xbuf.Material.shadeless', index=3,
       number=5, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=True,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -80,7 +81,7 @@ _MATERIAL = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='opacity', full_name='xbuf.Material.opacity', index=6,
       number=12, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -108,7 +109,7 @@ _MATERIAL = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='roughness', full_name='xbuf.Material.roughness', index=10,
       number=16, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -122,7 +123,7 @@ _MATERIAL = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='metalness', full_name='xbuf.Material.metalness', index=12,
       number=18, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -150,7 +151,7 @@ _MATERIAL = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='specular_power', full_name='xbuf.Material.specular_power', index=16,
       number=22, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -183,25 +184,26 @@ _MATERIAL = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=54,
-  serialized_end=626,
+  serialized_end=620,
 )
 
-_MATERIAL.fields_by_name['color'].message_type = xbuf.primitives_pb2._COLOR
-_MATERIAL.fields_by_name['color_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['opacity_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['normal'].message_type = xbuf.primitives_pb2._VEC3
-_MATERIAL.fields_by_name['normal_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['roughness_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['metalness_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['specular'].message_type = xbuf.primitives_pb2._COLOR
-_MATERIAL.fields_by_name['specular_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['specular_power_map'].message_type = xbuf.primitives_pb2._TEXTURE
-_MATERIAL.fields_by_name['emission'].message_type = xbuf.primitives_pb2._COLOR
-_MATERIAL.fields_by_name['emission_map'].message_type = xbuf.primitives_pb2._TEXTURE
+_MATERIAL.fields_by_name['color'].message_type = xbuf_dot_primitives__pb2._COLOR
+_MATERIAL.fields_by_name['color_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['opacity_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['normal'].message_type = xbuf_dot_primitives__pb2._VEC3
+_MATERIAL.fields_by_name['normal_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['roughness_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['metalness_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['specular'].message_type = xbuf_dot_primitives__pb2._COLOR
+_MATERIAL.fields_by_name['specular_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['specular_power_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_MATERIAL.fields_by_name['emission'].message_type = xbuf_dot_primitives__pb2._COLOR
+_MATERIAL.fields_by_name['emission_map'].message_type = xbuf_dot_primitives__pb2._TEXTURE
 DESCRIPTOR.message_types_by_name['Material'] = _MATERIAL
 
 Material = _reflection.GeneratedProtocolMessageType('Material', (_message.Message,), dict(

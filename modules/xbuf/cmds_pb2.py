@@ -13,16 +13,34 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import xbuf.datas_pb2
+from xbuf import datas_pb2 as xbuf_dot_datas__pb2
+xbuf_dot_lights__pb2 = xbuf_dot_datas__pb2.xbuf_dot_lights__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
+xbuf_dot_materials__pb2 = xbuf_dot_datas__pb2.xbuf_dot_materials__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
+xbuf_dot_meshes__pb2 = xbuf_dot_datas__pb2.xbuf_dot_meshes__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
+xbuf_dot_relations__pb2 = xbuf_dot_datas__pb2.xbuf_dot_relations__pb2
+xbuf_dot_skeletons__pb2 = xbuf_dot_datas__pb2.xbuf_dot_skeletons__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
+xbuf_dot_relations__pb2 = xbuf_dot_datas__pb2.xbuf_dot_relations__pb2
+xbuf_dot_tobjects__pb2 = xbuf_dot_datas__pb2.xbuf_dot_tobjects__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
+xbuf__ext_dot_animations__kf__pb2 = xbuf_dot_datas__pb2.xbuf__ext_dot_animations__kf__pb2
+xbuf__ext_dot_custom__params__pb2 = xbuf_dot_datas__pb2.xbuf__ext_dot_custom__params__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
+xbuf__ext_dot_physics__pb2 = xbuf_dot_datas__pb2.xbuf__ext_dot_physics__pb2
+xbuf_dot_primitives__pb2 = xbuf_dot_datas__pb2.xbuf_dot_primitives__pb2
 
 from xbuf.datas_pb2 import *
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/cmds.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x0fxbuf/cmds.proto\x12\x04xbuf\x1a\x10xbuf/datas.proto\"\xd9\x01\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.xbuf.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.xbuf.DataH\x00\x12&\n\ndeleteData\x18\x04 \x01(\x0b\x32\x10.xbuf.DeleteDataH\x00\x12\x36\n\x12\x63hangeAssetFolders\x18\x05 \x01(\x0b\x32\x18.xbuf.ChangeAssetFoldersH\x00\x12,\n\rplayAnimation\x18\x06 \x01(\x0b\x32\x13.xbuf.PlayAnimationH\x00\x42\x05\n\x03\x63md\"\xea\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x02(\x0b\x32\n.xbuf.Vec3\x12\"\n\x08rotation\x18\x02 \x02(\x0b\x32\x10.xbuf.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.xbuf.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\x12\x34\n\x08projMode\x18\x07 \x01(\x0e\x32\x15.xbuf.SetEye.ProjMode:\x0bperspective\"-\n\x08ProjMode\x12\x0f\n\x0bperspective\x10\x01\x12\x10\n\x0corthographic\x10\x02\"Z\n\x12\x43hangeAssetFolders\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x16\n\x08register\x18\x02 \x01(\x08:\x04true\x12\x1e\n\x0funregisterOther\x18\x03 \x01(\x08:\x05\x66\x61lse\"Q\n\nDeleteData\x12\x0c\n\x04refs\x18\x01 \x03(\t\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.xbuf.Relation\x12\x12\n\x03\x61ll\x18\x03 \x01(\x08:\x05\x66\x61lse\"5\n\rPlayAnimation\x12\x0b\n\x03ref\x18\x01 \x02(\t\x12\x17\n\x0f\x61nimationsNames\x18\x02 \x03(\tP\x00')
+  syntax='proto3',
+  serialized_pb=_b('\n\x0fxbuf/cmds.proto\x12\x04xbuf\x1a\x10xbuf/datas.proto\"\xd9\x01\n\x03\x43md\x12\x1e\n\x06setEye\x18\x02 \x01(\x0b\x32\x0c.xbuf.SetEyeH\x00\x12\x1d\n\x07setData\x18\x03 \x01(\x0b\x32\n.xbuf.DataH\x00\x12&\n\ndeleteData\x18\x04 \x01(\x0b\x32\x10.xbuf.DeleteDataH\x00\x12\x36\n\x12\x63hangeAssetFolders\x18\x05 \x01(\x0b\x32\x18.xbuf.ChangeAssetFoldersH\x00\x12,\n\rplayAnimation\x18\x06 \x01(\x0b\x32\x13.xbuf.PlayAnimationH\x00\x42\x05\n\x03\x63md\"\xe8\x01\n\x06SetEye\x12\x1c\n\x08location\x18\x01 \x01(\x0b\x32\n.xbuf.Vec3\x12\"\n\x08rotation\x18\x02 \x01(\x0b\x32\x10.xbuf.Quaternion\x12\x1e\n\nprojection\x18\x03 \x01(\x0b\x32\n.xbuf.Mat4\x12\x0c\n\x04near\x18\x05 \x01(\x02\x12\x0b\n\x03\x66\x61r\x18\x06 \x01(\x02\x12\'\n\x08projMode\x18\x07 \x01(\x0e\x32\x15.xbuf.SetEye.ProjMode\"8\n\x08ProjMode\x12\t\n\x05undef\x10\x00\x12\x0f\n\x0bperspective\x10\x01\x12\x10\n\x0corthographic\x10\x02\"M\n\x12\x43hangeAssetFolders\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x10\n\x08register\x18\x02 \x01(\x08\x12\x17\n\x0funregisterOther\x18\x03 \x01(\x08\"J\n\nDeleteData\x12\x0c\n\x04refs\x18\x01 \x03(\t\x12!\n\trelations\x18\x02 \x03(\x0b\x32\x0e.xbuf.Relation\x12\x0b\n\x03\x61ll\x18\x03 \x01(\x08\"5\n\rPlayAnimation\x12\x0b\n\x03ref\x18\x01 \x01(\t\x12\x17\n\x0f\x61nimationsNames\x18\x02 \x03(\tP\x00\x62\x06proto3')
   ,
-  dependencies=[xbuf.datas_pb2.DESCRIPTOR,])
+  dependencies=[xbuf_dot_datas__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -34,18 +52,22 @@ _SETEYE_PROJMODE = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='perspective', index=0, number=1,
+      name='undef', index=0, number=0,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='orthographic', index=1, number=2,
+      name='perspective', index=1, number=1,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='orthographic', index=2, number=2,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=453,
-  serialized_end=498,
+  serialized_start=440,
+  serialized_end=496,
 )
 _sym_db.RegisterEnumDescriptor(_SETEYE_PROJMODE)
 
@@ -100,6 +122,7 @@ _CMD = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
@@ -120,14 +143,14 @@ _SETEYE = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='location', full_name='xbuf.SetEye.location', index=0,
-      number=1, type=11, cpp_type=10, label=2,
+      number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='rotation', full_name='xbuf.SetEye.rotation', index=1,
-      number=2, type=11, cpp_type=10, label=2,
+      number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -142,21 +165,21 @@ _SETEYE = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='near', full_name='xbuf.SetEye.near', index=3,
       number=5, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='far', full_name='xbuf.SetEye.far', index=4,
       number=6, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='projMode', full_name='xbuf.SetEye.projMode', index=5,
       number=7, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -169,11 +192,12 @@ _SETEYE = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=264,
-  serialized_end=498,
+  serialized_end=496,
 )
 
 
@@ -194,14 +218,14 @@ _CHANGEASSETFOLDERS = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='register', full_name='xbuf.ChangeAssetFolders.register', index=1,
       number=2, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=True,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='unregisterOther', full_name='xbuf.ChangeAssetFolders.unregisterOther', index=2,
       number=3, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=False,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -213,11 +237,12 @@ _CHANGEASSETFOLDERS = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=500,
-  serialized_end=590,
+  serialized_start=498,
+  serialized_end=575,
 )
 
 
@@ -245,7 +270,7 @@ _DELETEDATA = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='all', full_name='xbuf.DeleteData.all', index=2,
       number=3, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=False,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -257,11 +282,12 @@ _DELETEDATA = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=592,
-  serialized_end=673,
+  serialized_start=577,
+  serialized_end=651,
 )
 
 
@@ -274,7 +300,7 @@ _PLAYANIMATION = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='ref', full_name='xbuf.PlayAnimation.ref', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -294,15 +320,16 @@ _PLAYANIMATION = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=675,
-  serialized_end=728,
+  serialized_start=653,
+  serialized_end=706,
 )
 
 _CMD.fields_by_name['setEye'].message_type = _SETEYE
-_CMD.fields_by_name['setData'].message_type = xbuf.datas_pb2._DATA
+_CMD.fields_by_name['setData'].message_type = xbuf_dot_datas__pb2._DATA
 _CMD.fields_by_name['deleteData'].message_type = _DELETEDATA
 _CMD.fields_by_name['changeAssetFolders'].message_type = _CHANGEASSETFOLDERS
 _CMD.fields_by_name['playAnimation'].message_type = _PLAYANIMATION
@@ -321,12 +348,12 @@ _CMD.fields_by_name['changeAssetFolders'].containing_oneof = _CMD.oneofs_by_name
 _CMD.oneofs_by_name['cmd'].fields.append(
   _CMD.fields_by_name['playAnimation'])
 _CMD.fields_by_name['playAnimation'].containing_oneof = _CMD.oneofs_by_name['cmd']
-_SETEYE.fields_by_name['location'].message_type = xbuf.primitives_pb2._VEC3
-_SETEYE.fields_by_name['rotation'].message_type = xbuf.primitives_pb2._QUATERNION
-_SETEYE.fields_by_name['projection'].message_type = xbuf.primitives_pb2._MAT4
+_SETEYE.fields_by_name['location'].message_type = xbuf_dot_primitives__pb2._VEC3
+_SETEYE.fields_by_name['rotation'].message_type = xbuf_dot_primitives__pb2._QUATERNION
+_SETEYE.fields_by_name['projection'].message_type = xbuf_dot_primitives__pb2._MAT4
 _SETEYE.fields_by_name['projMode'].enum_type = _SETEYE_PROJMODE
 _SETEYE_PROJMODE.containing_type = _SETEYE
-_DELETEDATA.fields_by_name['relations'].message_type = xbuf.relations_pb2._RELATION
+_DELETEDATA.fields_by_name['relations'].message_type = xbuf_dot_relations__pb2._RELATION
 DESCRIPTOR.message_types_by_name['Cmd'] = _CMD
 DESCRIPTOR.message_types_by_name['SetEye'] = _SETEYE
 DESCRIPTOR.message_types_by_name['ChangeAssetFolders'] = _CHANGEASSETFOLDERS

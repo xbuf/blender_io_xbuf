@@ -13,16 +13,17 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import xbuf.primitives_pb2
+from xbuf import primitives_pb2 as xbuf_dot_primitives__pb2
 
 from xbuf.primitives_pb2 import *
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/lights.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x11xbuf/lights.proto\x12\x04xbuf\x1a\x15xbuf/primitives.proto\"\xaa\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x02(\t\x12+\n\x04kind\x18\x02 \x01(\x0e\x32\x10.xbuf.Light.Kind:\x0b\x64irectional\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.xbuf.Color\x12\x14\n\tintensity\x18\x04 \x01(\x02:\x01\x31\x12\x1a\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08:\x05\x66\x61lse\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.xbuf.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.xbuf.Attenuation\x12\x0c\n\x04name\x18\x08 \x01(\t\"9\n\x04Kind\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x02(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.xbuf.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.xbuf.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.xbuf.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.xbuf.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"5\n\x11\x41ttenuationLinear\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"5\n\x11\x41ttenuationSmooth\x12\x10\n\x05\x62\x65gin\x18\x04 \x01(\x02:\x01\x30\x12\x0e\n\x03\x65nd\x18\x05 \x01(\x02:\x01\x31\"a\n\x12\x41ttenuationInverse\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x31\"}\n\x18\x41ttenuationInverseSquare\x12\x10\n\x05scale\x18\x02 \x01(\x02:\x01\x31\x12\x11\n\x06offset\x18\x03 \x01(\x02:\x01\x30\x12\x13\n\x08\x63onstant\x18\x04 \x01(\x02:\x01\x30\x12\x11\n\x06linear\x18\x05 \x01(\x02:\x01\x30\x12\x14\n\tquadratic\x18\x06 \x01(\x02:\x01\x31P\x00')
+  syntax='proto3',
+  serialized_pb=_b('\n\x11xbuf/lights.proto\x12\x04xbuf\x1a\x15xbuf/primitives.proto\"\x9e\x02\n\x05Light\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1e\n\x04kind\x18\x02 \x01(\x0e\x32\x10.xbuf.Light.Kind\x12\x1a\n\x05\x63olor\x18\x03 \x01(\x0b\x32\x0b.xbuf.Color\x12\x11\n\tintensity\x18\x04 \x01(\x02\x12\x13\n\x0b\x63\x61st_shadow\x18\x05 \x01(\x08\x12*\n\x0fradial_distance\x18\x06 \x01(\x0b\x32\x11.xbuf.Attenuation\x12%\n\nspot_angle\x18\x07 \x01(\x0b\x32\x11.xbuf.Attenuation\x12\x0c\n\x04name\x18\x08 \x01(\t\"D\n\x04Kind\x12\t\n\x05undef\x10\x00\x12\x0b\n\x07\x61mbient\x10\x01\x12\x0f\n\x0b\x64irectional\x10\x02\x12\t\n\x05point\x10\x03\x12\x08\n\x04spot\x10\x04\"\xe0\x01\n\x0b\x41ttenuation\x12\x0b\n\x03max\x18\x01 \x01(\x02\x12)\n\x06linear\x18\x04 \x01(\x0b\x32\x17.xbuf.AttenuationLinearH\x00\x12)\n\x06smooth\x18\x05 \x01(\x0b\x32\x17.xbuf.AttenuationSmoothH\x00\x12+\n\x07inverse\x18\x06 \x01(\x0b\x32\x18.xbuf.AttenuationInverseH\x00\x12\x38\n\x0einverse_square\x18\x07 \x01(\x0b\x32\x1e.xbuf.AttenuationInverseSquareH\x00\x42\x07\n\x05\x63urve\"/\n\x11\x41ttenuationLinear\x12\r\n\x05\x62\x65gin\x18\x04 \x01(\x02\x12\x0b\n\x03\x65nd\x18\x05 \x01(\x02\"/\n\x11\x41ttenuationSmooth\x12\r\n\x05\x62\x65gin\x18\x04 \x01(\x02\x12\x0b\n\x03\x65nd\x18\x05 \x01(\x02\"U\n\x12\x41ttenuationInverse\x12\r\n\x05scale\x18\x02 \x01(\x02\x12\x0e\n\x06offset\x18\x03 \x01(\x02\x12\x10\n\x08\x63onstant\x18\x04 \x01(\x02\x12\x0e\n\x06linear\x18\x05 \x01(\x02\"n\n\x18\x41ttenuationInverseSquare\x12\r\n\x05scale\x18\x02 \x01(\x02\x12\x0e\n\x06offset\x18\x03 \x01(\x02\x12\x10\n\x08\x63onstant\x18\x04 \x01(\x02\x12\x0e\n\x06linear\x18\x05 \x01(\x02\x12\x11\n\tquadratic\x18\x06 \x01(\x02P\x00\x62\x06proto3')
   ,
-  dependencies=[xbuf.primitives_pb2.DESCRIPTOR,])
+  dependencies=[xbuf_dot_primitives__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -34,26 +35,30 @@ _LIGHT_KIND = _descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     _descriptor.EnumValueDescriptor(
-      name='ambient', index=0, number=1,
+      name='undef', index=0, number=0,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='directional', index=1, number=2,
+      name='ambient', index=1, number=1,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='point', index=2, number=3,
+      name='directional', index=2, number=2,
       options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='spot', index=3, number=4,
+      name='point', index=3, number=3,
+      options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='spot', index=4, number=4,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=292,
-  serialized_end=349,
+  serialized_start=269,
+  serialized_end=337,
 )
 _sym_db.RegisterEnumDescriptor(_LIGHT_KIND)
 
@@ -67,7 +72,7 @@ _LIGHT = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='id', full_name='xbuf.Light.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -75,7 +80,7 @@ _LIGHT = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='kind', full_name='xbuf.Light.kind', index=1,
       number=2, type=14, cpp_type=8, label=1,
-      has_default_value=True, default_value=2,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -89,14 +94,14 @@ _LIGHT = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='intensity', full_name='xbuf.Light.intensity', index=3,
       number=4, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='cast_shadow', full_name='xbuf.Light.cast_shadow', index=4,
       number=5, type=8, cpp_type=7, label=1,
-      has_default_value=True, default_value=False,
+      has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -130,11 +135,12 @@ _LIGHT = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
   serialized_start=51,
-  serialized_end=349,
+  serialized_end=337,
 )
 
 
@@ -147,8 +153,8 @@ _ATTENUATION = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='max', full_name='xbuf.Attenuation.max', index=0,
-      number=1, type=2, cpp_type=6, label=2,
-      has_default_value=False, default_value=0,
+      number=1, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -188,14 +194,15 @@ _ATTENUATION = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
       name='curve', full_name='xbuf.Attenuation.curve',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=352,
-  serialized_end=576,
+  serialized_start=340,
+  serialized_end=564,
 )
 
 
@@ -209,14 +216,14 @@ _ATTENUATIONLINEAR = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='begin', full_name='xbuf.AttenuationLinear.begin', index=0,
       number=4, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='end', full_name='xbuf.AttenuationLinear.end', index=1,
       number=5, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -228,11 +235,12 @@ _ATTENUATIONLINEAR = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=578,
-  serialized_end=631,
+  serialized_start=566,
+  serialized_end=613,
 )
 
 
@@ -246,14 +254,14 @@ _ATTENUATIONSMOOTH = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='begin', full_name='xbuf.AttenuationSmooth.begin', index=0,
       number=4, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='end', full_name='xbuf.AttenuationSmooth.end', index=1,
       number=5, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -265,11 +273,12 @@ _ATTENUATIONSMOOTH = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=633,
-  serialized_end=686,
+  serialized_start=615,
+  serialized_end=662,
 )
 
 
@@ -283,28 +292,28 @@ _ATTENUATIONINVERSE = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='scale', full_name='xbuf.AttenuationInverse.scale', index=0,
       number=2, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='offset', full_name='xbuf.AttenuationInverse.offset', index=1,
       number=3, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='constant', full_name='xbuf.AttenuationInverse.constant', index=2,
       number=4, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='linear', full_name='xbuf.AttenuationInverse.linear', index=3,
       number=5, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -316,11 +325,12 @@ _ATTENUATIONINVERSE = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=688,
-  serialized_end=785,
+  serialized_start=664,
+  serialized_end=749,
 )
 
 
@@ -334,35 +344,35 @@ _ATTENUATIONINVERSESQUARE = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='scale', full_name='xbuf.AttenuationInverseSquare.scale', index=0,
       number=2, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='offset', full_name='xbuf.AttenuationInverseSquare.offset', index=1,
       number=3, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='constant', full_name='xbuf.AttenuationInverseSquare.constant', index=2,
       number=4, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='linear', full_name='xbuf.AttenuationInverseSquare.linear', index=3,
       number=5, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='quadratic', full_name='xbuf.AttenuationInverseSquare.quadratic', index=4,
       number=6, type=2, cpp_type=6, label=1,
-      has_default_value=True, default_value=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -374,15 +384,16 @@ _ATTENUATIONINVERSESQUARE = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=787,
-  serialized_end=912,
+  serialized_start=751,
+  serialized_end=861,
 )
 
 _LIGHT.fields_by_name['kind'].enum_type = _LIGHT_KIND
-_LIGHT.fields_by_name['color'].message_type = xbuf.primitives_pb2._COLOR
+_LIGHT.fields_by_name['color'].message_type = xbuf_dot_primitives__pb2._COLOR
 _LIGHT.fields_by_name['radial_distance'].message_type = _ATTENUATION
 _LIGHT.fields_by_name['spot_angle'].message_type = _ATTENUATION
 _LIGHT_KIND.containing_type = _LIGHT

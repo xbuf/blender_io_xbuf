@@ -13,16 +13,17 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-import xbuf.primitives_pb2
+from xbuf import primitives_pb2 as xbuf_dot_primitives__pb2
 
 from xbuf.primitives_pb2 import *
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf_ext/custom_params.proto',
   package='xbuf_ext',
-  serialized_pb=_b('\n\x1cxbuf_ext/custom_params.proto\x12\x08xbuf_ext\x1a\x15xbuf/primitives.proto\"D\n\x0f\x43ustomParamList\x12\n\n\x02id\x18\x01 \x02(\t\x12%\n\x06params\x18\x02 \x03(\x0b\x32\x15.xbuf_ext.CustomParam\"\xc3\x02\n\x0b\x43ustomParam\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x0f\n\x05vbool\x18\x02 \x01(\x08H\x00\x12\x11\n\x07vstring\x18\x03 \x01(\tH\x00\x12\x10\n\x06vfloat\x18\x04 \x01(\x02H\x00\x12\x0e\n\x04vint\x18\x05 \x01(\x05H\x00\x12\x1b\n\x05vvec2\x18\n \x01(\x0b\x32\n.xbuf.Vec2H\x00\x12\x1b\n\x05vvec3\x18\x0b \x01(\x0b\x32\n.xbuf.Vec3H\x00\x12\x1b\n\x05vvec4\x18\x0c \x01(\x0b\x32\n.xbuf.Vec4H\x00\x12!\n\x05vquat\x18\r \x01(\x0b\x32\x10.xbuf.QuaternionH\x00\x12\x1b\n\x05vmat4\x18\x0e \x01(\x0b\x32\n.xbuf.Mat4H\x00\x12!\n\x08vtexture\x18\x0f \x01(\x0b\x32\r.xbuf.TextureH\x00\x12\x1d\n\x06vcolor\x18\x10 \x01(\x0b\x32\x0b.xbuf.ColorH\x00\x42\x07\n\x05valueP\x00')
+  syntax='proto3',
+  serialized_pb=_b('\n\x1cxbuf_ext/custom_params.proto\x12\x08xbuf_ext\x1a\x15xbuf/primitives.proto\"D\n\x0f\x43ustomParamList\x12\n\n\x02id\x18\x01 \x01(\t\x12%\n\x06params\x18\x02 \x03(\x0b\x32\x15.xbuf_ext.CustomParam\"\xc3\x02\n\x0b\x43ustomParam\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x05vbool\x18\x02 \x01(\x08H\x00\x12\x11\n\x07vstring\x18\x03 \x01(\tH\x00\x12\x10\n\x06vfloat\x18\x04 \x01(\x02H\x00\x12\x0e\n\x04vint\x18\x05 \x01(\x05H\x00\x12\x1b\n\x05vvec2\x18\n \x01(\x0b\x32\n.xbuf.Vec2H\x00\x12\x1b\n\x05vvec3\x18\x0b \x01(\x0b\x32\n.xbuf.Vec3H\x00\x12\x1b\n\x05vvec4\x18\x0c \x01(\x0b\x32\n.xbuf.Vec4H\x00\x12!\n\x05vquat\x18\r \x01(\x0b\x32\x10.xbuf.QuaternionH\x00\x12\x1b\n\x05vmat4\x18\x0e \x01(\x0b\x32\n.xbuf.Mat4H\x00\x12!\n\x08vtexture\x18\x0f \x01(\x0b\x32\r.xbuf.TextureH\x00\x12\x1d\n\x06vcolor\x18\x10 \x01(\x0b\x32\x0b.xbuf.ColorH\x00\x42\x07\n\x05valueP\x00\x62\x06proto3')
   ,
-  dependencies=[xbuf.primitives_pb2.DESCRIPTOR,])
+  dependencies=[xbuf_dot_primitives__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -37,7 +38,7 @@ _CUSTOMPARAMLIST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='id', full_name='xbuf_ext.CustomParamList.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -57,6 +58,7 @@ _CUSTOMPARAMLIST = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
@@ -74,7 +76,7 @@ _CUSTOMPARAM = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='name', full_name='xbuf_ext.CustomParam.name', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -96,7 +98,7 @@ _CUSTOMPARAM = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='vfloat', full_name='xbuf_ext.CustomParam.vfloat', index=3,
       number=4, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -164,6 +166,7 @@ _CUSTOMPARAM = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
@@ -175,13 +178,13 @@ _CUSTOMPARAM = _descriptor.Descriptor(
 )
 
 _CUSTOMPARAMLIST.fields_by_name['params'].message_type = _CUSTOMPARAM
-_CUSTOMPARAM.fields_by_name['vvec2'].message_type = xbuf.primitives_pb2._VEC2
-_CUSTOMPARAM.fields_by_name['vvec3'].message_type = xbuf.primitives_pb2._VEC3
-_CUSTOMPARAM.fields_by_name['vvec4'].message_type = xbuf.primitives_pb2._VEC4
-_CUSTOMPARAM.fields_by_name['vquat'].message_type = xbuf.primitives_pb2._QUATERNION
-_CUSTOMPARAM.fields_by_name['vmat4'].message_type = xbuf.primitives_pb2._MAT4
-_CUSTOMPARAM.fields_by_name['vtexture'].message_type = xbuf.primitives_pb2._TEXTURE
-_CUSTOMPARAM.fields_by_name['vcolor'].message_type = xbuf.primitives_pb2._COLOR
+_CUSTOMPARAM.fields_by_name['vvec2'].message_type = xbuf_dot_primitives__pb2._VEC2
+_CUSTOMPARAM.fields_by_name['vvec3'].message_type = xbuf_dot_primitives__pb2._VEC3
+_CUSTOMPARAM.fields_by_name['vvec4'].message_type = xbuf_dot_primitives__pb2._VEC4
+_CUSTOMPARAM.fields_by_name['vquat'].message_type = xbuf_dot_primitives__pb2._QUATERNION
+_CUSTOMPARAM.fields_by_name['vmat4'].message_type = xbuf_dot_primitives__pb2._MAT4
+_CUSTOMPARAM.fields_by_name['vtexture'].message_type = xbuf_dot_primitives__pb2._TEXTURE
+_CUSTOMPARAM.fields_by_name['vcolor'].message_type = xbuf_dot_primitives__pb2._COLOR
 _CUSTOMPARAM.oneofs_by_name['value'].fields.append(
   _CUSTOMPARAM.fields_by_name['vbool'])
 _CUSTOMPARAM.fields_by_name['vbool'].containing_oneof = _CUSTOMPARAM.oneofs_by_name['value']

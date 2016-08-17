@@ -18,7 +18,8 @@ _sym_db = _symbol_database.Default()
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='xbuf/relations.proto',
   package='xbuf',
-  serialized_pb=_b('\n\x14xbuf/relations.proto\x12\x04xbuf\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x02(\t\x12\x0c\n\x04ref2\x18\x02 \x02(\t\x12\r\n\x05label\x18\x03 \x01(\t')
+  syntax='proto3',
+  serialized_pb=_b('\n\x14xbuf/relations.proto\x12\x04xbuf\"5\n\x08Relation\x12\x0c\n\x04ref1\x18\x01 \x01(\t\x12\x0c\n\x04ref2\x18\x02 \x01(\t\x12\r\n\x05label\x18\x03 \x01(\tb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -34,14 +35,14 @@ _RELATION = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='ref1', full_name='xbuf.Relation.ref1', index=0,
-      number=1, type=9, cpp_type=9, label=2,
+      number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='ref2', full_name='xbuf.Relation.ref2', index=1,
-      number=2, type=9, cpp_type=9, label=2,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -61,6 +62,7 @@ _RELATION = _descriptor.Descriptor(
   ],
   options=None,
   is_extendable=False,
+  syntax='proto3',
   extension_ranges=[],
   oneofs=[
   ],
