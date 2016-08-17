@@ -14,6 +14,7 @@
 # Copyright David Bernard, Riccardo Balbo
 
 # <pep8 compliant>
+import time
 
 import mathutils
 import bpy_extras
@@ -175,6 +176,7 @@ class ExportCfg:
 # TODO avoid export obj with same id
 # TODO optimize unify vertex with (same position, color, normal, texcoord,...)
 def export(scene, data, cfg):
+    t_start = time.perf_counter()
     export_all_tobjects(scene, data, cfg)
     export_all_geometries(scene, data, cfg)
     export_all_materials(scene, data, cfg)
@@ -182,6 +184,8 @@ def export(scene, data, cfg):
     export_all_skeletons(scene, data, cfg)
     export_all_actions(scene, data, cfg)
     export_all_physics(scene, data, cfg)
+    t_end = time.perf_counter()
+    cfg.info("export timing: %s" % (t_end - t_start))
 
 def export_all_tobjects(scene, data, cfg):
     for obj in scene.objects:
