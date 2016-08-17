@@ -19,8 +19,8 @@
 bl_info = {
     "name": "Xbuf Exporter & Render Engine",
     "author": "David Bernard",
-    "version": (0, 7),
-    "blender": (2, 73, 0),
+    "version": (0, 9),
+    "blender": (2, 77, 0),
     # "location": "Render > Engine > Xbuf Render",
     "description": "Xbuf exporter and renderer (via an external xbuf compatible render engine (eg provided by game engine))",
     "warning": "This script is Alpha",
@@ -38,9 +38,9 @@ del _modules_path
 
 # Use F8 to reload (see http://wiki.blender.org/index.php/Dev:2.5/Py/Scripts/Cookbook/Code_snippets/Multi-File_packages)
 from . import renderengine
-from . import protocol
+#from . import protocol
 from . import xbuf_export
-from . import helpers
+#from . import helpers
 
 """If the module is reloaded, reload all submodules as well
    This will reload all modules at the initial import as well but
