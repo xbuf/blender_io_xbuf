@@ -18,6 +18,7 @@ import time
 
 import mathutils
 import bpy_extras
+import math
 
 import xbuf
 import xbuf.datas_pb2
@@ -71,6 +72,18 @@ def cnv_toVec3ZupToYup(src):
     dst = [src[0], src[2], -src[1]]
     return dst
 
+def cnv_toQuatZupToYup(src):
+    # dst = xbuf.math_pb2.Quaternion()
+    src0 = src.copy()
+    q = mathutils.Quaternion((-1, 1, 0, 0))
+    q.normalize()
+    src0.rotate(q)
+    # orig = src
+    # src = mathutils.Quaternion((-1, 1, 0, 0))
+    # src.normalize()
+    # src.rotate(orig)
+    dst = [src0.x, src0.y, src0.z, src0.w]
+    return dst
 
 def cnv_quatZupToYup(src, dst):
     # dst = xbuf.math_pb2.Quaternion()
@@ -463,12 +476,14 @@ def export_meshes(src_geometry, meshes, scene, cfg):
             dstMap[material_index] = meshes.add()
 
     for material_index, dst in dstMap.items():
+        src_mat = None if material_index >= len(src_geometry.material_slots) else src_geometry.material_slots[material_index].material
         dst.primitive = xbuf.datas_pb2.Mesh.triangles
         dst.id = cfg.id_of(src_mesh) + "_" + str(material_index)
         dst.name = src_geometry.data.name + "_" + str(material_index)
         # unified_vertex_array = unify_vertices(vertex_array, index_table)
         export_positions(src_mesh, dst, material_index)
-        export_normals(src_mesh, dst, material_index)
+        #export_normals(src_mesh, dst, material_index)
+        export_tbns(src_mesh, dst, material_index, src_mat)
         export_index(src_mesh, dst, material_index)
         export_colors(src_mesh, dst, material_index)
         export_texcoords(src_mesh, dst, material_index)
@@ -534,6 +549,75 @@ def export_normals(src_mesh, dst_mesh, material_index):
     #     floats.extend(v.normal)
     dst.floats.values.extend(floats)
 
+def export_tbns(src_mesh, dst_mesh, material_index, src_mat):
+    #return
+    dst = dst_mesh.vertexArrays.add()
+    dst.attrib = xbuf.datas_pb2.VertexArray.tbn_to_model_quat
+    dst.floats.step = 4
+    floats = []
+    (tbn_fct, faces, fvertices_fct) = find_tbn_fct(src_mesh, material_index, src_mat)
+    for face in faces:
+        if material_index != face.material_index:
+            continue
+        fvertices = fvertices_fct(face)
+        for vertex in fvertices:
+            floats.extend(cnv_toQuatZupToYup(tbn_fct(vertex)))
+        #floats.extend(cnv_toQuatZupToYup(tbn_fct(vertices[face.vertices[1]])))
+        #floats.extend(cnv_toQuatZupToYup(tbn_fct(vertices[face.vertices[2]])))
+        #if len(face.vertices) == 4:
+        #    floats.extend(cnv_toQuatZupToYup(tbn_fct(vertices[face.vertices[3]])))
+    # for v in vertices:
+    #     floats.extend(v.normal)
+    dst.floats.values.extend(floats)
+
+# compute the invert quaternion that rotate (0, 0, 1) to the normal
+# see http://lolengine.net/blog/2013/09/18/beautiful-maths-quaternion-from-vectors
+# that generate better result than trying to create a tbn matrix like in GLSL like in
+# http://www.geeks3d.com/20130122/normal-mapping-without-precomputed-tangent-space-vectors/
+def tbn_from_normal(vertex):
+    n = mathutils.Vector(vertex.normal)
+    n.normalize()
+    v = mathutils.Vector((0.0, 0.0, 1.0))
+    m = math.sqrt(2.0 + 2.0 * n.dot(v))
+    if m == 0:
+        q = mathutils.Quaternion((0,0,-1,0))
+    else:
+        w = (1.0 / m) * n.cross(v)
+        q = mathutils.Quaternion((0.5 * m, w.x, w.y, w.z))
+        q.invert()
+    return q
+
+# calc_tangents should be called on mesh before
+def tbn_from_loop(vertex):
+    n = vertex.normal
+    t = vertex.tangent
+    b = vertex.bitangent
+    q = mathutils.Matrix((t, b, n)).to_quaternion()
+    #q.invert()
+    return q
+
+def find_tbn_fct(src_mesh, material_index, src_mat):
+    uvmap = None
+    if src_mat:
+        print(">>> tbn mat : %r" % (src_mat.name))
+        for textureSlot in src_mat.texture_slots:
+            if textureSlot:
+                print(">>> %r %r %r %r" % (uvmap, textureSlot.use, textureSlot.use_map_normal, textureSlot.uv_layer))
+            if not uvmap and textureSlot and textureSlot.use and textureSlot.use_map_normal and textureSlot.uv_layer:
+                print(">>> found uv_layer")
+                uvmap = textureSlot.uv_layer
+    else:
+        print(">>>> no src_mat")
+    if not uvmap:
+        print(">>>>> tbn_from_normal")
+        fvertices = lambda face: [vertex for vertex in [src_mesh.vertices[i] for i in face.vertices]]
+        return tbn_from_normal, src_mesh.tessfaces, fvertices
+    else:
+        print(">>>>> calc_tangents")
+        src_mesh.calc_tangents(uvmap = uvmap)
+        fvertices = lambda face : [vertex for vertex in [src_mesh.loops[i] for i in face.loop_indices]]
+        return tbn_from_loop, src_mesh.polygons, fvertices
+        #return tbn_from_normal
 
 def export_index(src_mesh, dst_mesh, material_index):
     faces = src_mesh.tessfaces
