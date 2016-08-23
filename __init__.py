@@ -19,7 +19,7 @@
 bl_info = {
     "name": "Xbuf Exporter & Render Engine",
     "author": "David Bernard",
-    "version": (0, 9),
+    "version": (0, 9, 1),
     "blender": (2, 77, 0),
     # "location": "Render > Engine > Xbuf Render",
     "description": "Xbuf exporter and renderer (via an external xbuf compatible render engine (eg provided by game engine))",
