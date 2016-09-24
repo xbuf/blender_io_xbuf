@@ -765,7 +765,10 @@ def export_tex(src, dst, cfg):
             if os.path.isfile(img_abspath):
                 # no resolution of symlink, could cause issue ?
                 if img_abspath != d_abspath:
-                    shutil.copyfile(img_abspath, d_abspath)
+                    try:
+                        shutil.copyfile(img_abspath, d_abspath)
+                    except shutil.SameFileError:
+                        dst.rpath = d_rpath.replace('\\', '/')
             else:
                 cfg.warning("source file not found : %s" % (img_abspath))
     #else:
