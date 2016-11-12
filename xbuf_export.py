@@ -599,21 +599,20 @@ def tbn_from_loop(vertex):
 def find_tbn_fct(src_mesh, material_index, src_mat):
     uvmap = None
     if src_mat:
-        print(">>> tbn mat : %r" % (src_mat.name))
         for textureSlot in src_mat.texture_slots:
-            if textureSlot:
-                print(">>> %r %r %r %r" % (uvmap, textureSlot.use, textureSlot.use_map_normal, textureSlot.uv_layer))
+            #if textureSlot:
+            #    print(">>> %r %r %r %r" % (uvmap, textureSlot.use, textureSlot.use_map_normal, textureSlot.uv_layer))
             if not uvmap and textureSlot and textureSlot.use and textureSlot.use_map_normal and textureSlot.uv_layer:
-                print(">>> found uv_layer")
+                #print(">>> found uv_layer")
                 uvmap = textureSlot.uv_layer
-    else:
-        print(">>>> no src_mat")
+    #else:
+    #    print(">>>> no src_mat")
     if not uvmap:
-        print(">>>>> tbn_from_normal")
+        #print(">>>>> tbn_from_normal")
         fvertices = lambda face: [vertex for vertex in [src_mesh.vertices[i] for i in face.vertices]]
         return tbn_from_normal, src_mesh.tessfaces, fvertices
     else:
-        print(">>>>> calc_tangents")
+        #print(">>>>> calc_tangents")
         src_mesh.calc_tangents(uvmap = uvmap)
         fvertices = lambda face : [vertex for vertex in [src_mesh.loops[i] for i in face.loop_indices]]
         return tbn_from_loop, src_mesh.polygons, fvertices
@@ -723,7 +722,7 @@ def export_material(src_mat, dst_mat, cfg):
         if (textureSlot) and textureSlot.use and (textureSlot.texture.type == "IMAGE") and textureSlot.texture.image and textureSlot.texture.image.source == 'FILE':
             if textureSlot.use_map_color_diffuse or textureSlot.use_map_diffuse:
                 export_tex(textureSlot, dst_mat.color_map, cfg)
-                print("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
+                cfg.info("link mat %r (%r) to tex %r" % (dst_mat.name, dst_mat.id, dst_mat.color_map.id))
             if textureSlot.use_map_color_spec or textureSlot.use_map_specular:
                 export_tex(textureSlot, dst_mat.specular_map, cfg)
             if textureSlot.use_map_emit:
@@ -735,7 +734,7 @@ def export_material(src_mat, dst_mat, cfg):
         elif textureSlot is None:
             continue  # Empty Texture Slot
         else:
-            print("WARNING: unsupported texture %r" % (textureSlot))
+            cfg.warning("unsupported texture %r" % (textureSlot))
 
 def export_tex(src, dst, cfg):
     import os
@@ -750,16 +749,16 @@ def export_tex(src, dst, cfg):
     else:
         d_rpath = os.path.join("Textures",  os.path.basename(src.texture.image.filepath[2:]))
     d_abspath = os.path.normpath(os.path.join(assets_abspath, d_rpath))
-    print("assets_abspath %r <= %r" % (assets_abspath, cfg.assets_path))
-    print("img_abspath %r" % (img_abspath))
-    print("d_rpath %r => d_abspath %r " % (d_rpath, d_abspath))
+    #print("assets_abspath %r <= %r" % (assets_abspath, cfg.assets_path))
+    #print("img_abspath %r" % (img_abspath))
+    #print("d_rpath %r => d_abspath %r " % (d_rpath, d_abspath))
     if cfg.need_update(src.texture):
         os.makedirs(os.path.dirname(d_abspath), exist_ok=True)
         if ispacked:
             with open(d_abspath, 'wb') as f:
                 f.write(src.texture.image.packed_file.data)
         else:
-            print("no packed texture %r // %r" % (src.texture, img_abspath))
+            #print("no packed texture %r // %r" % (src.texture, img_abspath))
             import shutil
             if os.path.isfile(img_abspath):
                 # no resolution of symlink, could cause issue ?
@@ -767,8 +766,8 @@ def export_tex(src, dst, cfg):
                     shutil.copyfile(img_abspath, d_abspath)
             else:
                 cfg.warning("source file not found : %s" % (img_abspath))
-    else:
-        print("no update of %r .. %r" % (dst.id, d_rpath))
+    #else:
+    #    print("no update of %r .. %r" % (dst.id, d_rpath))
     dst.rpath = d_rpath.replace('\\', '/')
     # TODO use md5 (hashlib.md5().update(...)) to name or to check change ??
     # TODO If the texture has a scale and/or offset, then export a coordinate transform.

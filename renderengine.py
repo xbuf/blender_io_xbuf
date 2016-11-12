@@ -221,7 +221,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         height = int(region.height)
         self.external_render(context, width, height, self.view_draw_image)
         self.check_strip_selection(context.scene)
-        print("time view_draw %r" % (time.process_time() - start))
+        #print("time view_draw %r" % (time.process_time() - start))
 
     def render_image(self, width, height, raw):
         # TODO optimize the loading/convertion of raw (other renderengine use load_from_file instead of rect)
@@ -251,7 +251,7 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
         layer = result.layers[0]
         layer.rect = data
         self.end_result(result)
-        print("time render_image %r" % (time.process_time() - start))
+        #print("time render_image %r" % (time.process_time() - start))
 
     def view_draw_image(self, width, height, raw):
         start = time.process_time()
@@ -266,4 +266,4 @@ class ExternalRenderEngine(bpy.types.RenderEngine):
                          # bgl.GL_BGRA, bgl.GL_UNSIGNED_BYTE,
                          bitmap
                          )
-        print("time view_draw_image %r" % (time.process_time() - start))
+        #print("time view_draw_image %r" % (time.process_time() - start))
