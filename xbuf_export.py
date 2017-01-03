@@ -591,9 +591,10 @@ def tbn_from_normal(vertex):
 def tbn_from_loop(vertex):
     n = vertex.normal
     t = vertex.tangent
-    b = vertex.bitangent
+    #b = vertex.bitangent
+    b = vertex.bitangent_sign * n.cross(t)
     q = mathutils.Matrix((t, b, n)).to_quaternion()
-    #q.invert()
+    q.invert()
     return q
 
 def find_tbn_fct(src_mesh, material_index, src_mat):
@@ -601,8 +602,8 @@ def find_tbn_fct(src_mesh, material_index, src_mat):
     if src_mat:
         for textureSlot in src_mat.texture_slots:
             #if textureSlot:
-            #    print(">>> %r %r %r %r" % (uvmap, textureSlot.use, textureSlot.use_map_normal, textureSlot.uv_layer))
-            if not uvmap and textureSlot and textureSlot.use and textureSlot.use_map_normal and textureSlot.uv_layer:
+            #    print(">>> %r %r %r %r %r" % (uvmap, textureSlot.use, textureSlot.use_map_normal, textureSlot.uv_layer, textureSlot.texture_coords))
+            if not uvmap and textureSlot and textureSlot.use and textureSlot.use_map_normal and textureSlot.texture_coords == 'UV' and textureSlot.uv_layer:
                 #print(">>> found uv_layer")
                 uvmap = textureSlot.uv_layer
     #else:
@@ -612,8 +613,8 @@ def find_tbn_fct(src_mesh, material_index, src_mat):
         fvertices = lambda face: [vertex for vertex in [src_mesh.vertices[i] for i in face.vertices]]
         return tbn_from_normal, src_mesh.tessfaces, fvertices
     else:
-        #print(">>>>> calc_tangents")
-        src_mesh.calc_tangents(uvmap = uvmap)
+        #print(">>>>> calc_tangents on %r" % (uvmap))
+        src_mesh.calc_tangents(uvmap=uvmap)
         fvertices = lambda face : [vertex for vertex in [src_mesh.loops[i] for i in face.loop_indices]]
         return tbn_from_loop, src_mesh.polygons, fvertices
         #return tbn_from_normal
