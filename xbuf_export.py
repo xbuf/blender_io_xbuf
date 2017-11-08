@@ -395,6 +395,7 @@ def export_all_geometries(scene, data, cfg):
             if len(obj.data.polygons) != 0 and cfg.need_update(obj.data):
                 meshes = export_meshes(obj, data.meshes, scene, cfg)
                 for material_index, mesh in meshes.items():
+                    export_customproperties(obj.data, mesh, data, cfg)
                     # several object can share the same mesh
                     for obj2 in scene.objects:
                         if obj2.data == obj.data:
