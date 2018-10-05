@@ -52,7 +52,3 @@ Notes:
 *  Video of [Harts Antler](https://www.youtube.com/channel/UCtHoHRAtqPzTZh52H6dgloQ) like :
   * [pyppet2-webGL-streaming-test1.mp4 - YouTube](https://www.youtube.com/watch?v=_4Qb_2LneJ8)
   * [b2ogre-0.5.5-anim-tracks.mp4 - YouTube](https://www.youtube.com/watch?v=5oVM0Lmeb68)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/xbuf/blender_io_xbuf/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
